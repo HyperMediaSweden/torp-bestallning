@@ -55,6 +55,9 @@ const GRUPPER = [
     { id: 'ig-film', namn: 'Film i flödet (.mp4)', matt: '1080×1080 px', info: 'Max 10 s. 4:5 (1080×1350) går också bra, skriv det i noteringen.' },
     { id: 'ig-stories', namn: 'Stories / Reels', matt: '1080×1920 px' }
   ]},
+  { id: 'tiktok', namn: 'TikTok', falt: ['kampanjstart', 'notering'], val: [
+    { id: 'tiktok-film', namn: 'Film (.mp4)', matt: '1080×1920 px', info: 'Stående 9:16, max 10 s. Ljud eller text på bilden, skriv önskemål i noteringen.' }
+  ]},
   { id: 'skarmar', namn: 'Digitala skärmar', info: 'Film 5 eller 10 s, max 12 s', falt: ['kampanjstart', 'kampanjslut', 'notering'],
     leverantor: 'Ocean Outdoor, ocean-delivery@oceanoutdoor.se', val: [
     { id: 'skarm-1080x1920', namn: 'Stående skärm', matt: '1080×1920 px' }

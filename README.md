@@ -6,8 +6,8 @@ Torp (Fredrik Wändel) kryssar i vad som ska tas fram, fyller i datum och skicka
 **Länk till kund:** https://torp.k2.nu/
 
 Sajten körs i Coolify (app `torp-bestallning`, Static från detta repo, branch `main`). GitHub Pages på
-https://hypermediasweden.github.io/torp-bestallning/ finns kvar tills Frida stänger det. Tills en GitHub-webhook
-finns för auto-deploy: tryck Redeploy i Coolify efter push.
+https://hypermediasweden.github.io/torp-bestallning/ finns kvar tills Frida stänger det. En GitHub-webhook i repot
+(Settings → Webhooks) driftsätter automatiskt i Coolify vid push till `main`; går den sönder: tryck Redeploy i Coolify.
 
 ## Hur beställningarna kommer fram
 

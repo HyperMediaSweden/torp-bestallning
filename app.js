@@ -9,8 +9,8 @@ const KONFIG = {
   kundkod: 'torp-kopcentrum',                          // kundens kod i beställningssystemet (Kunder → Kod)
   till: ['annonsproduktion@stampen.com'],             // produktionen (mejlvägen)
   kopia: ['frida.baldvinsdottir@stampen.com'],         // Frida
-  endpoint: '',                                        // Beställningssystemet: https://<domän>/api/bestallning. Tom = bara e-post.
-  materialUrl: '',                                     // Beställningssystemet: https://<domän>/api/material-lista/torp-kopcentrum. Tom = material.json.
+  endpoint: 'https://bestallningar.k2.nu/api/bestallning',                       // Beställningssystemet (Payload på Coolify). Tom = bara e-post.
+  materialUrl: 'https://bestallningar.k2.nu/api/material-lista/torp-kopcentrum', // Publicerat material från systemet. Tom = material.json.
   amnesprefix: 'Beställning Torp',
   sidlank: 'hypermediasweden.github.io/torp-bestallning'
 };

@@ -43,32 +43,32 @@ cd "kampanjer/torp-kopcentrum/bestallning" && git add -A && git commit -m "Uppda
 
 Sidan uppdateras inom någon minut.
 
-## Formatavvikelser mot den gamla PDF:en
+## Formaten i formuläret
 
-Jämfört med Stampens aktuella displayformat (datablocket i `../forhandsvisning/index.html`):
+Sociala kanaler, display, Adnami och tidning följer Stampens formatlista (datablocket `format` i
+`../forhandsvisning/index.html`). Ändras Stampens utbud: uppdatera `GRUPPER` i `app.js`.
 
-| I PDF:en | Hos Stampen | I formuläret |
-|---|---|---|
-| HTML5 320×320 | Mobil Panorama | Finns, med Stampens namn |
-| HTML5 320×480 | Mobil Mega | Finns |
-| HTML5 300×250 | Insider | Finns |
-| HTML5 250×600 | Outsider | Finns |
-| HTML5 980×240 | Panorama | Finns |
-| HTML5 980×600 | Panorama Mega | Finns |
-| HTML5 320×400 | Finns inte | Kvar, märkt "ej Stampen-standard" |
-| HTML5 980×300 | Finns inte | Kvar, märkt "ej Stampen-standard" |
-| HTML5 300×600 | Finns inte (Stampen har 250×600 Outsider) | Kvar, märkt "ej Stampen-standard" |
-| HTML5 640×360 | Finns inte (Stampen har 640×320 Modul) | Kvar, märkt "ej Stampen-standard" |
-| Norge 580×400 | Finns inte | Kvar, märkt "ej Stampen-standard" |
-| (saknas i PDF:en) 640×320 Modul | Finns | Tillagd under HTML5-annonser |
-| Facebook/Instagram film 12 s | Stampens Meta-filmer är max 10 s | Formuläret säger max 10 s |
-| Facebook/Instagram film 1080×1080 | Stampen bygger 4:5 (1080×1350) som flödesformat, 1:1 som stillbild | 1080×1080 kvar, 4:5 nämns som alternativ |
-| Instagram Stories 1080×1920 | Finns (Meta Stories/Reels 9:16, max 10 s) | Finns |
-| Digitala skärmar 1080×1920, 5/10 s, max 12 s | 1080×1920 finns; Stampens filmer är max 10 s | Oförändrat (Ocean Outdoors spec) |
-| Kartskärmar 1920×1080 | Finns (16:9) | Oförändrat, leverantör saknas i PDF:en |
-| Affischer och golvdekaler | Tryck, inte display | Oförändrat (Arkitektkopias spec) |
+| Grupp | Format |
+|---|---|
+| Facebook och Instagram | Flöde 4:5 1080×1350 (bild, film), flöde 1:1 1080×1080 (bild, film), Stories 9:16 och Reels 9:16 1080×1920, omslagsbild Facebook 1920×694. Film max 10 s |
+| TikTok | Film 9:16 1080×1920, max 10 s |
+| Snapchat | Film 9:16 1080×1920, max 10 s |
+| YouTube | Film 16:9 1920×1080 och Shorts 9:16 1080×1920, max 10 s |
+| Displayannonser | Panorama 980×240, Panorama Mega 980×600, Modul 640×320, Insider 300×250, Outsider 250×600, Mobil Panorama 320×320, Mobil Mega 320×480 |
+| Annonser med stor yta (Adnami) | Take-over mobil 320×480 och 1080×1920, take-over desktop 1920×1080, top-scroll mobil 1080×1920, top-scroll desktop 2560×1440 |
+| Tidningsannons | Modul 23 80×133 mm, Modul 34 122×170 mm, helsida 248×372 mm |
+
+## Avvikelser mot den gamla PDF:en
+
+| I PDF:en | I formuläret nu |
+|---|---|
+| HTML5 320×400, 980×300, 300×600, 640×360 (Sverige) | Borttagna, finns inte i Stampens utbud |
+| HTML5 Norge, alla storlekar | Kvar som egen grupp; 320×400, 580×400, 980×300 och 300×600 märkta "ej Stampen-standard" |
+| Leverantör Delta via FRC Media för HTML5 | Borttagen |
+| Facebook och Instagram som separata grupper, film 12 s, 1080×1080 | En Meta-grupp med Stampens flödes-, Stories- och Reels-format, film max 10 s |
+| Digitala skärmar 1080×1920, 5/10 s, max 12 s | Oförändrat (Ocean Outdoors spec) |
+| Kartskärmar 1920×1080 | Oförändrat, leverantör saknas i PDF:en |
+| Affischer och golvdekaler | Oförändrat (Arkitektkopias spec) |
 
 Hemsidans mått (1920×694, 1500×1000) kommer från Torps egen webb och går inte att kontrollera
-mot Stampens listor. Stampens sociala format TikTok, Snapchat, YouTube och Adnami take-over
-finns inte i formuläret eftersom de ingår i Stampens mediaplan, inte i kundens egna kanaler.
-De kan läggas till som en grupp i `GRUPPER` i `app.js` om Torp vill beställa dem separat.
+mot Stampens listor.

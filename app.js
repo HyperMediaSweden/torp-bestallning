@@ -11,6 +11,7 @@ const KONFIG = {
   kopia: ['frida.baldvinsdottir@stampen.com'],         // Frida
   endpoint: 'https://bestallningar.k2.nu/api/bestallning',                       // Beställningssystemet (Payload på Coolify). Tom = bara e-post.
   materialUrl: 'https://bestallningar.k2.nu/api/material-lista/torp-kopcentrum', // Publicerat material från systemet. Tom = material.json.
+  filUrl: '',                                          // Uppladdning: 'https://bestallningar.k2.nu/api/fil' när backend har ändpunkten. Tom = blocket Bilder och filer döljs.
   amnesprefix: 'Beställning Torp',
   sidlank: 'torp.k2.nu'
 };
@@ -21,6 +22,7 @@ const FALT = {
   kampanjslut:  { typ: 'date', etikett: 'Kampanjslut' },
   uppsattning:  { typ: 'date', etikett: 'Uppsättningsdatum' },
   montering:    { typ: 'date', etikett: 'Monteringsdatum' },
+  inforande:    { typ: 'date', etikett: 'Införandedatum', hjalp: 'Den dag annonsen ska vara i tidningen' },
   matt:         { typ: 'text', etikett: 'Mått', platshallare: 't.ex. 2×3 m' },
   notering:     { typ: 'text', etikett: 'Notering', bred: true, platshallare: 'Budskap, bild, annat som gäller just detta' }
 };
@@ -45,18 +47,43 @@ const GRUPPER = [
     { id: 'webheader-mp4', namn: 'Webheader, film (.mp4)', matt: '1920×694 px', info: 'Max 50 MB' },
     { id: 'kampanjplugg', namn: 'Kampanjplugg (.jpg)', matt: '1500×1000 px' }
   ]},
-  { id: 'facebook', namn: 'Facebook', falt: ['kampanjstart', 'notering'], val: [
-    { id: 'fb-header', namn: 'Omslagsbild (.jpg)', matt: '1920×694 px' },
-    { id: 'fb-film', namn: 'Film i flödet (.mp4)', matt: '1080×1080 px', info: 'Stampen gör filmer på max 10 s. Vill ni ha 4:5 (1080×1350) i stället, skriv det i noteringen.' },
-    { id: 'fb-story', namn: 'Story', matt: '1080×1920 px' }
+  { id: 'meta', namn: 'Facebook och Instagram', info: 'Film max 10 s', falt: ['kampanjstart', 'notering'],
+    hjalp: 'Samma material fungerar i båda kanalerna. Ska det bara synas i den ena, skriv det i noteringen.', val: [
+    { id: 'meta-flode-45-bild', namn: 'Flöde 4:5, bild', matt: '1080×1350 px' },
+    { id: 'meta-flode-45-film', namn: 'Flöde 4:5, film', matt: '1080×1350 px' },
+    { id: 'meta-flode-11-bild', namn: 'Flöde 1:1, bild', matt: '1080×1080 px' },
+    { id: 'meta-flode-11-film', namn: 'Flöde 1:1, film', matt: '1080×1080 px' },
+    { id: 'meta-stories', namn: 'Stories 9:16, bild eller film', matt: '1080×1920 px' },
+    { id: 'meta-reels', namn: 'Reels 9:16, film', matt: '1080×1920 px' },
+    { id: 'fb-omslag', namn: 'Omslagsbild Facebook (.jpg)', matt: '1920×694 px' }
   ]},
-  { id: 'instagram', namn: 'Instagram', falt: ['kampanjstart', 'notering'], val: [
-    { id: 'ig-square', namn: 'Inlägg, bild', matt: '1080×1080 px' },
-    { id: 'ig-film', namn: 'Film i flödet (.mp4)', matt: '1080×1080 px', info: 'Max 10 s. 4:5 (1080×1350) går också bra, skriv det i noteringen.' },
-    { id: 'ig-stories', namn: 'Stories / Reels', matt: '1080×1920 px' }
+  { id: 'tiktok', namn: 'TikTok', info: 'Film max 10 s', falt: ['kampanjstart', 'notering'], val: [
+    { id: 'tiktok-film', namn: 'Film 9:16', matt: '1080×1920 px', info: 'Ljud eller text på bilden, skriv önskemål i noteringen.' }
   ]},
-  { id: 'tiktok', namn: 'TikTok', falt: ['kampanjstart', 'notering'], val: [
-    { id: 'tiktok-film', namn: 'Film (.mp4)', matt: '1080×1920 px', info: 'Stående 9:16, max 10 s. Ljud eller text på bilden, skriv önskemål i noteringen.' }
+  { id: 'snapchat', namn: 'Snapchat', info: 'Film max 10 s', falt: ['kampanjstart', 'notering'], val: [
+    { id: 'snapchat-film', namn: 'Film 9:16', matt: '1080×1920 px' }
+  ]},
+  { id: 'youtube', namn: 'YouTube', info: 'Film max 10 s', falt: ['kampanjstart', 'notering'], val: [
+    { id: 'youtube-film', namn: 'Film 16:9', matt: '1920×1080 px', info: 'Loggan syns från start.' },
+    { id: 'youtube-shorts', namn: 'Shorts 9:16', matt: '1080×1920 px' }
+  ]},
+  { id: 'html5', namn: 'Displayannonser', info: 'Animerade HTML5, max 30 s', alla: 'Alla format', kompakt: true, falt: ['kampanjstart', 'notering'], val: [
+    html5('se', '980×240'), html5('se', '980×600'), html5('se', '640×320'), html5('se', '300×250'), html5('se', '250×600'), html5('se', '320×320'), html5('se', '320×480')
+  ]},
+  { id: 'html5-norge', namn: 'Displayannonser Norge', info: 'Animerade HTML5, max 30 s', alla: 'Alla storlekar', allaInklEjStandard: true, kompakt: true, falt: ['kampanjstart', 'notering'], val: [
+    html5('no', '320×480'), html5('no', '320×400'), html5('no', '300×250'), html5('no', '320×320'), html5('no', '980×600'), html5('no', '580×400'), html5('no', '980×300'), html5('no', '300×600')
+  ]},
+  { id: 'adnami', namn: 'Annonser med stor yta', info: 'Adnami, stillbild, max 200 kB', alla: 'Alla format', kompakt: true, falt: ['kampanjstart', 'kampanjslut', 'notering'], val: [
+    { id: 'takeover-mobil-320x480', namn: 'Take-over mobil', matt: '320×480 px' },
+    { id: 'takeover-mobil-1080x1920', namn: 'Take-over mobil', matt: '1080×1920 px' },
+    { id: 'takeover-desktop', namn: 'Take-over desktop', matt: '1920×1080 px' },
+    { id: 'topscroll-mobil', namn: 'Top-scroll mobil', matt: '1080×1920 px' },
+    { id: 'topscroll-desktop', namn: 'Top-scroll desktop', matt: '2560×1440 px' }
+  ]},
+  { id: 'tidning', namn: 'Tidningsannons', falt: ['inforande', 'notering'], val: [
+    { id: 'tidning-modul-23', namn: 'Modul 23, åttondelssida', matt: '80×133 mm' },
+    { id: 'tidning-modul-34', namn: 'Modul 34, kvartssida', matt: '122×170 mm' },
+    { id: 'tidning-helsida', namn: 'Helsida', matt: '248×372 mm' }
   ]},
   { id: 'skarmar', namn: 'Digitala skärmar', info: 'Film 5 eller 10 s, max 12 s', falt: ['kampanjstart', 'kampanjslut', 'notering'],
     leverantor: 'Ocean Outdoor, ocean-delivery@oceanoutdoor.se', val: [
@@ -65,15 +92,6 @@ const GRUPPER = [
   { id: 'kartskarmar', namn: 'Kartskärmar', falt: ['kampanjstart', 'kampanjslut', 'notering'],
     leverantor: 'Ej angiven i den gamla blanketten – skriv i noteringen vem som ska ha filen', val: [
     { id: 'kartskarm-1920x1080', namn: 'Liggande skärm', matt: '1920×1080 px' }
-  ]},
-  { id: 'html5', namn: 'HTML5-annonser', info: 'Max 30 s', alla: 'Alla Stampens format', kompakt: true, falt: ['kampanjstart', 'notering'],
-    leverantor: 'Delta via FRC Media, Martin Söder', val: [
-    html5('se', '980×240'), html5('se', '980×600'), html5('se', '640×320'), html5('se', '300×250'), html5('se', '250×600'), html5('se', '320×320'), html5('se', '320×480'),
-    html5('se', '320×400'), html5('se', '980×300'), html5('se', '300×600'), html5('se', '640×360')
-  ]},
-  { id: 'html5-norge', namn: 'HTML5-annonser Norge', info: 'Max 30 s', alla: 'Alla storlekar', allaInklEjStandard: true, kompakt: true, falt: ['kampanjstart', 'notering'],
-    leverantor: 'Delta via FRC Media, Martin Söder', val: [
-    html5('no', '320×480'), html5('no', '320×400'), html5('no', '300×250'), html5('no', '320×320'), html5('no', '980×600'), html5('no', '580×400'), html5('no', '980×300'), html5('no', '300×600')
   ]},
   { id: 'affischer', namn: 'Öppettider-affischer', falt: ['uppsattning', 'notering'],
     leverantor: 'Arkitektkopia, henrik.fagerberg@arkitektkopia.se', val: [
@@ -105,6 +123,7 @@ function byggGrupper() {
     huvud.querySelector('h3').textContent = g.namn;
     if (g.info) huvud.querySelector('small').textContent = g.info;
     sek.appendChild(huvud);
+    if (g.hjalp) { const h = document.createElement('p'); h.className = 'grupp-info'; h.textContent = g.hjalp; sek.appendChild(h); }
 
     if (g.fritext) {
       const f = document.createElement('div');
@@ -186,7 +205,11 @@ function lasFormular() {
     leveransdatum: $('leveransdatum').value,
     notering: $('notering').value.trim(),
     bestallare: { namn: $('bestallare-namn').value.trim(), epost: $('bestallare-epost').value.trim(), telefon: $('bestallare-telefon').value.trim() },
-    grupper: []
+    grupper: [],
+    filer: FILER.filter(f => f.status === 'klar' || f.status === 'laddar').map(f => ({
+      id: f.id, etikett: f.etikett, beskrivning: f.beskrivning.trim(), namn: f.namn, storlek: f.storlek
+    })),
+    filLank: $('fil-lank').value.trim()
   };
   for (const g of GRUPPER) {
     if (g.fritext) {
@@ -224,7 +247,7 @@ function sammanstall(d) {
 
   for (const g of d.grupper) {
     r.push('');
-    r.push(g.namn.toUpperCase() + (g.info ? ' (' + g.info.toLowerCase() + ')' : ''));
+    r.push(g.namn.toUpperCase() + (g.info ? ' (' + g.info + ')' : ''));
     if (g.fritext) { r.push(g.fritext); continue; }
     if (g.kompakt) {
       // Många storlekar på en rad, så mejlet blir kortare
@@ -238,6 +261,15 @@ function sammanstall(d) {
     }
     for (const fid of Object.keys(g.falt)) r.push('  ' + FALT[fid].etikett + ': ' + g.falt[fid]);
     if (g.leverantor) r.push('  Leverantör: ' + g.leverantor);
+  }
+
+  if (d.filer.length || d.filLank) {
+    r.push('');
+    r.push('BILDER OCH FILER' + (d.filer.length ? ' (' + d.filer.length + ')' : ''));
+    for (const f of d.filer) {
+      r.push('• ' + f.namn + ' – ' + etikettNamn(f.etikett) + (f.beskrivning ? ', ' + f.beskrivning : '') + ' (' + storlekText(f.storlek) + ')');
+    }
+    if (d.filLank) r.push('Länk till större filer: ' + d.filLank);
   }
 
   const nu = new Date();
@@ -281,6 +313,19 @@ function validera(d) {
     visaFel(id, !giltig);
     if (!giltig) { ok = false; forsta = forsta || id; }
   }
+  // Filer som inte gick att ladda upp och en länk som inte är en länk
+  const felFiler = FILER.filter(f => f.status === 'fel');
+  $('fel-filer').textContent = felFiler.length
+    ? (felFiler.length === 1
+      ? 'Filen ' + felFiler[0].namn + ' kom inte med. Försök igen eller ta bort den innan du skickar.'
+      : felFiler.length + ' filer kom inte med. Försök igen eller ta bort dem innan du skickar.')
+    : '';
+  $('fel-filer').hidden = !felFiler.length;
+  if (felFiler.length) { ok = false; forsta = forsta || 'block-filer'; }
+  const lankOk = !d.filLank || /^https?:\/\/\S+\.\S+/i.test(d.filLank);
+  visaFel('fil-lank', !lankOk);
+  if (!lankOk) { ok = false; forsta = forsta || 'fil-lank'; }
+
   const harMaterial = d.grupper.length > 0;
   $('fel-material').hidden = harMaterial;
   if (!harMaterial) { ok = false; forsta = forsta || 'grupper'; }
@@ -312,7 +357,9 @@ function uppdatera() {
   const d = lasFormular();
   const n = antalVal(d);
   $('sammanstallning-forhandsvisning').textContent = n ? sammanstall(d) : '';
-  $('snabbrad-text').textContent = n === 0 ? 'Inget valt ännu' : n === 1 ? '1 sak vald' : n + ' saker valda';
+  const nf = d.filer.length;
+  $('snabbrad-text').textContent = (n === 0 ? 'Inget valt ännu' : n === 1 ? '1 sak vald' : n + ' saker valda')
+    + (nf ? ' · ' + nf + (nf === 1 ? ' fil' : ' filer') : '');
   // Varning om leveransdatum efter kampanjstart
   $('varning-leveransdatum').hidden = !(d.startdatum && d.leveransdatum && d.leveransdatum > d.startdatum);
   sparaUtkast();
@@ -320,7 +367,8 @@ function uppdatera() {
 
 /* ---------- Utkast i webbläsaren ---------- */
 function allaFalt() {
-  return Array.from(document.querySelectorAll('#formular input, #formular textarea')).filter(el => el.id && !el.dataset.alla);
+  return Array.from(document.querySelectorAll('#formular input, #formular textarea'))
+    .filter(el => el.id && !el.dataset.alla && el.type !== 'file' && !el.closest('#fil-lista'));
 }
 function sparaUtkast() {
   try {
@@ -343,7 +391,9 @@ function rensa(behallBestallare) {
   const b = behallBestallare ? { namn: $('bestallare-namn').value, epost: $('bestallare-epost').value, telefon: $('bestallare-telefon').value } : null;
   for (const el of allaFalt()) { if (el.type === 'checkbox') el.checked = false; else el.value = ''; }
   if (b) { $('bestallare-namn').value = b.namn; $('bestallare-epost').value = b.epost; $('bestallare-telefon').value = b.telefon; }
-  for (const id of ['kampanjnamn', 'leveransdatum', 'bestallare-namn', 'bestallare-epost', 'slutdatum']) visaFel(id, false);
+  for (const f of FILER.slice()) taBortFil(f, true);
+  $('fel-filer').hidden = true;
+  for (const id of ['kampanjnamn', 'leveransdatum', 'bestallare-namn', 'bestallare-epost', 'slutdatum', 'fil-lank']) visaFel(id, false);
   $('fel-material').hidden = true;
   uppdatera();
 }
@@ -399,13 +449,22 @@ function visaBekraftelse(mottagen) {
 
 async function skicka(e) {
   e.preventDefault();
-  const d = lasFormular();
-  if (!validera(d)) return;
-  const text = sammanstall(d);
-  const lank = mailtoLank(d, text);
+  if (!validera(lasFormular())) return;
   const knapp = $('skicka');
   knapp.disabled = true;
+
+  // Filer som fortfarande laddas upp: vänta in dem innan beställningen skickas
+  const pagaende = FILER.filter(f => f.status === 'laddar' && f.lofte);
+  if (pagaende.length) {
+    knapp.textContent = 'Laddar upp filer …';
+    await Promise.all(pagaende.map(f => f.lofte));
+    if (!validera(lasFormular())) { knapp.disabled = false; knapp.textContent = 'Skicka beställningen'; return; }
+  }
   knapp.textContent = 'Skickar …';
+
+  const d = lasFormular();
+  const text = sammanstall(d);
+  const lank = mailtoLank(d, text);
 
   $('sammanstallning-klar').textContent = text;
   $('oppna-mejl-igen').href = lank;
@@ -425,6 +484,8 @@ async function skicka(e) {
   knapp.disabled = false;
   knapp.textContent = 'Skicka beställningen';
 
+  $('mejl-filer').hidden = mottagen || !d.filer.length;
+  $('mejl-filer').textContent = 'Bifoga också filerna i mejlet: ' + d.filer.map(f => f.namn).join(', ') + '.';
   visaBekraftelse(mottagen);
   if (!mottagen) {
     // Reservvägen: färdigifyllt mejl, texten även i urklipp
@@ -432,6 +493,206 @@ async function skicka(e) {
     window.location.href = lank;
   }
   try { localStorage.removeItem(UTKAST_NYCKEL); } catch (err) { /* ok */ }
+}
+
+/* ---------- Bilder och filer ---------- */
+/* Varje fil laddas upp till KONFIG.filUrl så fort den väljs (en fil per anrop, med förlopp).
+   Beställningen skickar sedan bara fil-id, etikett och beskrivning. */
+const FIL_ETIKETTER = [['butikslogga', 'Butikslogga'], ['produktbild', 'Produktbild'], ['miljobild', 'Miljöbild'], ['annat', 'Annat']];
+const FIL_ANDELSER = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'svg', 'heic', 'heif', 'tif', 'tiff', 'pdf', 'zip', 'ai', 'eps', 'psd'];
+const BILD_ANDELSER = ['jpg', 'jpeg', 'png', 'webp', 'gif', 'svg'];
+const FIL_MAX_BYTE = 50 * 1024 * 1024;
+const FIL_MAX_ANTAL = 30;
+const FILER = [];
+let filRaknare = 0;
+
+function andelse(namn) { const m = /\.([a-z0-9]+)$/i.exec(namn || ''); return m ? m[1].toLowerCase() : ''; }
+function storlekText(b) {
+  if (b < 1024 * 1024) return Math.max(1, Math.round(b / 1024)) + ' kB';
+  return (b / 1024 / 1024).toFixed(1).replace('.', ',') + ' MB';
+}
+function etikettNamn(k) { const e = FIL_ETIKETTER.find(x => x[0] === k); return e ? e[1] : 'Annat'; }
+function gissaEtikett(namn, a) {
+  const n = namn.toLowerCase();
+  if (/logo|logga|logotyp/.test(n)) return 'butikslogga';
+  if (/milj|interi|exteri|butiken|entre|galleria/.test(n)) return 'miljobild';
+  return BILD_ANDELSER.includes(a) || a === 'heic' || a === 'heif' ? 'produktbild' : 'annat';
+}
+
+function laggTillFiler(lista) {
+  $('fel-filer').hidden = true;
+  for (const fil of Array.from(lista)) {
+    if (FILER.length >= FIL_MAX_ANTAL) {
+      $('fel-filer').textContent = 'Max ' + FIL_MAX_ANTAL + ' filer per beställning. Skicka resten via en länk i fältet nedan.';
+      $('fel-filer').hidden = false;
+      break;
+    }
+    const a = andelse(fil.name);
+    const f = {
+      lokalId: 'fil-' + (++filRaknare), fil, namn: fil.name, storlek: fil.size, andelse: a,
+      etikett: gissaEtikett(fil.name, a), beskrivning: '', status: 'vantar', progress: 0,
+      id: null, fel: '', kanForsoka: true, xhr: null, lofte: null, forhandsUrl: null, el: null
+    };
+    if (!FIL_ANDELSER.includes(a)) {
+      f.status = 'fel'; f.kanForsoka = false;
+      f.fel = 'Filtypen ' + (a ? '.' + a : 'saknas') + ' går inte att ladda upp. Använd bild, PDF, zip, AI, EPS eller PSD.';
+    } else if (fil.size > FIL_MAX_BYTE) {
+      f.status = 'fel'; f.kanForsoka = false;
+      f.fel = 'Filen är större än 50 MB. Skicka den via en länk i fältet nedan.';
+    } else if (fil.size === 0) {
+      f.status = 'fel'; f.kanForsoka = false;
+      f.fel = 'Filen är tom.';
+    } else if (BILD_ANDELSER.includes(a)) {
+      try { f.forhandsUrl = URL.createObjectURL(fil); } catch (e) { /* utan förhandsvisning */ }
+    }
+    FILER.push(f);
+    byggFilRad(f);
+    if (f.status !== 'fel') laddaUpp(f);
+  }
+  uppdatera();
+}
+
+function byggFilRad(f) {
+  const li = document.createElement('li');
+  li.className = 'fil-rad';
+  li.id = f.lokalId;
+
+  const tumme = document.createElement('div');
+  tumme.className = 'fil-tumme';
+  if (f.forhandsUrl) {
+    const img = document.createElement('img'); img.src = f.forhandsUrl; img.alt = '';
+    img.onerror = () => { tumme.textContent = f.andelse || 'fil'; };
+    tumme.appendChild(img);
+  } else {
+    tumme.textContent = f.andelse || 'fil';
+  }
+
+  const info = document.createElement('div'); info.className = 'fil-info';
+  const namn = document.createElement('div'); namn.className = 'fil-namn';
+  const b = document.createElement('b'); b.textContent = f.namn;
+  const st = document.createElement('span'); st.textContent = storlekText(f.storlek);
+  namn.append(b, st);
+  const matare = document.createElement('div'); matare.className = 'fil-matare';
+  const stapel = document.createElement('i'); matare.appendChild(stapel);
+  const status = document.createElement('p'); status.className = 'fil-status';
+
+  const val = document.createElement('div'); val.className = 'fil-val';
+  const sel = document.createElement('select');
+  sel.id = f.lokalId + '-etikett';
+  sel.setAttribute('aria-label', 'Vad är ' + f.namn + '?');
+  for (const [k, t] of FIL_ETIKETTER) { const o = document.createElement('option'); o.value = k; o.textContent = t; sel.appendChild(o); }
+  sel.value = f.etikett;
+  sel.addEventListener('change', () => { f.etikett = sel.value; });
+  const besk = document.createElement('input');
+  besk.type = 'text'; besk.id = f.lokalId + '-beskrivning'; besk.maxLength = 300;
+  besk.placeholder = 'Vilken butik eller vara?';
+  besk.setAttribute('aria-label', 'Beskrivning av ' + f.namn);
+  besk.addEventListener('input', () => { f.beskrivning = besk.value; });
+  val.append(sel, besk);
+  info.append(namn, matare, status, val);
+
+  const knappar = document.createElement('div'); knappar.className = 'fil-knappar';
+  const igen = document.createElement('button'); igen.type = 'button'; igen.className = 'lank'; igen.textContent = 'Försök igen';
+  igen.addEventListener('click', () => { laddaUpp(f); uppdatera(); });
+  const bort = document.createElement('button'); bort.type = 'button'; bort.className = 'lank'; bort.textContent = 'Ta bort';
+  bort.setAttribute('aria-label', 'Ta bort ' + f.namn);
+  bort.addEventListener('click', () => taBortFil(f));
+  knappar.append(igen, bort);
+
+  li.append(tumme, info, knappar);
+  $('fil-lista').appendChild(li);
+  f.el = { li, stapel, matare, status, val, igen };
+  ritaFil(f);
+}
+
+function ritaFil(f) {
+  if (!f.el) return;
+  const { li, stapel, matare, status, val, igen } = f.el;
+  li.classList.toggle('fel-rad', f.status === 'fel');
+  matare.hidden = f.status !== 'laddar';
+  stapel.style.width = Math.round(f.progress * 100) + '%';
+  val.hidden = f.status === 'fel' && !f.kanForsoka;
+  igen.hidden = !(f.status === 'fel' && f.kanForsoka);
+  status.className = 'fil-status' + (f.status === 'klar' ? ' ok' : f.status === 'fel' ? ' fel' : '');
+  status.textContent = f.status === 'klar' ? 'Uppladdad'
+    : f.status === 'fel' ? f.fel
+    : f.status === 'laddar' ? 'Laddar upp … ' + Math.round(f.progress * 100) + ' %'
+    : 'Väntar';
+}
+
+function laddaUpp(f) {
+  if (!KONFIG.filUrl) {
+    f.status = 'fel'; f.kanForsoka = false;
+    f.fel = 'Uppladdning är inte påslagen. Bifoga filen i mejlet eller skicka en länk.';
+    ritaFil(f);
+    return Promise.resolve();
+  }
+  f.status = 'laddar'; f.progress = 0; f.fel = ''; f.id = null;
+  ritaFil(f);
+  f.lofte = new Promise((klar) => {
+    const xhr = new XMLHttpRequest();
+    f.xhr = xhr;
+    const fd = new FormData();
+    fd.append('kund', KONFIG.kundkod);
+    fd.append('etikett', f.etikett);
+    fd.append('beskrivning', f.beskrivning.trim());
+    fd.append('fil', f.fil, f.namn);
+    const avsluta = () => { f.xhr = null; ritaFil(f); uppdatera(); klar(); };
+    const misslyckad = (text) => { f.status = 'fel'; f.fel = text; avsluta(); };
+    xhr.open('POST', KONFIG.filUrl);
+    xhr.timeout = 10 * 60 * 1000;
+    xhr.upload.onprogress = (e) => { if (e.lengthComputable) { f.progress = e.loaded / e.total; ritaFil(f); } };
+    xhr.onload = () => {
+      let j = null;
+      try { j = JSON.parse(xhr.responseText); } catch (e) { /* inget JSON-svar */ }
+      if (xhr.status >= 200 && xhr.status < 300 && j && j.ok && j.id) {
+        f.status = 'klar'; f.id = String(j.id); f.progress = 1; avsluta();
+      } else if (xhr.status === 413) {
+        f.kanForsoka = false; misslyckad('Filen är för stor för systemet. Skicka den via en länk i fältet nedan.');
+      } else {
+        misslyckad((j && j.fel) || 'Uppladdningen misslyckades (fel ' + xhr.status + ').');
+      }
+    };
+    xhr.onerror = () => misslyckad('Kunde inte nå Stampens system. Försök igen, eller skicka filen via en länk.');
+    xhr.ontimeout = () => misslyckad('Uppladdningen tog för lång tid. Försök igen, eller skicka filen via en länk.');
+    xhr.onabort = () => { f.xhr = null; klar(); };
+    xhr.send(fd);
+  });
+  return f.lofte;
+}
+
+function taBortFil(f, tyst) {
+  if (f.xhr) { try { f.xhr.abort(); } catch (e) { /* ok */ } }
+  if (f.forhandsUrl) { try { URL.revokeObjectURL(f.forhandsUrl); } catch (e) { /* ok */ } }
+  if (f.el) f.el.li.remove();
+  const i = FILER.indexOf(f);
+  if (i >= 0) FILER.splice(i, 1);
+  if (!tyst) {
+    if (!FILER.some(x => x.status === 'fel')) $('fel-filer').hidden = true;
+    uppdatera();
+  }
+}
+
+function startaFiler() {
+  // Utan uppladdningsadress visas inte blocket alls
+  $('block-filer').hidden = !KONFIG.filUrl;
+  if (!KONFIG.filUrl) return;
+  const input = $('fil-input');
+  const yta = $('fil-yta');
+  input.addEventListener('change', () => { if (input.files && input.files.length) laggTillFiler(input.files); input.value = ''; });
+  let djup = 0;
+  yta.addEventListener('dragenter', (e) => { e.preventDefault(); djup++; yta.classList.add('drar'); });
+  yta.addEventListener('dragover', (e) => { e.preventDefault(); if (e.dataTransfer) e.dataTransfer.dropEffect = 'copy'; });
+  yta.addEventListener('dragleave', () => { djup = Math.max(0, djup - 1); if (!djup) yta.classList.remove('drar'); });
+  yta.addEventListener('drop', (e) => {
+    e.preventDefault(); djup = 0; yta.classList.remove('drar');
+    if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) laggTillFiler(e.dataTransfer.files);
+  });
+  // En fil som släpps bredvid ytan ska inte öppnas i webbläsaren och lämna formuläret
+  window.addEventListener('dragover', (e) => e.preventDefault());
+  window.addEventListener('drop', (e) => e.preventDefault());
+  // Varna om sidan lämnas mitt i en uppladdning
+  window.addEventListener('beforeunload', (e) => { if (FILER.some(f => f.status === 'laddar')) { e.preventDefault(); e.returnValue = ''; } });
 }
 
 /* ---------- Hämta material ---------- */
@@ -487,6 +748,7 @@ function visaVy() {
 /* ---------- Start ---------- */
 function start() {
   byggGrupper();
+  startaFiler();
   const mottagare = KONFIG.till.join(', ');
   $('mottagare-text').textContent = mottagare;
   document.querySelectorAll('.mottagare-text').forEach(el => { el.textContent = mottagare; });
@@ -519,6 +781,7 @@ function start() {
   $('ny-bestallning').addEventListener('click', () => {
     $('bekraftelse').hidden = true;
     $('mejl-orsak').hidden = true;
+    $('mejl-filer').hidden = true;
     $('formular').hidden = false;
     $('snabbrad').hidden = false;
     rensa(true);

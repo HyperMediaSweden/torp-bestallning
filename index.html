@@ -131,7 +131,31 @@
       <div id="grupper" class="grupper"></div>
     </section>
 
-    <!-- Steg 3: Skicka -->
+    <!-- Steg 3: Bilder och filer -->
+    <section class="block" id="block-filer">
+      <div class="block-huvud">
+        <h2>Bilder och filer</h2>
+        <p>Har ni butiksloggor, produktbilder eller annat som ska vara med? Lägg till dem här. Filerna laddas upp direkt och följer med beställningen.</p>
+      </div>
+      <div class="fil-yta" id="fil-yta">
+        <input type="file" id="fil-input" class="visuellt-dold" multiple accept="image/*,.svg,.heic,.heif,.tif,.tiff,.pdf,.zip,.ai,.eps,.psd">
+        <label for="fil-input" class="fil-yta-text">
+          <svg class="fil-ikon" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M12 16V4m0 0L7 9m5-5l5 5M5 15v3a2 2 0 002 2h10a2 2 0 002-2v-3" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span><strong>Dra filer hit</strong> eller <span class="fil-valj">välj filer</span></span>
+          <small>Bilder, PDF, zip, AI, EPS och PSD. Max 50 MB per fil.</small>
+        </label>
+      </div>
+      <p class="fel" id="fel-filer" hidden></p>
+      <ul class="fil-lista" id="fil-lista" aria-live="polite"></ul>
+      <div class="falt">
+        <label for="fil-lank">Länk till större filer</label>
+        <input type="url" id="fil-lank" inputmode="url" autocomplete="off" placeholder="https://we.tl/…">
+        <p class="hjalp">Film och filer över 50 MB: skicka via WeTransfer, Dropbox eller liknande och klistra in länken här.</p>
+        <p class="fel" id="fel-fil-lank" hidden>Länken ska börja med https://</p>
+      </div>
+    </section>
+
+    <!-- Steg 4: Skicka -->
     <section class="block" id="block-skicka">
       <div class="block-huvud">
         <h2>Skicka beställningen</h2>
@@ -159,6 +183,7 @@
         <p class="etikett">Nästan klart</p>
         <h2 id="bekraftelse-rubrik">Mejlet med beställningen är öppnat</h2>
         <p id="mejl-orsak" hidden></p>
+        <p id="mejl-filer" class="varning" hidden></p>
         <p>Ditt e-postprogram ska nu visa ett mejl till <span class="mottagare-text"></span> med beställningen ifylld. Skicka mejlet, så är beställningen gjord.</p>
         <p>Om mejlet inte öppnades, eller om texten saknas i det: texten nedan är kopierad till urklipp. Klistra in den i ett nytt mejl till <span class="mottagare-text"></span>.</p>
       </div>

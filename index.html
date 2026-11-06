@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Beställ material – Torp Köpcentrum</title>
+<meta name="description" content="Beställningsformulär för kampanjmaterial från Stampen Media till Torp Köpcentrum.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%238a1a5b'/%3E%3Cpath d='M9 16.5l4.5 4.5L23 11' fill='none' stroke='%23f06aa8' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="stil.css">
+</head>
+<body>
+
+<header class="topp">
+  <div class="inre">
+    <div class="topp-rad">
+      <a class="logga" href="#bestall" aria-label="Stampen Media">
+        <img class="logga-svart" src="logo-svart.svg" alt="Stampen Media" width="129" height="49">
+        <img class="logga-vit" src="logo-vit.svg" alt="" width="129" height="49" aria-hidden="true">
+      </a>
+      <nav class="flikar" aria-label="Sidor">
+        <a href="#bestall" id="flik-bestall" class="flik aktiv">Beställ material</a>
+        <a href="#material" id="flik-material" class="flik">Hämta material</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<!-- ============ VY 1: BESTÄLL ============ -->
+<main id="vy-bestall" class="vy">
+  <section class="hero">
+    <div class="inre">
+      <p class="etikett">Torp Köpcentrum · Stampen Media</p>
+      <h1>Beställ material till en kampanj</h1>
+      <p class="lead">Fyll i kampanjen, kryssa i det som ska tas fram och skicka. Beställningen går som ett mejl till Emanda Andersson på Stampen, som ser till att produktionen får den. Du kan fylla i formuläret i omgångar, det sparas i din webbläsare tills du skickar.</p>
+    </div>
+  </section>
+
+  <form id="formular" class="inre formular" novalidate>
+
+    <!-- Steg 1: Kampanjen -->
+    <section class="block" id="block-kampanj">
+      <div class="block-huvud">
+        <h2>Kampanjen</h2>
+        <p>Vad gäller beställningen och när ska materialet vara klart?</p>
+      </div>
+
+      <div class="falt-rad">
+        <div class="falt falt-bred">
+          <label for="kampanjnamn">Kampanjnamn <span class="kravd">*</span></label>
+          <input type="text" id="kampanjnamn" name="kampanjnamn" autocomplete="off" placeholder="t.ex. Julhandel 2026" required>
+          <p class="fel" id="fel-kampanjnamn" hidden>Skriv vad kampanjen heter.</p>
+        </div>
+      </div>
+
+      <div class="falt-rad datum-rad">
+        <div class="falt">
+          <label for="startdatum">Kampanjen startar</label>
+          <input type="date" id="startdatum" name="startdatum">
+        </div>
+        <div class="falt">
+          <label for="slutdatum">Kampanjen slutar</label>
+          <input type="date" id="slutdatum" name="slutdatum">
+          <p class="fel" id="fel-slutdatum" hidden>Slutdatumet ligger före startdatumet.</p>
+        </div>
+        <div class="falt falt-leverans">
+          <label for="leveransdatum">Materialet levereras senast <span class="kravd">*</span></label>
+          <input type="date" id="leveransdatum" name="leveransdatum" required>
+          <p class="hjalp">Det viktigaste datumet. Det är då Stampen ska ha skickat allt till er.</p>
+          <p class="fel" id="fel-leveransdatum" hidden>Ange när materialet senast ska vara levererat.</p>
+          <p class="varning" id="varning-leveransdatum" hidden>Leveransdatumet ligger efter kampanjstarten. Stämmer det?</p>
+        </div>
+      </div>
+
+      <div class="falt-rad">
+        <div class="falt falt-bred">
+          <label for="notering">Notering om kampanjen</label>
+          <textarea id="notering" name="notering" rows="3" placeholder="Budskap, erbjudanden, butiker som ska synas, bilder ni har, annat Stampen behöver veta."></textarea>
+        </div>
+      </div>
+
+      <div class="falt-rad bestallare-rad">
+        <div class="falt">
+          <label for="bestallare-namn">Ditt namn <span class="kravd">*</span></label>
+          <input type="text" id="bestallare-namn" name="bestallare-namn" autocomplete="name" required>
+          <p class="fel" id="fel-bestallare-namn" hidden>Skriv ditt namn så Stampen vet vem som beställt.</p>
+        </div>
+        <div class="falt">
+          <label for="bestallare-epost">Din e-post <span class="kravd">*</span></label>
+          <input type="email" id="bestallare-epost" name="bestallare-epost" autocomplete="email" required>
+          <p class="fel" id="fel-bestallare-epost" hidden>Ange en e-postadress som Stampen kan svara till.</p>
+        </div>
+        <div class="falt">
+          <label for="bestallare-telefon">Telefon</label>
+          <input type="tel" id="bestallare-telefon" name="bestallare-telefon" autocomplete="tel">
+        </div>
+      </div>
+    </section>
+
+    <!-- Steg 2: Materialet (byggs av app.js) -->
+    <section class="block" id="block-material">
+      <div class="block-huvud">
+        <h2>Materialet</h2>
+        <p>Kryssa i det som ska tas fram. När du kryssat i något i en grupp får du fält för datum och noteringar som bara gäller den gruppen.</p>
+        <p class="fel" id="fel-material" hidden>Kryssa i minst en sak att beställa.</p>
+      </div>
+      <div id="grupper" class="grupper"></div>
+    </section>
+
+    <!-- Steg 3: Skicka -->
+    <section class="block" id="block-skicka">
+      <div class="block-huvud">
+        <h2>Skicka beställningen</h2>
+        <p>Kontrollera sammanställningen. När du trycker på Skicka öppnas ett mejl i ditt e-postprogram med allt ifyllt. Skicka mejlet, så är beställningen gjord.</p>
+      </div>
+      <pre id="sammanstallning-forhandsvisning" class="sammanstallning" aria-live="polite"></pre>
+      <div class="skicka-rad">
+        <button type="submit" class="knapp knapp-primar" id="skicka">Skicka beställningen</button>
+        <button type="button" class="knapp knapp-sekundar" id="kopiera-forhandsvisning">Kopiera texten</button>
+        <button type="button" class="lank" id="rensa">Rensa formuläret</button>
+      </div>
+      <p class="hjalp">Skickas till <span id="mottagare-text"></span>. Vill du hellre mejla själv: kopiera texten och klistra in den.</p>
+    </section>
+  </form>
+
+  <!-- Bekräftelse (visas efter Skicka) -->
+  <section id="bekraftelse" class="inre bekraftelse" hidden>
+    <div class="block">
+      <div class="block-huvud">
+        <p class="etikett">Nästan klart</p>
+        <h2 id="bekraftelse-rubrik">Mejlet med beställningen är öppnat</h2>
+        <p>Ditt e-postprogram ska nu visa ett mejl till <span class="mottagare-text"></span> med beställningen ifylld. Skicka mejlet, så är beställningen gjord.</p>
+        <p>Om mejlet inte öppnades, eller om texten saknas i det: texten nedan är kopierad till urklipp. Klistra in den i ett nytt mejl till <span class="mottagare-text"></span>.</p>
+      </div>
+      <pre id="sammanstallning-klar" class="sammanstallning"></pre>
+      <div class="skicka-rad">
+        <a class="knapp knapp-primar" id="oppna-mejl-igen" href="#">Öppna mejlet igen</a>
+        <button type="button" class="knapp knapp-sekundar" id="kopiera-klar">Kopiera texten</button>
+        <button type="button" class="lank" id="ny-bestallning">Gör en ny beställning</button>
+      </div>
+      <p class="hjalp" id="kopierat-besked" hidden>Texten är kopierad.</p>
+    </div>
+  </section>
+
+  <!-- Fast rad längst ned på mobil -->
+  <div class="snabbrad" id="snabbrad">
+    <div class="inre snabbrad-inre">
+      <span id="snabbrad-text">Inget valt ännu</span>
+      <a class="knapp knapp-primar knapp-liten" href="#block-skicka">Till sammanställningen</a>
+    </div>
+  </div>
+</main>
+
+<!-- ============ VY 2: HÄMTA MATERIAL ============ -->
+<main id="vy-material" class="vy" hidden>
+  <section class="hero">
+    <div class="inre">
+      <p class="etikett">Torp Köpcentrum · Stampen Media</p>
+      <h1>Hämta färdigt material</h1>
+      <p class="lead">Här lägger Stampen upp färdigt material, sorterat per kampanj, så att ni kan hämta det själva i stället för att leta i mejl.</p>
+    </div>
+  </section>
+  <div class="inre">
+    <div id="material-lista" class="material-lista">
+      <p class="dampad">Hämtar listan …</p>
+    </div>
+  </div>
+</main>
+
+<footer class="sidfot">
+  <div class="inre">
+    <p>Stampen Media · Beställningsformulär för Torp Köpcentrum · Frågor: <a href="mailto:emanda.andersson@stampen.com">emanda.andersson@stampen.com</a></p>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+</body>
+</html>

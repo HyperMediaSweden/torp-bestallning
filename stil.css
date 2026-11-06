@@ -1,0 +1,173 @@
+/* Beställningsformulär Torp Köpcentrum – Stampen Media.
+   Layout: ett formulär i tre block (kampanjen, materialet, skicka) i en smal spalt,
+   materialgrupperna som kort i två kolumner på desktop och en på mobil.
+   Färger: Thons manér – svart, vitt, rosa och plommon (Thon Title/Thon Sans ersatta av Manrope). */
+
+:root {
+  --bg: #ffffff;
+  --yta: #faf7f9;          /* kort och paneler, en aning rosa i det vita */
+  --text: #141414;
+  --text2: #4a4247;
+  --dampad: #8f878c;
+  --linje: #e6dde2;
+  --plum: #8a1a5b;         /* primär: knappar, markeringar, rubrikaccent */
+  --plum2: #b32a79;        /* hover */
+  --rosa: #f06aa8;         /* tonplatta och fokus */
+  --rosa-ton: #fde8f1;     /* rosa platta bakom leveransdatum och valda kort */
+  --rosa-ton2: #f9d2e3;
+  --varning: #a15c00;
+  --varning-ton: #fff1dc;
+  --fel: #b3261e;
+  --fel-ton: #fde9e7;
+  --ok: #2f7a4f;
+  --disp: "Manrope", "Helvetica Neue", Arial, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #141414; --yta: #1e1a1d; --text: #ffffff; --text2: #cfc7cc; --dampad: #8f878c; --linje: #3a2a33;
+    --plum: #b32a79; --plum2: #d04594; --rosa: #f06aa8; --rosa-ton: #2a1a24; --rosa-ton2: #3b2331;
+    --varning: #ffcf87; --varning-ton: #3a2d16; --fel: #ff9d94; --fel-ton: #3d1f1c; --ok: #7fc69e;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #141414; --yta: #1e1a1d; --text: #ffffff; --text2: #cfc7cc; --dampad: #8f878c; --linje: #3a2a33;
+  --plum: #b32a79; --plum2: #d04594; --rosa: #f06aa8; --rosa-ton: #2a1a24; --rosa-ton2: #3b2331;
+  --varning: #ffcf87; --varning-ton: #3a2d16; --fel: #ff9d94; --fel-ton: #3d1f1c; --ok: #7fc69e;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { height: 100%; }
+body { margin: 0; background: var(--bg); color: var(--text); font: 400 16px/1.55 var(--disp); -webkit-font-smoothing: antialiased; }
+.inre { max-width: 980px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { margin: 0; text-wrap: balance; font-weight: 800; letter-spacing: -0.01em; }
+h1 { font-size: clamp(30px, 4.5vw, 46px); line-height: 1.05; }
+h2 { font-size: clamp(22px, 2.6vw, 28px); line-height: 1.15; }
+h3 { font-size: 17px; line-height: 1.3; }
+p { margin: 0; }
+a { color: var(--plum); }
+.etikett { font: 500 12px/1.2 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--plum); }
+.dampad { color: var(--dampad); }
+.mono { font-family: var(--mono); font-variant-numeric: tabular-nums; }
+:focus-visible { outline: 3px solid var(--rosa); outline-offset: 2px; }
+[hidden] { display: none !important; }
+
+/* ---------- Toppen ---------- */
+.topp { border-bottom: 1px solid var(--linje); background: var(--bg); position: sticky; top: 0; z-index: 20; }
+.topp-rad { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 12px; flex-wrap: wrap; }
+.logga img { display: block; height: 40px; width: auto; }
+.logga img.logga-vit { display: none; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .logga img.logga-svart { display: none; }
+  :root:not([data-theme="light"]) .logga img.logga-vit { display: block; }
+}
+:root[data-theme="dark"] .logga img.logga-svart { display: none; }
+:root[data-theme="dark"] .logga img.logga-vit { display: block; }
+.flikar { display: flex; gap: 4px; }
+.flik { font-weight: 600; font-size: 15px; color: var(--text2); text-decoration: none; padding: 8px 14px; border-radius: 999px; }
+.flik:hover { background: var(--yta); color: var(--text); }
+.flik.aktiv { background: var(--plum); color: #fff; }
+
+/* ---------- Hero ---------- */
+.hero .inre { padding-block: 40px 28px; display: grid; gap: 12px; }
+.lead { font-size: clamp(16px, 1.4vw, 18px); color: var(--text2); max-width: 64ch; }
+
+/* ---------- Block ---------- */
+.formular { display: grid; gap: 28px; padding-bottom: 120px; }
+.block { background: var(--yta); border: 1px solid var(--linje); border-radius: 14px; padding: clamp(18px, 3vw, 32px); display: grid; gap: 20px; }
+.block-huvud { display: grid; gap: 6px; }
+.block-huvud p { color: var(--text2); max-width: 66ch; }
+
+/* ---------- Fält ---------- */
+.falt-rad { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
+.falt { display: grid; gap: 6px; min-width: 0; align-content: start; }
+.falt-bred { grid-column: 1 / -1; }
+label { font-weight: 600; font-size: 15px; }
+.kravd { color: var(--plum); }
+input[type="text"], input[type="email"], input[type="tel"], input[type="date"], textarea {
+  font: inherit; color: var(--text); background: var(--bg); border: 1px solid var(--linje); border-radius: 8px;
+  padding: 10px 12px; width: 100%; min-width: 0; max-width: 100%;
+}
+input:focus, textarea:focus { border-color: var(--plum); outline: 3px solid var(--rosa-ton2); outline-offset: 0; }
+textarea { resize: vertical; }
+.hjalp { font-size: 13.5px; color: var(--dampad); }
+.fel { font-size: 13.5px; color: var(--fel); font-weight: 600; }
+.varning { font-size: 13.5px; color: var(--varning); font-weight: 600; }
+.falt.ogiltig input { border-color: var(--fel); }
+
+/* Leveransdatum: rosa platta, som gulmarkeringen i den gamla blanketten */
+.falt-leverans { background: var(--rosa-ton); border: 1px solid var(--rosa-ton2); border-radius: 10px; padding: 12px; }
+.falt-leverans label { color: var(--plum); }
+.datum-rad { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); align-items: start; }
+
+/* ---------- Materialgrupper ---------- */
+.grupper { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr)); }
+.grupp { background: var(--bg); border: 1px solid var(--linje); border-radius: 12px; padding: 16px 18px 18px; display: grid; gap: 12px; align-content: start; min-width: 0; transition: border-color .15s, box-shadow .15s; }
+.grupp.vald { border-color: var(--plum); box-shadow: 0 0 0 3px var(--rosa-ton); }
+.grupp-huvud { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.grupp-huvud small { font-weight: 500; color: var(--dampad); font-size: 13.5px; }
+.grupp-info { font-size: 13.5px; color: var(--text2); }
+.val-lista { display: grid; gap: 4px; }
+.val-rad { display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; padding: 7px 8px; margin: 0 -8px; border-radius: 8px; cursor: pointer; }
+.val-rad:hover { background: var(--yta); }
+.val-rad input { width: 20px; height: 20px; margin: 2px 0 0; accent-color: var(--plum); cursor: pointer; }
+.val-text { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: baseline; min-width: 0; }
+.val-namn { font-weight: 600; }
+.val-matt { font-family: var(--mono); font-size: 13.5px; color: var(--text2); white-space: nowrap; }
+.val-info { font-size: 13px; color: var(--dampad); flex-basis: 100%; }
+.tagg { font: 500 11px/1.4 var(--mono); letter-spacing: .04em; padding: 1px 7px; border-radius: 999px; background: var(--varning-ton); color: var(--varning); white-space: nowrap; }
+.tagg-ok { background: var(--rosa-ton); color: var(--plum); }
+.val-alla { border-bottom: 1px dashed var(--linje); margin-bottom: 4px; padding-bottom: 8px; }
+.val-alla .val-namn { color: var(--plum); }
+.grupp-falt { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); padding-top: 12px; border-top: 1px solid var(--linje); }
+.grupp-falt .falt-bred { grid-column: 1 / -1; }
+.grupp-falt label { font-size: 14px; }
+.leverantor { font-size: 13px; color: var(--dampad); }
+.leverantor b { font-weight: 600; color: var(--text2); }
+.grupp-ovrigt { grid-column: 1 / -1; }
+
+/* ---------- Sammanställning och knappar ---------- */
+.sammanstallning { margin: 0; font: 400 13.5px/1.5 var(--mono); white-space: pre-wrap; word-break: break-word; background: var(--bg); border: 1px solid var(--linje); border-radius: 10px; padding: 16px 18px; max-height: 480px; overflow: auto; color: var(--text2); }
+.sammanstallning:empty::before { content: "Sammanställningen fylls i här när du kryssat i något."; color: var(--dampad); }
+.skicka-rad { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.knapp { font: 700 15px/1 var(--disp); border: 0; border-radius: 999px; padding: 14px 22px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+.knapp-primar { background: var(--plum); color: #fff; }
+.knapp-primar:hover { background: var(--plum2); }
+.knapp-sekundar { background: transparent; color: var(--plum); box-shadow: inset 0 0 0 2px var(--plum); }
+.knapp-sekundar:hover { background: var(--rosa-ton); }
+.knapp-liten { padding: 10px 16px; font-size: 14px; white-space: nowrap; }
+.lank { background: none; border: 0; font: 600 14px var(--disp); color: var(--dampad); cursor: pointer; padding: 8px 4px; text-decoration: underline; }
+.lank:hover { color: var(--text); }
+.bekraftelse { padding-block: 0 120px; }
+
+/* ---------- Fast rad på mobil ---------- */
+.snabbrad { position: fixed; left: 0; right: 0; bottom: 0; z-index: 15; background: var(--yta); border-top: 1px solid var(--linje); padding-bottom: env(safe-area-inset-bottom, 0px); }
+.snabbrad-inre { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 10px; }
+#snabbrad-text { font-size: 14px; font-weight: 600; color: var(--text2); min-width: 0; }
+
+/* ---------- Hämta material ---------- */
+.material-lista { display: grid; gap: 16px; padding-bottom: 80px; }
+.material-kampanj { background: var(--yta); border: 1px solid var(--linje); border-radius: 14px; padding: 20px 22px; display: grid; gap: 10px; }
+.material-kampanj p { color: var(--text2); }
+.material-filer { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.material-filer li { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; flex-wrap: wrap; padding: 8px 0; border-top: 1px solid var(--linje); }
+.material-filer a { font-weight: 600; }
+.material-filer span { font-family: var(--mono); font-size: 13px; color: var(--dampad); }
+.tomt { background: var(--yta); border: 1px dashed var(--linje); border-radius: 14px; padding: 32px 24px; text-align: center; color: var(--text2); display: grid; gap: 6px; }
+
+/* ---------- Sidfot ---------- */
+.sidfot { border-top: 1px solid var(--linje); color: var(--dampad); font-size: 13.5px; }
+.sidfot .inre { padding-block: 20px 100px; }
+
+@media (max-width: 600px) {
+  .block { border-radius: 12px; }
+  .logga img { height: 30px; }
+  .flik { padding: 6px 11px; font-size: 14px; }
+  .topp-rad { gap: 8px; }
+  .hero .inre { padding-block: 28px 20px; }
+  .skicka-rad .knapp { width: 100%; justify-content: center; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }

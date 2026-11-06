@@ -7,8 +7,10 @@
 const KONFIG = {
   kund: 'Torp Köpcentrum',
   kundkod: 'torp-kopcentrum',                          // kundens kod i beställningssystemet (Kunder → Kod)
-  till: ['annonsproduktion@stampen.com'],             // produktionen (mejlvägen)
-  kopia: ['frida.baldvinsdottir@stampen.com'],         // Frida
+  // TESTLÄGE (Fridas beslut 2026-11-06): allt reservmejl går bara till Frida medan formuläret testas.
+  // Skarpt läge: till: ['annonsproduktion@stampen.com'], kopia: ['frida.baldvinsdottir@stampen.com']
+  till: ['frida@hypermedia.se'],
+  kopia: [],
   endpoint: 'https://bestallningar.k2.nu/api/bestallning',                       // Beställningssystemet (Payload på Coolify). Tom = bara e-post.
   materialUrl: 'https://bestallningar.k2.nu/api/material-lista/torp-kopcentrum', // Publicerat material från systemet. Tom = material.json.
   filUrl: 'https://bestallningar.k2.nu/api/fil',      // Uppladdning av bilder och filer. Tom = blocket Bilder och filer döljs.

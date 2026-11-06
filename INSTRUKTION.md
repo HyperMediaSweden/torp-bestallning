@@ -1,9 +1,9 @@
 # Beställningar från Torp – så gör ni
 
-*Till annonsproduktion (Anton) och Emanda (säljare).*
+*Till annonsproduktion (Anton).*
 
 Torp beställer kampanjmaterial via formuläret på
-https://hypermediasweden.github.io/torp-bestallning/. Beställningarna hamnar i Stampens
+https://torp.k2.nu/. Beställningarna hamnar i Stampens
 beställningssystem: **https://bestallningar.k2.nu/admin**. Logga in med din Stampen-adress.
 Första gången: tryck *Glömt lösenord?* på inloggningssidan och följ länken i mejlet.
 

@@ -12,7 +12,7 @@ const KONFIG = {
   endpoint: 'https://bestallningar.k2.nu/api/bestallning',                       // Beställningssystemet (Payload på Coolify). Tom = bara e-post.
   materialUrl: 'https://bestallningar.k2.nu/api/material-lista/torp-kopcentrum', // Publicerat material från systemet. Tom = material.json.
   amnesprefix: 'Beställning Torp',
-  sidlank: 'hypermediasweden.github.io/torp-bestallning'
+  sidlank: 'torp.k2.nu'
 };
 
 /* Fälttyper som kan dyka upp under en grupp när något i gruppen är ikryssat. */

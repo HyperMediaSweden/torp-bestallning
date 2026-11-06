@@ -3,7 +3,11 @@
 Digitalt beställningsformulär som ersätter den gamla PDF:en (skriv ut, fyll i, scanna).
 Torp (Fredrik Wändel) kryssar i vad som ska tas fram, fyller i datum och skickar.
 
-**Länk till kund:** https://hypermediasweden.github.io/torp-bestallning/
+**Länk till kund:** https://torp.k2.nu/
+
+Sajten körs i Coolify (app `torp-bestallning`, Static från detta repo, branch `main`). GitHub Pages på
+https://hypermediasweden.github.io/torp-bestallning/ finns kvar tills Frida stänger det. Tills en GitHub-webhook
+finns för auto-deploy: tryck Redeploy i Coolify efter push.
 
 ## Hur beställningarna kommer fram
 

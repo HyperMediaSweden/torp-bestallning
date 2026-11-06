@@ -127,7 +127,7 @@
     <section class="block" id="block-skicka">
       <div class="block-huvud">
         <h2>Skicka beställningen</h2>
-        <p>Kontrollera sammanställningen. När du trycker på Skicka öppnas ett mejl i ditt e-postprogram med allt ifyllt. Skicka mejlet, så är beställningen gjord.</p>
+        <p id="skicka-info">Kontrollera sammanställningen. När du trycker på Skicka går beställningen direkt till Stampen och du får en bekräftelse här.</p>
       </div>
       <pre id="sammanstallning-forhandsvisning" class="sammanstallning" aria-live="polite"></pre>
       <div class="skicka-rad">
@@ -135,16 +135,22 @@
         <button type="button" class="knapp knapp-sekundar" id="kopiera-forhandsvisning">Kopiera texten</button>
         <button type="button" class="lank" id="rensa">Rensa formuläret</button>
       </div>
-      <p class="hjalp">Skickas till <span id="mottagare-text"></span>. Vill du hellre mejla själv: kopiera texten och klistra in den.</p>
+      <p class="hjalp" id="skicka-hjalp">Skickas till <span id="mottagare-text"></span>. Vill du hellre mejla själv: kopiera texten och klistra in den.</p>
     </section>
   </form>
 
   <!-- Bekräftelse (visas efter Skicka) -->
   <section id="bekraftelse" class="inre bekraftelse" hidden>
     <div class="block">
-      <div class="block-huvud">
+      <div class="block-huvud" id="bekraftelse-mottagen" hidden>
+        <p class="etikett">Klart</p>
+        <h2>Beställningen är mottagen</h2>
+        <p>Tack! Beställningen ligger nu hos Stampen och säljare och produktion har fått besked. <span id="bekraftelse-nummer"></span> Spara gärna texten nedan som kvitto.</p>
+      </div>
+      <div class="block-huvud" id="bekraftelse-mejl">
         <p class="etikett">Nästan klart</p>
         <h2 id="bekraftelse-rubrik">Mejlet med beställningen är öppnat</h2>
+        <p id="mejl-orsak" hidden></p>
         <p>Ditt e-postprogram ska nu visa ett mejl till <span class="mottagare-text"></span> med beställningen ifylld. Skicka mejlet, så är beställningen gjord.</p>
         <p>Om mejlet inte öppnades, eller om texten saknas i det: texten nedan är kopierad till urklipp. Klistra in den i ett nytt mejl till <span class="mottagare-text"></span>.</p>
       </div>
@@ -152,6 +158,7 @@
       <div class="skicka-rad">
         <a class="knapp knapp-primar" id="oppna-mejl-igen" href="#">Öppna mejlet igen</a>
         <button type="button" class="knapp knapp-sekundar" id="kopiera-klar">Kopiera texten</button>
+        <a class="lank" id="oppna-som-mejl" href="#">Skicka även som mejl</a>
         <button type="button" class="lank" id="ny-bestallning">Gör en ny beställning</button>
       </div>
       <p class="hjalp" id="kopierat-besked" hidden>Texten är kopierad.</p>
@@ -185,7 +192,7 @@
 
 <footer class="sidfot">
   <div class="inre">
-    <p>Stampen Media · Beställningsformulär för Torp Köpcentrum · Frågor: <a href="mailto:emanda.andersson@stampen.com">emanda.andersson@stampen.com</a></p>
+    <p>Stampen Media · Beställningsformulär för Torp Köpcentrum · Frågor: <a href="mailto:annonsproduktion@stampen.com">annonsproduktion@stampen.com</a></p>
   </div>
 </footer>
 

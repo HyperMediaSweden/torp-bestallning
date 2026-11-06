@@ -8,40 +8,26 @@ Torp (Fredrik Wändel) kryssar i vad som ska tas fram, fyller i datum och skicka
 ## Hur beställningarna kommer fram
 
 1. Kunden fyller i formuläret och trycker **Skicka beställningen**.
-2. Ett färdigifyllt mejl öppnas i kundens e-postprogram, adresserat till
-   **emanda.andersson@stampen.com** med kopia till **frida.baldvinsdottir@stampen.com**.
-   Ämne: `Beställning Torp: <kampanjnamn> – leverans <datum>`.
-3. Kunden skickar mejlet. Hela beställningen ligger som text i mejlet och kan vidarebefordras
-   rakt av till Anton (produktion). Samma text kopieras också till kundens urklipp,
-   ifall e-postprogrammet inte öppnas.
+2. Beställningen skickas som JSON till Stampens beställningssystem (`KONFIG.endpoint` i `app.js`,
+   repo `HyperMediaSweden/stampen-bestallningar`, Payload CMS på Coolify). Där sparas den med status,
+   och ett mejl går till kundens aviseringsmottagare (annonsproduktion@stampen.com, Frida) med hela texten och
+   en länk till beställningen i admin. Kunden ser "Beställningen är mottagen" med beställningsnummer.
+3. **Reservväg:** går systemet inte att nå öppnas i stället ett färdigifyllt mejl i kundens
+   e-postprogram, adresserat till **annonsproduktion@stampen.com** med kopia till
+   **annonsproduktion@stampen.com** och **frida.baldvinsdottir@stampen.com** (`KONFIG.till`/`KONFIG.kopia`). Texten kopieras också till urklipp.
 
-Inget sparas på någon server. Formuläret sparar kundens pågående utkast i den egna webbläsaren
-tills det skickats.
-
-**Lägga till Anton som mottagare:** öppna `app.js`, lägg till adressen i `KONFIG.kopia` (eller `KONFIG.till`)
-och publicera om (se nedan).
-
-**Ta emot i ett system senare:** sätt `KONFIG.endpoint` i `app.js` till en URL som tar emot JSON (POST).
-Formuläret skickar då beställningen dit också, e-posten är kvar som huvudväg.
+Är `KONFIG.endpoint` tom används bara mejlvägen. Instruktion till produktionen: `INSTRUKTION.md`.
 
 ## Hämta material (fliken)
 
-Fliken "Hämta material" listar filer från `material.json`. Lägg filerna i `material/<kampanj>/`
-och fyll i:
+Fliken "Hämta material" läser listan från beställningssystemet (`KONFIG.materialUrl`, endpointen
+`/api/material-lista/torp-kopcentrum`): filer som Stampen laddat upp under **Material** i admin och
+markerat som synliga för kunden, grupperade per kampanj. Filerna ligger i systemet, inte i det här
+(publika) repot.
 
-```json
-{
-  "uppdaterad": "2026-11-20",
-  "kampanjer": [
-    { "namn": "Julhandel 2026", "beskrivning": "Levererat 2026-11-13", "filer": [
-      { "namn": "Webheader 1920×694", "fil": "material/julhandel-2026/webheader.jpg", "format": "JPG", "storlek": "1,1 MB", "datum": "2026-11-13" }
-    ]}
-  ]
-}
-```
-
-Repot är publikt, så lägg inte Thon-material eller något känsligt där. Stora filer (film) hör
-hemma på en delningslänk i stället, `fil` kan vara en full URL.
+Är `KONFIG.materialUrl` tom används `material.json` i repot i stället (samma format: `kampanjer[]`
+med `filer[]` som har `namn`, `fil`, `format`, `storlek`, `datum`). Lägg aldrig Thon-material eller
+något känsligt i repot, det är publikt.
 
 ## Publicera ändringar
 

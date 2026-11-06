@@ -1,13 +1,16 @@
 /* Beställningsformulär Torp Köpcentrum – logik.
-   Beställningen sammanställs som text och skickas som ett färdigifyllt mejl (mailto) till Stampen.
-   Vill man senare ta emot beställningarna i ett system: sätt KONFIG.endpoint till en URL som tar emot JSON (POST). */
+   Beställningen sammanställs som text och skickas till Stampens beställningssystem (KONFIG.endpoint, JSON via POST).
+   Går det inte (systemet nere, nätfel) öppnas i stället ett färdigifyllt mejl (mailto) till Stampen, som förut.
+   Är KONFIG.endpoint tom används bara mejlvägen. */
 'use strict';
 
 const KONFIG = {
   kund: 'Torp Köpcentrum',
-  till: ['emanda.andersson@stampen.com'],              // säljare
-  kopia: ['frida.baldvinsdottir@stampen.com'],         // Lägg till Anton (produktion) här när adressen är känd.
-  endpoint: '',                                        // Tom = bara e-post. Annars POST:as beställningen som JSON hit.
+  kundkod: 'torp-kopcentrum',                          // kundens kod i beställningssystemet (Kunder → Kod)
+  till: ['annonsproduktion@stampen.com'],             // produktionen (mejlvägen)
+  kopia: ['frida.baldvinsdottir@stampen.com'],         // Frida
+  endpoint: '',                                        // Beställningssystemet: https://<domän>/api/bestallning. Tom = bara e-post.
+  materialUrl: '',                                     // Beställningssystemet: https://<domän>/api/material-lista/torp-kopcentrum. Tom = material.json.
   amnesprefix: 'Beställning Torp',
   sidlank: 'hypermediasweden.github.io/torp-bestallning'
 };
@@ -358,28 +361,73 @@ async function kopiera(text, besked) {
 }
 
 /* ---------- Skicka ---------- */
+/* Skickar beställningen till beställningssystemet. Returnerar { ok, id } eller { ok: false, fel }. */
+async function skickaTillSystem(d, text) {
+  const styr = new AbortController();
+  const klocka = setTimeout(() => styr.abort(), 15000);
+  try {
+    const svar = await fetch(KONFIG.endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ ...d, kund: KONFIG.kundkod, text, amne: amne(d) }),
+      signal: styr.signal
+    });
+    let json = null;
+    try { json = await svar.json(); } catch (e) { /* inget JSON-svar */ }
+    if (svar.ok && json && json.ok) return { ok: true, id: json.id };
+    return { ok: false, fel: (json && json.fel) || ('Systemet svarade ' + svar.status) };
+  } catch (err) {
+    return { ok: false, fel: err && err.name === 'AbortError' ? 'Systemet svarade inte i tid' : 'Kunde inte nå systemet' };
+  } finally {
+    clearTimeout(klocka);
+  }
+}
+
+function visaBekraftelse(mottagen) {
+  $('bekraftelse-mottagen').hidden = !mottagen;
+  $('bekraftelse-mejl').hidden = mottagen;
+  $('oppna-mejl-igen').hidden = mottagen;
+  $('oppna-som-mejl').hidden = !mottagen;
+  $('formular').hidden = true;
+  $('snabbrad').hidden = true;
+  $('bekraftelse').hidden = false;
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
 async function skicka(e) {
   e.preventDefault();
   const d = lasFormular();
   if (!validera(d)) return;
   const text = sammanstall(d);
   const lank = mailtoLank(d, text);
-
-  if (KONFIG.endpoint) {
-    try {
-      await fetch(KONFIG.endpoint, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ ...d, text, amne: amne(d) }) });
-    } catch (err) { /* e-posten är huvudvägen; endpointen är en kopia */ }
-  }
+  const knapp = $('skicka');
+  knapp.disabled = true;
+  knapp.textContent = 'Skickar …';
 
   $('sammanstallning-klar').textContent = text;
   $('oppna-mejl-igen').href = lank;
-  $('formular').hidden = true;
-  $('snabbrad').hidden = true;
-  $('bekraftelse').hidden = false;
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-  await kopiera(text, null);
-  // Öppna e-postprogrammet
-  window.location.href = lank;
+  $('oppna-som-mejl').href = lank;
+
+  let mottagen = false;
+  if (KONFIG.endpoint) {
+    const r = await skickaTillSystem(d, text);
+    mottagen = r.ok;
+    if (r.ok) {
+      $('bekraftelse-nummer').textContent = r.id ? 'Beställningsnummer ' + r.id + '.' : '';
+    } else {
+      $('mejl-orsak').textContent = 'Beställningssystemet gick inte att nå just nu (' + r.fel + '), så beställningen skickas som mejl i stället.';
+      $('mejl-orsak').hidden = false;
+    }
+  }
+  knapp.disabled = false;
+  knapp.textContent = 'Skicka beställningen';
+
+  visaBekraftelse(mottagen);
+  if (!mottagen) {
+    // Reservvägen: färdigifyllt mejl, texten även i urklipp
+    await kopiera(text, null);
+    window.location.href = lank;
+  }
   try { localStorage.removeItem(UTKAST_NYCKEL); } catch (err) { /* ok */ }
 }
 
@@ -388,7 +436,8 @@ async function visaMaterial() {
   const rot = $('material-lista');
   let data = null;
   try {
-    const svar = await fetch('material.json', { cache: 'no-store' });
+    // Listan kommer från beställningssystemet när KONFIG.materialUrl är satt, annars från material.json i repot
+    const svar = await fetch(KONFIG.materialUrl || 'material.json', { cache: 'no-store' });
     if (svar.ok) data = await svar.json();
   } catch (e) { /* visas som tomt */ }
   rot.textContent = '';
@@ -408,8 +457,8 @@ async function visaMaterial() {
     const ul = document.createElement('ul'); ul.className = 'material-filer';
     for (const f of (k.filer || [])) {
       const li = document.createElement('li');
-      const a = document.createElement('a'); a.href = f.fil; a.textContent = f.namn; a.download = ''; li.appendChild(a);
-      const s = document.createElement('span'); s.textContent = [f.format, f.storlek, f.datum].filter(Boolean).join(' · '); li.appendChild(s);
+      const a = document.createElement('a'); a.href = f.fil; a.textContent = f.namn; a.download = ''; a.target = '_blank'; a.rel = 'noopener'; li.appendChild(a);
+      const s = document.createElement('span'); s.textContent = [f.format, f.storlek, f.datum, f.beskrivning].filter(Boolean).join(' · '); li.appendChild(s);
       ul.appendChild(li);
     }
     sek.appendChild(ul);
@@ -438,6 +487,12 @@ function start() {
   const mottagare = KONFIG.till.join(', ');
   $('mottagare-text').textContent = mottagare;
   document.querySelectorAll('.mottagare-text').forEach(el => { el.textContent = mottagare; });
+  $('skicka-info').textContent = KONFIG.endpoint
+    ? 'Kontrollera sammanställningen. När du trycker på Skicka går beställningen direkt till Stampen och du får en bekräftelse här.'
+    : 'Kontrollera sammanställningen. När du trycker på Skicka öppnas ett mejl i ditt e-postprogram med allt ifyllt. Skicka mejlet, så är beställningen gjord.';
+  $('skicka-hjalp').textContent = KONFIG.endpoint
+    ? 'Går systemet inte att nå öppnas i stället ett färdigt mejl till ' + mottagare + '.'
+    : 'Skickas till ' + mottagare + '. Vill du hellre mejla själv: kopiera texten och klistra in den.';
   lasUtkast();
 
   const form = $('formular');
@@ -460,6 +515,7 @@ function start() {
   $('kopiera-klar').addEventListener('click', () => kopiera($('sammanstallning-klar').textContent, $('kopierat-besked')));
   $('ny-bestallning').addEventListener('click', () => {
     $('bekraftelse').hidden = true;
+    $('mejl-orsak').hidden = true;
     $('formular').hidden = false;
     $('snabbrad').hidden = false;
     rensa(true);

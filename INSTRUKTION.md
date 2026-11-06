@@ -1,6 +1,6 @@
 # Beställningar från Torp – så gör ni
 
-*Till Emanda (säljare) och annonsproduktion (Anton).*
+*Till annonsproduktion (Anton) och Emanda (säljare).*
 
 Torp beställer kampanjmaterial via formuläret på
 https://hypermediasweden.github.io/torp-bestallning/. Beställningarna hamnar i Stampens
@@ -42,11 +42,11 @@ sätt status **Levererad**.
 
 ## Vem får aviseringarna?
 
-**Kunder → Torp Köpcentrum → Aviseras vid ny beställning.** Just nu Emanda, annonsproduktion@stampen.com
+**Kunder → Torp Köpcentrum → Aviseras vid ny beställning.** Just nu annonsproduktion@stampen.com
 och Frida. Lägg till eller ta bort adresser där och spara.
 
 ## Om något krånglar
 
 Om systemet inte svarar när Torp skickar, öppnas i stället ett färdigt mejl till annonsproduktion@stampen.com med kopia
-till annonsproduktion@stampen.com och Frida (som förut). Beställningen finns då bara i mejlet, så lägg in den för hand under
+till Frida (som förut). Beställningen finns då bara i mejlet, så lägg in den för hand under
 **Beställningar → Skapa ny** om ni vill ha den i systemet. Frågor om systemet: Frida.

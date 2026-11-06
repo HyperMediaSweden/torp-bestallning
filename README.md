@@ -14,7 +14,7 @@ Torp (Fredrik Wändel) kryssar i vad som ska tas fram, fyller i datum och skicka
    en länk till beställningen i admin. Kunden ser "Beställningen är mottagen" med beställningsnummer.
 3. **Reservväg:** går systemet inte att nå öppnas i stället ett färdigifyllt mejl i kundens
    e-postprogram, adresserat till **annonsproduktion@stampen.com** med kopia till
-   **annonsproduktion@stampen.com** och **frida.baldvinsdottir@stampen.com** (`KONFIG.till`/`KONFIG.kopia`). Texten kopieras också till urklipp.
+   **frida.baldvinsdottir@stampen.com** (`KONFIG.till`/`KONFIG.kopia`). Texten kopieras också till urklipp.
 
 Är `KONFIG.endpoint` tom används bara mejlvägen. Instruktion till produktionen: `INSTRUKTION.md`.
 

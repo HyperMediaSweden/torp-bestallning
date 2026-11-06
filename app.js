@@ -11,7 +11,7 @@ const KONFIG = {
   kopia: ['frida.baldvinsdottir@stampen.com'],         // Frida
   endpoint: 'https://bestallningar.k2.nu/api/bestallning',                       // Beställningssystemet (Payload på Coolify). Tom = bara e-post.
   materialUrl: 'https://bestallningar.k2.nu/api/material-lista/torp-kopcentrum', // Publicerat material från systemet. Tom = material.json.
-  filUrl: '',                                          // Uppladdning: 'https://bestallningar.k2.nu/api/fil' när backend har ändpunkten. Tom = blocket Bilder och filer döljs.
+  filUrl: 'https://bestallningar.k2.nu/api/fil',      // Uppladdning av bilder och filer. Tom = blocket Bilder och filer döljs.
   amnesprefix: 'Beställning Torp',
   sidlank: 'torp.k2.nu'
 };
@@ -649,6 +649,8 @@ function laddaUpp(f) {
         f.status = 'klar'; f.id = String(j.id); f.progress = 1; avsluta();
       } else if (xhr.status === 413) {
         f.kanForsoka = false; misslyckad('Filen är för stor för systemet. Skicka den via en länk i fältet nedan.');
+      } else if (xhr.status === 415) {
+        f.kanForsoka = false; misslyckad((j && j.fel) || 'Filtypen tas inte emot. Använd bild, PDF, zip, AI, EPS eller PSD.');
       } else {
         misslyckad((j && j.fel) || 'Uppladdningen misslyckades (fel ' + xhr.status + ').');
       }

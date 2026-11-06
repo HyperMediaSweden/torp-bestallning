@@ -58,6 +58,10 @@ a { color: var(--plum); }
 /* ---------- Toppen ---------- */
 .topp { border-bottom: 1px solid var(--linje); background: var(--bg); position: sticky; top: 0; z-index: 20; }
 .topp-rad { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-block: 12px; flex-wrap: wrap; }
+.avsandare { display: flex; align-items: center; gap: 14px; }
+.o-platta { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 10px; background: var(--plum); color: var(--rosa); flex: none; }
+.o-platta img { display: block; width: 29px; height: 29px; }
+.avsandare .logga { padding-left: 14px; border-left: 1px solid var(--linje); }
 .logga img { display: block; height: 40px; width: auto; }
 .logga img.logga-vit { display: none; }
 @media (prefers-color-scheme: dark) {

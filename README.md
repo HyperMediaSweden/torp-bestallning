@@ -42,6 +42,10 @@ något känsligt i repot, det är publikt.
 
 ## Publicera ändringar
 
+**Viktigt:** När `app.js` eller `stil.css` ändras, räkna upp `?v=` på raderna som laddar dem i
+`index.html` (t.ex. `?v=2026-11-07a` → `?v=2026-11-07b`). Servern skickar inga cache-regler, så
+annars kan besökare få en gammal `app.js` ihop med en ny `index.html`.
+
 Mappen är ett git-repo kopplat till `HyperMediaSweden/torp-bestallning` (GitHub Pages från `main`).
 
 ```bash

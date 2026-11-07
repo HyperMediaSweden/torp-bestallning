@@ -1,7 +1,14 @@
 # Beställningsformulär Torp Köpcentrum
 
-Digitalt beställningsformulär som ersätter den gamla PDF:en (skriv ut, fyll i, scanna).
-Torp (Fredrik Wändel) kryssar i vad som ska tas fram, fyller i datum och skickar.
+Digitalt beställningsformulär för material som Torp beställer själva utanför kampanjproduktionen,
+till exempel golvdekaler, öppettider-affischer och material till skärmarna. Det ersätter den gamla
+PDF:en (skriv ut, fyll i, scanna). Beställare hos Torp är Fredrik Wändel och Anki, som också hämtar
+färdigt material under fliken Hämta material.
+
+Inhusmaterialet kommer först i formuläret. Kampanjkanalerna (sociala medier, display, Adnami och
+tidning) tas normalt fram inom kampanjen via Emanda och ligger därför i ett ihopfällt block längst
+ner, märkt "Kryssa bara i vid extra behov". Grupper med `kampanj: true` i `GRUPPER` i `app.js`
+hamnar där.
 
 **Länk till kund:** https://torp.k2.nu/
 

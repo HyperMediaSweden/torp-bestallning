@@ -44,48 +44,16 @@ function html5(prefix, storlek) {
 }
 
 const GRUPPER = [
-  { id: 'hemsidan', namn: 'Hemsidan', falt: ['kampanjstart', 'notering'], val: [
-    { id: 'webheader-jpg', namn: 'Webheader, bild (.jpg)', matt: '1920×694 px' },
-    { id: 'webheader-mp4', namn: 'Webheader, film (.mp4)', matt: '1920×694 px', info: 'Max 50 MB' },
-    { id: 'kampanjplugg', namn: 'Kampanjplugg (.jpg)', matt: '1500×1000 px' }
+  // Inhusmaterial som Torp beställer själva kommer först. Grupper med kampanj: true hamnar i det
+  // ihopfällda blocket Kampanjkanaler längst ner (tas normalt fram inom kampanjen via Emanda).
+  { id: 'golvdekaler', namn: 'Golvdekaler', falt: ['matt', 'montering', 'notering'],
+    leverantor: 'Arkitektkopia, henrik.fagerberg@arkitektkopia.se', val: [
+    { id: 'golvdekal', namn: 'Golvdekal', matt: 'ca 2×3 m', info: 'Ange exakt mått i fältet nedan' }
   ]},
-  { id: 'meta', namn: 'Facebook och Instagram', info: 'Film max 10 s', falt: ['kampanjstart', 'notering'],
-    hjalp: 'Samma material fungerar i båda kanalerna. Ska det bara synas i den ena, skriv det i noteringen.', val: [
-    { id: 'meta-flode-45-bild', namn: 'Flöde 4:5, bild', matt: '1080×1350 px' },
-    { id: 'meta-flode-45-film', namn: 'Flöde 4:5, film', matt: '1080×1350 px' },
-    { id: 'meta-flode-11-bild', namn: 'Flöde 1:1, bild', matt: '1080×1080 px' },
-    { id: 'meta-flode-11-film', namn: 'Flöde 1:1, film', matt: '1080×1080 px' },
-    { id: 'meta-stories', namn: 'Stories 9:16, bild eller film', matt: '1080×1920 px' },
-    { id: 'meta-reels', namn: 'Reels 9:16, film', matt: '1080×1920 px' },
-    { id: 'fb-omslag', namn: 'Omslagsbild Facebook (.jpg)', matt: '1920×694 px' }
-  ]},
-  { id: 'tiktok', namn: 'TikTok', info: 'Film max 10 s', falt: ['kampanjstart', 'notering'], val: [
-    { id: 'tiktok-film', namn: 'Film 9:16', matt: '1080×1920 px', info: 'Ljud eller text på bilden, skriv önskemål i noteringen.' }
-  ]},
-  { id: 'snapchat', namn: 'Snapchat', info: 'Film max 10 s', falt: ['kampanjstart', 'notering'], val: [
-    { id: 'snapchat-film', namn: 'Film 9:16', matt: '1080×1920 px' }
-  ]},
-  { id: 'youtube', namn: 'YouTube', info: 'Film max 10 s', falt: ['kampanjstart', 'notering'], val: [
-    { id: 'youtube-film', namn: 'Film 16:9', matt: '1920×1080 px', info: 'Loggan syns från start.' },
-    { id: 'youtube-shorts', namn: 'Shorts 9:16', matt: '1080×1920 px' }
-  ]},
-  { id: 'html5', namn: 'Displayannonser', info: 'Animerade HTML5, max 30 s', alla: 'Alla format', kompakt: true, falt: ['kampanjstart', 'notering'], val: [
-    html5('se', '980×240'), html5('se', '980×600'), html5('se', '640×320'), html5('se', '300×250'), html5('se', '250×600'), html5('se', '320×320'), html5('se', '320×480')
-  ]},
-  { id: 'html5-norge', namn: 'Displayannonser Norge', info: 'Animerade HTML5, max 30 s', alla: 'Alla storlekar', allaInklEjStandard: true, kompakt: true, falt: ['kampanjstart', 'notering'], val: [
-    html5('no', '320×480'), html5('no', '320×400'), html5('no', '300×250'), html5('no', '320×320'), html5('no', '980×600'), html5('no', '580×400'), html5('no', '980×300'), html5('no', '300×600')
-  ]},
-  { id: 'adnami', namn: 'Annonser med stor yta', info: 'Adnami, stillbild, max 200 kB', alla: 'Alla format', kompakt: true, falt: ['kampanjstart', 'kampanjslut', 'notering'], val: [
-    { id: 'takeover-mobil-320x480', namn: 'Take-over mobil', matt: '320×480 px' },
-    { id: 'takeover-mobil-1080x1920', namn: 'Take-over mobil', matt: '1080×1920 px' },
-    { id: 'takeover-desktop', namn: 'Take-over desktop', matt: '1920×1080 px' },
-    { id: 'topscroll-mobil', namn: 'Top-scroll mobil', matt: '1080×1920 px' },
-    { id: 'topscroll-desktop', namn: 'Top-scroll desktop', matt: '2560×1440 px' }
-  ]},
-  { id: 'tidning', namn: 'Tidningsannons', falt: ['inforande', 'notering'], val: [
-    { id: 'tidning-modul-23', namn: 'Modul 23, åttondelssida', matt: '80×133 mm' },
-    { id: 'tidning-modul-34', namn: 'Modul 34, kvartssida', matt: '122×170 mm' },
-    { id: 'tidning-helsida', namn: 'Helsida', matt: '248×372 mm' }
+  { id: 'affischer', namn: 'Öppettider-affischer', falt: ['uppsattning', 'notering'],
+    leverantor: 'Arkitektkopia, henrik.fagerberg@arkitektkopia.se', val: [
+    { id: 'affisch-700x1000', namn: 'Affisch', matt: '700×1000 mm' },
+    { id: 'affisch-eurosize', namn: 'Eurosize', matt: '1185×1750 mm', info: 'Synlig yta 1155×1710 mm, upplösning 120 dpi' }
   ]},
   { id: 'skarmar', namn: 'Digitala skärmar', info: 'Film 5 eller 10 s, max 12 s', falt: ['kampanjstart', 'kampanjslut', 'notering'],
     leverantor: 'Ocean Outdoor, ocean-delivery@oceanoutdoor.se', val: [
@@ -95,16 +63,50 @@ const GRUPPER = [
     leverantor: 'Ej angiven i den gamla blanketten – skriv i noteringen vem som ska ha filen', val: [
     { id: 'kartskarm-1920x1080', namn: 'Liggande skärm', matt: '1920×1080 px' }
   ]},
-  { id: 'affischer', namn: 'Öppettider-affischer', falt: ['uppsattning', 'notering'],
-    leverantor: 'Arkitektkopia, henrik.fagerberg@arkitektkopia.se', val: [
-    { id: 'affisch-700x1000', namn: 'Affisch', matt: '700×1000 mm' },
-    { id: 'affisch-eurosize', namn: 'Eurosize', matt: '1185×1750 mm', info: 'Synlig yta 1155×1710 mm, upplösning 120 dpi' }
+  { id: 'hemsidan', namn: 'Hemsidan', falt: ['kampanjstart', 'notering'], val: [
+    { id: 'webheader-jpg', namn: 'Webheader, bild (.jpg)', matt: '1920×694 px' },
+    { id: 'webheader-mp4', namn: 'Webheader, film (.mp4)', matt: '1920×694 px', info: 'Max 50 MB' },
+    { id: 'kampanjplugg', namn: 'Kampanjplugg (.jpg)', matt: '1500×1000 px' }
   ]},
-  { id: 'golvdekaler', namn: 'Golvdekaler', falt: ['matt', 'montering', 'notering'],
-    leverantor: 'Arkitektkopia, henrik.fagerberg@arkitektkopia.se', val: [
-    { id: 'golvdekal', namn: 'Golvdekal', matt: 'ca 2×3 m', info: 'Ange exakt mått i fältet nedan' }
+  { id: 'ovrigt', namn: 'Övrigt', fritext: true, platshallare: 'Annat som ska tas fram, t.ex. tryck, skyltar eller annonser i andra kanaler. Skriv mått och var det ska användas.' },
+  { id: 'meta', kampanj: true, namn: 'Facebook och Instagram', info: 'Film max 10 s', falt: ['kampanjstart', 'notering'],
+    hjalp: 'Samma material fungerar i båda kanalerna. Ska det bara synas i den ena, skriv det i noteringen.', val: [
+    { id: 'meta-flode-45-bild', namn: 'Flöde 4:5, bild', matt: '1080×1350 px' },
+    { id: 'meta-flode-45-film', namn: 'Flöde 4:5, film', matt: '1080×1350 px' },
+    { id: 'meta-flode-11-bild', namn: 'Flöde 1:1, bild', matt: '1080×1080 px' },
+    { id: 'meta-flode-11-film', namn: 'Flöde 1:1, film', matt: '1080×1080 px' },
+    { id: 'meta-stories', namn: 'Stories 9:16, bild eller film', matt: '1080×1920 px' },
+    { id: 'meta-reels', namn: 'Reels 9:16, film', matt: '1080×1920 px' },
+    { id: 'fb-omslag', namn: 'Omslagsbild Facebook (.jpg)', matt: '1920×694 px' }
   ]},
-  { id: 'ovrigt', namn: 'Övrigt', fritext: true, platshallare: 'Annat som ska tas fram, t.ex. tryck, skyltar eller annonser i andra kanaler. Skriv mått och var det ska användas.' }
+  { id: 'tiktok', kampanj: true, namn: 'TikTok', info: 'Film max 10 s', falt: ['kampanjstart', 'notering'], val: [
+    { id: 'tiktok-film', namn: 'Film 9:16', matt: '1080×1920 px', info: 'Ljud eller text på bilden, skriv önskemål i noteringen.' }
+  ]},
+  { id: 'snapchat', kampanj: true, namn: 'Snapchat', info: 'Film max 10 s', falt: ['kampanjstart', 'notering'], val: [
+    { id: 'snapchat-film', namn: 'Film 9:16', matt: '1080×1920 px' }
+  ]},
+  { id: 'youtube', kampanj: true, namn: 'YouTube', info: 'Film max 10 s', falt: ['kampanjstart', 'notering'], val: [
+    { id: 'youtube-film', namn: 'Film 16:9', matt: '1920×1080 px', info: 'Loggan syns från start.' },
+    { id: 'youtube-shorts', namn: 'Shorts 9:16', matt: '1080×1920 px' }
+  ]},
+  { id: 'html5', kampanj: true, namn: 'Displayannonser', info: 'Animerade HTML5, max 30 s', alla: 'Alla format', kompakt: true, falt: ['kampanjstart', 'notering'], val: [
+    html5('se', '980×240'), html5('se', '980×600'), html5('se', '640×320'), html5('se', '300×250'), html5('se', '250×600'), html5('se', '320×320'), html5('se', '320×480')
+  ]},
+  { id: 'html5-norge', kampanj: true, namn: 'Displayannonser Norge', info: 'Animerade HTML5, max 30 s', alla: 'Alla storlekar', allaInklEjStandard: true, kompakt: true, falt: ['kampanjstart', 'notering'], val: [
+    html5('no', '320×480'), html5('no', '320×400'), html5('no', '300×250'), html5('no', '320×320'), html5('no', '980×600'), html5('no', '580×400'), html5('no', '980×300'), html5('no', '300×600')
+  ]},
+  { id: 'adnami', kampanj: true, namn: 'Annonser med stor yta', info: 'Adnami, stillbild, max 200 kB', alla: 'Alla format', kompakt: true, falt: ['kampanjstart', 'kampanjslut', 'notering'], val: [
+    { id: 'takeover-mobil-320x480', namn: 'Take-over mobil', matt: '320×480 px' },
+    { id: 'takeover-mobil-1080x1920', namn: 'Take-over mobil', matt: '1080×1920 px' },
+    { id: 'takeover-desktop', namn: 'Take-over desktop', matt: '1920×1080 px' },
+    { id: 'topscroll-mobil', namn: 'Top-scroll mobil', matt: '1080×1920 px' },
+    { id: 'topscroll-desktop', namn: 'Top-scroll desktop', matt: '2560×1440 px' }
+  ]},
+  { id: 'tidning', kampanj: true, namn: 'Tidningsannons', falt: ['inforande', 'notering'], val: [
+    { id: 'tidning-modul-23', namn: 'Modul 23, åttondelssida', matt: '80×133 mm' },
+    { id: 'tidning-modul-34', namn: 'Modul 34, kvartssida', matt: '122×170 mm' },
+    { id: 'tidning-helsida', namn: 'Helsida', matt: '248×372 mm' }
+  ]}
 ];
 
 const $ = (id) => document.getElementById(id);
@@ -112,8 +114,10 @@ const UTKAST_NYCKEL = 'torp-bestallning-utkast';
 
 /* ---------- Bygg materialgrupperna ---------- */
 function byggGrupper() {
-  const rot = $('grupper');
+  const inhus = $('grupper');
+  const kampanj = $('grupper-kampanj');
   for (const g of GRUPPER) {
+    const rot = g.kampanj ? kampanj : inhus;
     const sek = document.createElement('section');
     sek.className = 'grupp' + (g.fritext ? ' grupp-ovrigt' : '');
     sek.id = 'grupp-' + g.id;
@@ -356,6 +360,8 @@ function uppdatera() {
       $('val-' + g.id + '-alla').checked = relevanta.every(v => $('val-' + v.id).checked);
     }
   }
+  // Är något ikryssat bland kampanjkanalerna ska blocket stå öppet (stängs aldrig automatiskt)
+  if (GRUPPER.some(g => g.kampanj && g.val.some(v => $('val-' + v.id).checked))) $('kampanjkanaler').open = true;
   const d = lasFormular();
   const n = antalVal(d);
   $('sammanstallning-forhandsvisning').textContent = n ? sammanstall(d) : '';

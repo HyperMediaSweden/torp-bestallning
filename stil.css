@@ -226,7 +226,7 @@ textarea { resize: vertical; }
 .kampanjkanaler { border: 1px solid var(--linje); border-radius: 12px; background: var(--bg); }
 .kampanjkanaler > summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 12px; align-items: center; padding: 12px 16px; border-radius: 12px; }
 .kampanjkanaler > summary::-webkit-details-marker { display: none; }
-.kampanjkanaler > summary::after { content: ""; grid-column: 2; grid-row: 1 / span 2; width: 10px; height: 10px; border-right: 2px solid var(--plum); border-bottom: 2px solid var(--plum); transform: rotate(45deg); margin-top: -4px; transition: transform .15s; }
+.kampanjkanaler > summary::after { content: ""; grid-column: 2; grid-row: 1; width: 10px; height: 10px; border-right: 2px solid var(--plum); border-bottom: 2px solid var(--plum); transform: rotate(45deg); margin-top: -4px; transition: transform .15s; }
 .kampanjkanaler[open] > summary::after { transform: rotate(-135deg); margin-top: 4px; }
 .kampanjkanaler > summary:hover { background: var(--yta); }
 .kampanjkanaler > summary:focus-visible { outline: 3px solid var(--rosa); outline-offset: 2px; }

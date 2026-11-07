@@ -45,7 +45,7 @@ function html5(prefix, storlek) {
 
 const GRUPPER = [
   // Inhusmaterial som Torp beställer själva kommer först. Grupper med kampanj: true hamnar i det
-  // ihopfällda blocket Kampanjkanaler längst ner (tas normalt fram inom kampanjen via Emanda).
+  // ihopfällda blocket Kampanjkanaler längst ner.
   { id: 'golvdekaler', namn: 'Golvdekaler', falt: ['matt', 'montering', 'notering'],
     leverantor: 'Arkitektkopia, henrik.fagerberg@arkitektkopia.se', val: [
     { id: 'golvdekal', namn: 'Golvdekal', matt: 'ca 2×3 m', info: 'Ange exakt mått i fältet nedan' }

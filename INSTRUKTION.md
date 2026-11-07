@@ -4,8 +4,7 @@
 
 Torp (Fredrik och Anki) beställer själva material utanför kampanjproduktionen,
 till exempel golvdekaler, affischer och skärmmaterial, via formuläret på https://torp.k2.nu/.
-Kampanjkanalerna ligger ihopfällda längst ner i formuläret och används bara vid extra behov, eftersom
-de normalt beställs inom kampanjen via Emanda. Beställningarna hamnar i Stampens
+Kampanjkanalerna ligger ihopfällda längst ner i formuläret. Beställningarna hamnar i Stampens
 beställningssystem: **https://bestallningar.k2.nu/admin**. Logga in med din Stampen-adress.
 Första gången: tryck *Glömt lösenord?* på inloggningssidan och följ länken i mejlet.
 

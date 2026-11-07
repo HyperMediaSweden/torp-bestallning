@@ -6,8 +6,7 @@ PDF:en (skriv ut, fyll i, scanna). Beställare hos Torp är Fredrik Wändel och 
 färdigt material under fliken Hämta material.
 
 Inhusmaterialet kommer först i formuläret. Kampanjkanalerna (sociala medier, display, Adnami och
-tidning) tas normalt fram inom kampanjen via Emanda och ligger därför i ett ihopfällt block längst
-ner, märkt "Kryssa bara i vid extra behov". Grupper med `kampanj: true` i `GRUPPER` i `app.js`
+tidning) ligger i ett ihopfällt block längst ner. Grupper med `kampanj: true` i `GRUPPER` i `app.js`
 hamnar där.
 
 Varje materialgrupp är en ihopfällbar rad med gruppens namn till vänster och antal valda till höger.

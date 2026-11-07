@@ -242,3 +242,10 @@ textarea { resize: vertical; }
 .grupp > summary:focus-visible { outline-offset: -3px; }
 .grupp.vald > summary { background: var(--rosa-ton); }
 .grupp[open] > .grupp-innehall { border-top: 1px dashed var(--linje); padding-top: 12px; }
+
+/* Antal på rader för tryckt och uppsatt material */
+.val-rad-antal { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: start; gap: 10px; }
+.antal-falt { display: grid; justify-items: end; gap: 2px; padding-top: 4px; }
+.antal-falt label { font-size: 12px; font-weight: 600; color: var(--text2); }
+.antal-falt input { width: 76px; padding: 6px 8px; font: inherit; font-size: 15px; text-align: right; color: var(--text); background: var(--bg); border: 1px solid var(--linje); border-radius: 8px; font-variant-numeric: tabular-nums; }
+.antal-falt input:focus { border-color: var(--plum); outline: 3px solid var(--rosa-ton2); outline-offset: 0; }

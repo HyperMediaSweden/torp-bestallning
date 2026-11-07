@@ -46,20 +46,20 @@ function html5(prefix, storlek) {
 const GRUPPER = [
   // Inhusmaterial som Torp beställer själva kommer först. Grupper med kampanj: true hamnar i det
   // ihopfällda blocket Kampanjkanaler längst ner.
-  { id: 'golvdekaler', namn: 'Golvdekaler', falt: ['matt', 'montering', 'notering'],
+  { id: 'golvdekaler', antal: true, namn: 'Golvdekaler', falt: ['matt', 'montering', 'notering'],
     leverantor: 'Arkitektkopia, henrik.fagerberg@arkitektkopia.se', val: [
     { id: 'golvdekal', namn: 'Golvdekal', matt: 'ca 2×3 m', info: 'Ange exakt mått i fältet nedan' }
   ]},
-  { id: 'affischer', namn: 'Öppettider-affischer', falt: ['uppsattning', 'notering'],
+  { id: 'affischer', antal: true, namn: 'Öppettider-affischer', falt: ['uppsattning', 'notering'],
     leverantor: 'Arkitektkopia, henrik.fagerberg@arkitektkopia.se', val: [
     { id: 'affisch-700x1000', namn: 'Affisch', matt: '700×1000 mm' },
     { id: 'affisch-eurosize', namn: 'Eurosize', matt: '1185×1750 mm', info: 'Synlig yta 1155×1710 mm, upplösning 120 dpi' }
   ]},
-  { id: 'skarmar', namn: 'Digitala skärmar', info: 'Film 5 eller 10 s, max 12 s', falt: ['kampanjstart', 'kampanjslut', 'notering'],
+  { id: 'skarmar', antal: true, namn: 'Digitala skärmar', info: 'Film 5 eller 10 s, max 12 s', falt: ['kampanjstart', 'kampanjslut', 'notering'],
     leverantor: 'Ocean Outdoor, ocean-delivery@oceanoutdoor.se', val: [
     { id: 'skarm-1080x1920', namn: 'Stående skärm', matt: '1080×1920 px' }
   ]},
-  { id: 'kartskarmar', namn: 'Kartskärmar', falt: ['kampanjstart', 'kampanjslut', 'notering'],
+  { id: 'kartskarmar', antal: true, namn: 'Kartskärmar', falt: ['kampanjstart', 'kampanjslut', 'notering'],
     leverantor: 'Ej angiven i den gamla blanketten – skriv i noteringen vem som ska ha filen', val: [
     { id: 'kartskarm-1920x1080', namn: 'Liggande skärm', matt: '1920×1080 px' }
   ]},
@@ -204,7 +204,30 @@ function valRad(v, g, arAlla) {
   if (v.info) { const i = document.createElement('span'); i.className = 'val-info'; i.textContent = v.info; text.appendChild(i); }
   label.appendChild(input);
   label.appendChild(text);
-  return label;
+  if (!g.antal || arAlla) return label;
+  // Antal för material som trycks eller sätts upp. Visas när raden är ikryssad.
+  const rad = document.createElement('div');
+  rad.className = 'val-rad-antal';
+  const antal = document.createElement('div');
+  antal.className = 'antal-falt';
+  antal.id = 'antal-falt-' + v.id;
+  antal.hidden = true;
+  const al = document.createElement('label');
+  al.htmlFor = 'antal-' + v.id;
+  al.textContent = 'Antal';
+  const ai = document.createElement('input');
+  ai.type = 'number'; ai.id = 'antal-' + v.id; ai.min = '1'; ai.step = '1'; ai.max = '9999';
+  ai.inputMode = 'numeric'; ai.value = '1';
+  ai.setAttribute('aria-label', 'Antal ' + v.namn);
+  antal.append(al, ai);
+  rad.append(label, antal);
+  return rad;
+}
+
+function lasAntal(v) {
+  const el = $('antal-' + v.id);
+  const n = el ? parseInt(el.value, 10) : NaN;
+  return Number.isFinite(n) && n >= 1 ? Math.min(n, 9999) : 1;
 }
 
 /* ---------- Läs av formuläret ---------- */
@@ -228,7 +251,7 @@ function lasFormular() {
       if (t) d.grupper.push({ id: g.id, namn: g.namn, fritext: t });
       continue;
     }
-    const valda = g.val.filter(v => $('val-' + v.id).checked);
+    const valda = g.val.filter(v => $('val-' + v.id).checked).map(v => g.antal ? { ...v, antal: lasAntal(v) } : v);
     if (!valda.length) continue;
     const falt = {};
     for (const fid of g.falt) { const val = $(g.id + '-' + fid).value.trim(); if (val) falt[fid] = val; }
@@ -265,7 +288,7 @@ function sammanstall(d) {
       r.push('• ' + g.val.map(v => (v.matt ? v.namn + ' ' + v.matt.replace(' px', '') : v.namn.replace(' px', '')) + (v.tagg ? ' [' + v.tagg + ']' : '')).join(', '));
     } else {
       for (const v of g.val) {
-        let rad = '• ' + v.namn + (v.matt ? ', ' + v.matt : '');
+        let rad = '• ' + v.namn + (v.matt ? ', ' + v.matt : '') + (v.antal ? ', ' + v.antal + ' st' : '');
         if (v.tagg) rad += ' [' + v.tagg + ']';
         r.push(rad);
       }
@@ -361,6 +384,14 @@ function uppdatera() {
       continue;
     }
     const valda = g.val.filter(v => $('val-' + v.id).checked);
+    if (g.antal) {
+      for (const v of g.val) {
+        const ruta = $('antal-falt-' + v.id), falt = $('antal-' + v.id);
+        if (!ruta) continue;
+        ruta.hidden = !$('val-' + v.id).checked;
+        if (!ruta.hidden && falt.value === '') falt.value = '1';
+      }
+    }
     sek.classList.toggle('vald', valda.length > 0);
     antal.textContent = valda.length === 0 ? '' : valda.length + (valda.length === 1 ? ' vald' : ' valda');
     if (valda.length) sek.open = true; // stängs aldrig automatiskt

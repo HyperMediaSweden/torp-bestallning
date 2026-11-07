@@ -115,7 +115,8 @@ const UTKAST_NYCKEL = 'torp-bestallning-utkast';
 /* ---------- Bygg materialgrupperna ---------- */
 function byggGrupper() {
   const inhus = $('grupper');
-  const kampanj = $('grupper-kampanj');
+  // Saknas blocket (en äldre index.html ur webbläsarens cache) hamnar kampanjgrupperna i den vanliga listan
+  const kampanj = $('grupper-kampanj') || inhus;
   for (const g of GRUPPER) {
     const rot = g.kampanj ? kampanj : inhus;
     // Varje grupp är en ihopfällbar rad: namn till vänster, antal valda till höger
@@ -370,7 +371,7 @@ function uppdatera() {
     }
   }
   // Är något ikryssat bland kampanjkanalerna ska blocket stå öppet (stängs aldrig automatiskt)
-  if (GRUPPER.some(g => g.kampanj && g.val.some(v => $('val-' + v.id).checked))) $('kampanjkanaler').open = true;
+  if (GRUPPER.some(g => g.kampanj && g.val.some(v => $('val-' + v.id).checked))) { const kk = $('kampanjkanaler'); if (kk) kk.open = true; }
   const d = lasFormular();
   const n = antalVal(d);
   $('sammanstallning-forhandsvisning').textContent = n ? sammanstall(d) : '';
@@ -766,6 +767,13 @@ function visaVy() {
 
 /* ---------- Start ---------- */
 function start() {
+  // En äldre index.html ur webbläsarens cache saknar nyare delar av sidan. Ladda då om en gång,
+  // en omladdning frågar alltid servern (som svarar med Cache-Control: no-cache).
+  if (!$('grupper-kampanj') || !$('block-filer')) {
+    let redan = false;
+    try { redan = sessionStorage.getItem('torp-omladdad') === '1'; sessionStorage.setItem('torp-omladdad', '1'); } catch (e) { redan = true; }
+    if (!redan) { location.reload(); return; }
+  }
   byggGrupper();
   startaFiler();
   const mottagare = KONFIG.till.join(', ');

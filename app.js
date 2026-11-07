@@ -118,25 +118,29 @@ function byggGrupper() {
   const kampanj = $('grupper-kampanj');
   for (const g of GRUPPER) {
     const rot = g.kampanj ? kampanj : inhus;
-    const sek = document.createElement('section');
+    // Varje grupp är en ihopfällbar rad: namn till vänster, antal valda till höger
+    const sek = document.createElement('details');
     sek.className = 'grupp' + (g.fritext ? ' grupp-ovrigt' : '');
     sek.id = 'grupp-' + g.id;
     sek.dataset.grupp = g.id;
 
-    const huvud = document.createElement('div');
+    const huvud = document.createElement('summary');
     huvud.className = 'grupp-huvud';
-    huvud.innerHTML = '<h3></h3>' + (g.info ? '<small></small>' : '');
+    huvud.innerHTML = '<span class="grupp-namn"><h3></h3>' + (g.info ? '<small></small>' : '') + '</span><span class="grupp-antal" aria-live="polite"></span>';
     huvud.querySelector('h3').textContent = g.namn;
     if (g.info) huvud.querySelector('small').textContent = g.info;
     sek.appendChild(huvud);
-    if (g.hjalp) { const h = document.createElement('p'); h.className = 'grupp-info'; h.textContent = g.hjalp; sek.appendChild(h); }
+    const inne = document.createElement('div');
+    inne.className = 'grupp-innehall';
+    sek.appendChild(inne);
+    if (g.hjalp) { const h = document.createElement('p'); h.className = 'grupp-info'; h.textContent = g.hjalp; inne.appendChild(h); }
 
     if (g.fritext) {
       const f = document.createElement('div');
       f.className = 'falt';
       f.innerHTML = '<label for="ovrigt-text">Beskriv vad ni vill ha</label><textarea id="ovrigt-text" rows="4"></textarea>';
       f.querySelector('textarea').placeholder = g.platshallare || '';
-      sek.appendChild(f);
+      inne.appendChild(f);
       rot.appendChild(sek);
       continue;
     }
@@ -147,7 +151,7 @@ function byggGrupper() {
       lista.appendChild(valRad({ id: g.id + '-alla', namn: g.alla + ' →' }, g, true));
     }
     for (const v of g.val) lista.appendChild(valRad(v, g, false));
-    sek.appendChild(lista);
+    inne.appendChild(lista);
 
     const falt = document.createElement('div');
     falt.className = 'grupp-falt';
@@ -170,14 +174,14 @@ function byggGrupper() {
       if (def.hjalp) { const h = document.createElement('p'); h.className = 'hjalp'; h.textContent = def.hjalp; w.appendChild(h); }
       falt.appendChild(w);
     }
-    sek.appendChild(falt);
+    inne.appendChild(falt);
 
     if (g.leverantor) {
       const l = document.createElement('p');
       l.className = 'leverantor';
       l.innerHTML = '<b>Leverantör:</b> ';
       l.appendChild(document.createTextNode(g.leverantor));
-      sek.appendChild(l);
+      inne.appendChild(l);
     }
     rot.appendChild(sek);
   }
@@ -334,7 +338,7 @@ function validera(d) {
 
   const harMaterial = d.grupper.length > 0;
   $('fel-material').hidden = harMaterial;
-  if (!harMaterial) { ok = false; forsta = forsta || 'grupper'; }
+  if (!harMaterial) { ok = false; forsta = forsta || 'grupper'; $('grupp-' + GRUPPER[0].id).open = true; }
   if (!ok && forsta) {
     const el = $(forsta);
     if (el) { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); if (el.focus) el.focus({ preventScroll: true }); }
@@ -346,14 +350,19 @@ function validera(d) {
 function uppdatera() {
   // Gruppfält visas bara när något i gruppen är ikryssat; "Alla" speglar gruppens kryssrutor.
   for (const g of GRUPPER) {
+    const sek = $('grupp-' + g.id);
+    const antal = sek.querySelector('.grupp-antal');
     if (g.fritext) {
       const t = $('ovrigt-text').value.trim();
-      $('grupp-' + g.id).classList.toggle('vald', !!t);
+      sek.classList.toggle('vald', !!t);
+      antal.textContent = t ? 'Ifyllt' : '';
+      if (t) sek.open = true; // stängs aldrig automatiskt
       continue;
     }
     const valda = g.val.filter(v => $('val-' + v.id).checked);
-    const sek = $('grupp-' + g.id);
     sek.classList.toggle('vald', valda.length > 0);
+    antal.textContent = valda.length === 0 ? '' : valda.length + (valda.length === 1 ? ' vald' : ' valda');
+    if (valda.length) sek.open = true; // stängs aldrig automatiskt
     sek.querySelector('.grupp-falt').hidden = valda.length === 0;
     if (g.alla) {
       const relevanta = g.allaInklEjStandard ? g.val : g.val.filter(v => !v.ejStandard);

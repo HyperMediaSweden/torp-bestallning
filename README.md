@@ -10,6 +10,10 @@ tidning) tas normalt fram inom kampanjen via Emanda och ligger därför i ett ih
 ner, märkt "Kryssa bara i vid extra behov". Grupper med `kampanj: true` i `GRUPPER` i `app.js`
 hamnar där.
 
+Varje materialgrupp är en ihopfällbar rad med gruppens namn till vänster och antal valda till höger.
+Raderna är stängda från början. En grupp med något ikryssat, eller Övrigt med text, öppnas av sig själv
+och stängs aldrig automatiskt. Trycker kunden Skicka utan att ha valt något öppnas första gruppen.
+
 **Länk till kund:** https://torp.k2.nu/
 
 Sajten körs i Coolify (app `torp-bestallning`, Static från detta repo, branch `main`). GitHub Pages på

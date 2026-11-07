@@ -105,13 +105,24 @@ textarea { resize: vertical; }
 /* Leveransdatum: rosa platta, som gulmarkeringen i den gamla blanketten */
 .falt-leverans { background: var(--rosa-ton); border: 1px solid var(--rosa-ton2); border-radius: 10px; padding: 12px; }
 .falt-leverans label { color: var(--plum); }
-.datum-rad { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); align-items: start; }
+.datum-rad { grid-template-columns: repeat(auto-fit, minmax(135px, 1fr)); align-items: start; }
+.datum-rad .falt-leverans { grid-column: 1 / -1; }
 
 /* ---------- Materialgrupper ---------- */
-.grupper { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 420px), 1fr)); }
-.grupp { background: var(--bg); border: 1px solid var(--linje); border-radius: 12px; padding: 16px 18px 18px; display: grid; gap: 12px; align-content: start; min-width: 0; transition: border-color .15s, box-shadow .15s; }
+.grupper { display: grid; gap: 8px; grid-template-columns: minmax(0, 1fr); }
+.grupp { background: var(--bg); border: 1px solid var(--linje); border-radius: 12px; min-width: 0; transition: border-color .15s, box-shadow .15s; }
 .grupp.vald { border-color: var(--plum); box-shadow: 0 0 0 3px var(--rosa-ton); }
-.grupp-huvud { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+/* Gruppraden: namn till vänster, antal valda och pil till höger */
+.grupp > summary.grupp-huvud { list-style: none; cursor: pointer; display: grid; grid-template-columns: minmax(0, 1fr) auto 12px; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 12px; }
+.grupp > summary::-webkit-details-marker { display: none; }
+.grupp > summary::after { content: ""; width: 9px; height: 9px; border-right: 2px solid var(--plum); border-bottom: 2px solid var(--plum); transform: rotate(45deg); margin-top: -4px; transition: transform .15s; }
+.grupp[open] > summary::after { transform: rotate(-135deg); margin-top: 4px; }
+.grupp > summary:hover { background: var(--yta); }
+.grupp > summary:focus-visible { outline: 3px solid var(--rosa); outline-offset: 2px; }
+.grupp[open] > summary { border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+.grupp-namn { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; min-width: 0; }
+.grupp-antal { font: 700 13px/1 var(--disp); color: var(--plum); white-space: nowrap; }
+.grupp-innehall { display: grid; gap: 12px; padding: 4px 16px 16px; }
 .grupp-huvud small { font-weight: 500; color: var(--dampad); font-size: 13.5px; }
 .grupp-info { font-size: 13.5px; color: var(--text2); }
 .val-lista { display: grid; gap: 4px; }
@@ -164,7 +175,7 @@ textarea { resize: vertical; }
 
 /* ---------- Sidfot ---------- */
 .sidfot { border-top: 1px solid var(--linje); color: var(--dampad); font-size: 13.5px; }
-.sidfot .inre { padding-block: 20px 100px; }
+.sidfot .inre { padding-block: 20px 80px; }
 
 @media (max-width: 600px) {
   .block { border-radius: 12px; }
@@ -179,7 +190,7 @@ textarea { resize: vertical; }
 /* ---------- Bilder och filer ---------- */
 .visuellt-dold { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 .fil-yta { position: relative; }
-.fil-yta-text { display: grid; justify-items: center; gap: 6px; text-align: center; padding: 28px 16px; border: 2px dashed var(--linje); border-radius: 12px; background: var(--bg); color: var(--text2); cursor: pointer; transition: border-color .15s, background .15s; font-weight: 400; }
+.fil-yta-text { display: grid; justify-items: center; gap: 6px; text-align: center; padding: 18px 16px; border: 2px dashed var(--linje); border-radius: 12px; background: var(--bg); color: var(--text2); cursor: pointer; transition: border-color .15s, background .15s; font-weight: 400; }
 .fil-yta-text:hover, .fil-yta.drar .fil-yta-text { border-color: var(--plum); background: var(--rosa-ton); }
 .fil-yta input:focus-visible + .fil-yta-text { outline: 3px solid var(--rosa); outline-offset: 2px; }
 .fil-ikon { color: var(--plum); }
@@ -213,7 +224,7 @@ textarea { resize: vertical; }
 
 /* ---------- Kampanjkanaler (ihopfällt block i Materialet) ---------- */
 .kampanjkanaler { border: 1px solid var(--linje); border-radius: 12px; background: var(--bg); }
-.kampanjkanaler > summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 12px; align-items: center; padding: 16px 18px; border-radius: 12px; }
+.kampanjkanaler > summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2px 12px; align-items: center; padding: 12px 16px; border-radius: 12px; }
 .kampanjkanaler > summary::-webkit-details-marker { display: none; }
 .kampanjkanaler > summary::after { content: ""; grid-column: 2; grid-row: 1 / span 2; width: 10px; height: 10px; border-right: 2px solid var(--plum); border-bottom: 2px solid var(--plum); transform: rotate(45deg); margin-top: -4px; transition: transform .15s; }
 .kampanjkanaler[open] > summary::after { transform: rotate(-135deg); margin-top: 4px; }
@@ -221,4 +232,13 @@ textarea { resize: vertical; }
 .kampanjkanaler > summary:focus-visible { outline: 3px solid var(--rosa); outline-offset: 2px; }
 .kampanj-rubrik { font-weight: 800; font-size: 17px; }
 .kampanj-text { grid-column: 1; font-size: 14px; color: var(--text2); }
-.kampanjkanaler > .grupper { padding: 0 14px 14px; }
+.kampanjkanaler > .grupper { margin: 0 14px 14px; }
+
+/* Grupperna som en sammanhållen lista: en ram runt, tunna linjer mellan raderna */
+#grupper, #grupper-kampanj { gap: 0; border: 1px solid var(--linje); border-radius: 12px; overflow: hidden; background: var(--bg); }
+#grupper > .grupp, #grupper-kampanj > .grupp { border: 0; border-radius: 0; box-shadow: none; }
+#grupper > .grupp + .grupp, #grupper-kampanj > .grupp + .grupp { border-top: 1px solid var(--linje); }
+.grupp > summary.grupp-huvud { padding: 12px 16px; border-radius: 0; }
+.grupp > summary:focus-visible { outline-offset: -3px; }
+.grupp.vald > summary { background: var(--rosa-ton); }
+.grupp[open] > .grupp-innehall { border-top: 1px dashed var(--linje); padding-top: 12px; }

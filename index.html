@@ -27,7 +27,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="stil.css?v=2026-11-09a">
+<link rel="stylesheet" href="stil.css?v=2026-11-09b">
 </head>
 <body>
 
@@ -219,13 +219,25 @@
     <div class="inre">
       <p class="etikett">Torp Köpcentrum · Stampen Media</p>
       <h1>Hämta färdigt material</h1>
-      <p class="lead">Här lägger Stampen upp färdigt material, sorterat per kampanj, så att ni kan hämta det själva i stället för att leta i mejl.</p>
+      <p class="lead">Här lägger Stampen upp färdigt material, sorterat per beställning, så att ni kan hämta det själva i stället för att leta i mejl.</p>
     </div>
   </section>
   <div class="inre">
+    <form id="hamtkod-formular" class="block hamtkod" novalidate hidden>
+      <div class="falt">
+        <label for="hamtkod">Hämtkod</label>
+        <input type="text" id="hamtkod" name="hamtkod" autocomplete="off" autocapitalize="none" spellcheck="false" required>
+        <p class="hjalp">Koden får ni av Stampen.</p>
+        <p class="fel" id="fel-hamtkod" hidden></p>
+      </div>
+      <div class="skicka-rad">
+        <button type="submit" class="knapp knapp-primar" id="hamtkod-knapp">Visa materialet</button>
+      </div>
+    </form>
     <div id="material-lista" class="material-lista">
       <p class="dampad">Hämtar listan …</p>
     </div>
+    <p class="glom-kod" id="glom-kod" hidden><button type="button" class="lank" id="glom-kod-knapp">Glöm koden på den här enheten</button></p>
   </div>
 </main>
 
@@ -235,6 +247,6 @@
   </div>
 </footer>
 
-<script src="app.js?v=2026-11-09a"></script>
+<script src="app.js?v=2026-11-09b"></script>
 </body>
 </html>

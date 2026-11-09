@@ -34,7 +34,7 @@ https://hypermediasweden.github.io/torp-bestallning/ finns kvar tills Frida stä
 
 ## Hämta material (fliken)
 
-Fliken "Hämta material" läser listan från beställningssystemet (`KONFIG.materialUrl`, endpointen
+Fliken "Hämta material" kräver en hämtkod, som sätts per kund i admin under Kunder. Koden skickas med POST och sparas bara på besökarens enhet, och fillänkarna gäller en timme. Fliken läser listan från beställningssystemet (`KONFIG.materialUrl`, endpointen
 `/api/material-lista/torp-kopcentrum`): filer som Stampen laddat upp under **Material** i admin och
 markerat som synliga för kunden, grupperade per kampanj. Filerna ligger i systemet, inte i det här
 (publika) repot.

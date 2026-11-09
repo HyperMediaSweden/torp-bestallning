@@ -249,3 +249,7 @@ textarea { resize: vertical; }
 .antal-falt label { font-size: 12px; font-weight: 600; color: var(--text2); }
 .antal-falt input { width: 76px; padding: 6px 8px; font: inherit; font-size: 15px; text-align: right; color: var(--text); background: var(--bg); border: 1px solid var(--linje); border-radius: 8px; font-variant-numeric: tabular-nums; }
 .antal-falt input:focus { border-color: var(--plum); outline: 3px solid var(--rosa-ton2); outline-offset: 0; }
+
+/* Hämtkod för fliken Hämta material */
+.hamtkod { max-width: 420px; margin-bottom: 16px; }
+.glom-kod { margin: -64px 0 0; padding-bottom: 80px; }

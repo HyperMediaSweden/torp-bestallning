@@ -747,20 +747,103 @@ function startaFiler() {
 }
 
 /* ---------- Hämta material ---------- */
-async function visaMaterial() {
+/* Materialet kräver en hämtkod. Koden skickas med POST och sparas bara på den här enheten.
+   Fillänkarna från systemet gäller en timme, så listan hämtas om medan fliken står öppen. */
+const HAMTKOD_NYCKEL = 'torp-hamtkod';
+const MATERIAL_UPPDATERA_MS = 50 * 60 * 1000;
+let materialKlocka = null;
+
+function lasHamtkod() { try { return localStorage.getItem(HAMTKOD_NYCKEL) || ''; } catch (e) { return ''; } }
+function sparaHamtkod(kod) { try { localStorage.setItem(HAMTKOD_NYCKEL, kod); } catch (e) { /* frågar igen nästa gång */ } }
+function glomHamtkod() { try { localStorage.removeItem(HAMTKOD_NYCKEL); } catch (e) { /* ok */ } }
+
+function visaHamtkodFormular(fel) {
+  clearTimeout(materialKlocka);
+  $('hamtkod-formular').hidden = false;
+  $('glom-kod').hidden = true;
+  $('material-lista').textContent = '';
+  $('fel-hamtkod').textContent = fel || '';
+  $('fel-hamtkod').hidden = !fel;
+}
+
+function visaMaterialFel(text) {
   const rot = $('material-lista');
-  let data = null;
+  rot.textContent = '';
+  const t = document.createElement('div');
+  t.className = 'tomt';
+  const p = document.createElement('p'); p.textContent = text;
+  t.appendChild(p);
+  rot.appendChild(t);
+}
+
+async function visaMaterial() {
+  clearTimeout(materialKlocka);
+  if (!KONFIG.materialUrl) {
+    // Utan beställningssystem läses den öppna listan i material.json
+    let data = null;
+    try {
+      const svar = await fetch('material.json', { cache: 'no-store' });
+      if (svar.ok) data = await svar.json();
+    } catch (e) { /* visas som tomt */ }
+    ritaMaterial(data);
+    return;
+  }
+  const kod = lasHamtkod();
+  if (!kod) { visaHamtkodFormular(''); return; }
+  await hamtaMaterial(kod);
+}
+
+async function hamtaMaterial(kod) {
+  const knapp = $('hamtkod-knapp');
+  knapp.disabled = true;
+  let svar = null, j = null;
   try {
-    // Listan kommer från beställningssystemet när KONFIG.materialUrl är satt, annars från material.json i repot
-    const svar = await fetch(KONFIG.materialUrl || 'material.json', { cache: 'no-store' });
-    if (svar.ok) data = await svar.json();
-  } catch (e) { /* visas som tomt */ }
+    svar = await fetch(KONFIG.materialUrl, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ kod }),
+      cache: 'no-store'
+    });
+    try { j = await svar.json(); } catch (e) { /* inget JSON-svar */ }
+  } catch (e) { /* hanteras nedan */ }
+  knapp.disabled = false;
+
+  if (!svar) {
+    $('hamtkod-formular').hidden = true;
+    visaMaterialFel('Det gick inte att nå Stampens system. Försök igen om en stund.');
+    return;
+  }
+  if (svar.status === 401) {
+    glomHamtkod();
+    visaHamtkodFormular((j && j.fel) || 'Koden stämmer inte. Kontrollera den och försök igen.');
+    return;
+  }
+  if (svar.status === 429) {
+    visaHamtkodFormular((j && j.fel) || 'För många försök. Vänta en stund och försök igen.');
+    return;
+  }
+  if (!svar.ok) {
+    $('hamtkod-formular').hidden = true;
+    visaMaterialFel('Det gick inte att hämta materialet just nu. Försök igen om en stund.');
+    return;
+  }
+  sparaHamtkod(kod);
+  $('hamtkod-formular').hidden = true;
+  $('hamtkod').value = '';
+  $('fel-hamtkod').hidden = true;
+  $('glom-kod').hidden = false;
+  ritaMaterial(j);
+  materialKlocka = setTimeout(() => { if (!$('vy-material').hidden) visaMaterial(); }, MATERIAL_UPPDATERA_MS);
+}
+
+function ritaMaterial(data) {
+  const rot = $('material-lista');
   rot.textContent = '';
   const kampanjer = (data && data.kampanjer) || [];
   if (!kampanjer.length) {
     const t = document.createElement('div');
     t.className = 'tomt';
-    t.innerHTML = '<h3>Inget material upplagt ännu</h3><p>När Stampen lägger upp färdigt material dyker det upp här, sorterat per kampanj.</p>';
+    t.innerHTML = '<h3>Inget material upplagt ännu</h3><p>När Stampen lägger upp färdigt material dyker det upp här, sorterat per beställning.</p>';
     rot.appendChild(t);
     return;
   }
@@ -800,7 +883,7 @@ function visaVy() {
 function start() {
   // En äldre index.html ur webbläsarens cache saknar nyare delar av sidan. Ladda då om en gång,
   // en omladdning frågar alltid servern (som svarar med Cache-Control: no-cache).
-  if (!$('grupper-kampanj') || !$('block-filer')) {
+  if (!$('grupper-kampanj') || !$('block-filer') || !$('hamtkod-formular')) {
     let redan = false;
     try { redan = sessionStorage.getItem('torp-omladdad') === '1'; sessionStorage.setItem('torp-omladdad', '1'); } catch (e) { redan = true; }
     if (!redan) { location.reload(); return; }
@@ -846,6 +929,13 @@ function start() {
     location.hash = '#bestall';
     window.scrollTo({ top: 0 });
   });
+  $('hamtkod-formular').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const kod = $('hamtkod').value.trim();
+    if (!kod) { visaHamtkodFormular('Skriv in hämtkoden.'); return; }
+    hamtaMaterial(kod);
+  });
+  $('glom-kod-knapp').addEventListener('click', () => { glomHamtkod(); visaHamtkodFormular(''); });
   window.addEventListener('hashchange', visaVy);
   visaVy();
   uppdatera();

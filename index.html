@@ -15,7 +15,7 @@
 <meta property="og:image" content="https://torp.k2.nu/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Beställ material till en kampanj – Torp Köpcentrum">
+<meta property="og:image:alt" content="Beställ material – Torp Köpcentrum">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Beställ material – Torp Köpcentrum">
 <meta name="twitter:description" content="Torp Köpcentrums beställningsformulär. Kryssa i vad som ska tas fram, fyll i datum och skicka.">
@@ -27,7 +27,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="stil.css?v=2026-11-07e">
+<link rel="stylesheet" href="stil.css?v=2026-11-09a">
 </head>
 <body>
 
@@ -56,50 +56,50 @@
   <section class="hero">
     <div class="inre">
       <p class="etikett">Torp Köpcentrum · Stampen Media</p>
-      <h1>Beställ material till en kampanj</h1>
+      <h1>Beställ material</h1>
     </div>
   </section>
 
   <form id="formular" class="inre formular" novalidate>
 
-    <!-- Steg 1: Kampanjen -->
+    <!-- Steg 1: Beställningen -->
     <section class="block" id="block-kampanj">
       <div class="block-huvud">
-        <h2>Kampanjen</h2>
-        <p>Vad gäller beställningen och när ska materialet vara klart?</p>
+        <h2>Beställningen</h2>
+        <p>Berätta vad det gäller och när materialet ska vara klart.</p>
       </div>
 
       <div class="falt-rad">
         <div class="falt falt-bred">
-          <label for="kampanjnamn">Kampanjnamn <span class="kravd">*</span></label>
-          <input type="text" id="kampanjnamn" name="kampanjnamn" autocomplete="off" placeholder="t.ex. Julhandel 2026" required>
-          <p class="fel" id="fel-kampanjnamn" hidden>Skriv vad kampanjen heter.</p>
+          <label for="kampanjnamn">Vad gäller beställningen? <span class="kravd">*</span></label>
+          <input type="text" id="kampanjnamn" name="kampanjnamn" autocomplete="off" placeholder="t.ex. Golvdekaler till entrén" required>
+          <p class="fel" id="fel-kampanjnamn" hidden>Skriv vad beställningen gäller.</p>
         </div>
       </div>
 
       <div class="falt-rad datum-rad">
         <div class="falt">
-          <label for="startdatum">Kampanjen startar</label>
+          <label for="startdatum">Startdatum</label>
           <input type="date" id="startdatum" name="startdatum">
         </div>
         <div class="falt">
-          <label for="slutdatum">Kampanjen slutar</label>
+          <label for="slutdatum">Slutdatum</label>
           <input type="date" id="slutdatum" name="slutdatum">
           <p class="fel" id="fel-slutdatum" hidden>Slutdatumet ligger före startdatumet.</p>
         </div>
         <div class="falt falt-leverans">
           <label for="leveransdatum">Materialet levereras senast <span class="kravd">*</span></label>
           <input type="date" id="leveransdatum" name="leveransdatum" required>
-          <p class="hjalp">Det viktigaste datumet. Det är då Stampen ska ha skickat allt till er.</p>
+          <p class="hjalp">Det viktigaste datumet. Då behöver ni ha materialet.</p>
           <p class="fel" id="fel-leveransdatum" hidden>Ange när materialet senast ska vara levererat.</p>
-          <p class="varning" id="varning-leveransdatum" hidden>Leveransdatumet ligger efter kampanjstarten. Stämmer det?</p>
+          <p class="varning" id="varning-leveransdatum" hidden>Leveransdatumet ligger efter startdatumet. Stämmer det?</p>
         </div>
       </div>
 
       <div class="falt-rad">
         <div class="falt falt-bred">
-          <label for="notering">Notering om kampanjen</label>
-          <textarea id="notering" name="notering" rows="3" placeholder="Budskap, erbjudanden, butiker som ska synas, bilder ni har, annat Stampen behöver veta."></textarea>
+          <label for="notering">Notering</label>
+          <textarea id="notering" name="notering" rows="3" placeholder="Budskap, butiker som ska synas, placering, annat som är bra att veta."></textarea>
         </div>
       </div>
 
@@ -107,12 +107,12 @@
         <div class="falt">
           <label for="bestallare-namn">Ditt namn <span class="kravd">*</span></label>
           <input type="text" id="bestallare-namn" name="bestallare-namn" autocomplete="name" required>
-          <p class="fel" id="fel-bestallare-namn" hidden>Skriv ditt namn så Stampen vet vem som beställt.</p>
+          <p class="fel" id="fel-bestallare-namn" hidden>Skriv ditt namn så att vi vet vem som beställt.</p>
         </div>
         <div class="falt">
           <label for="bestallare-epost">Din e-post <span class="kravd">*</span></label>
           <input type="email" id="bestallare-epost" name="bestallare-epost" autocomplete="email" required>
-          <p class="fel" id="fel-bestallare-epost" hidden>Ange en e-postadress som Stampen kan svara till.</p>
+          <p class="fel" id="fel-bestallare-epost" hidden>Ange en e-postadress som vi kan svara till.</p>
         </div>
         <div class="falt">
           <label for="bestallare-telefon">Telefon</label>
@@ -165,7 +165,7 @@
     <section class="block" id="block-skicka">
       <div class="block-huvud">
         <h2>Skicka beställningen</h2>
-        <p id="skicka-info">Kontrollera sammanställningen. När du trycker på Skicka går beställningen direkt till Stampen och du får en bekräftelse här.</p>
+        <p id="skicka-info">Kontrollera sammanställningen. När du trycker på Skicka går beställningen iväg direkt och du får en bekräftelse här.</p>
       </div>
       <pre id="sammanstallning-forhandsvisning" class="sammanstallning" aria-live="polite"></pre>
       <div class="skicka-rad">
@@ -183,7 +183,7 @@
       <div class="block-huvud" id="bekraftelse-mottagen" hidden>
         <p class="etikett">Klart</p>
         <h2>Beställningen är mottagen</h2>
-        <p>Tack! Beställningen ligger nu hos Stampen och säljare och produktion har fått besked. <span id="bekraftelse-nummer"></span> Spara gärna texten nedan som kvitto.</p>
+        <p>Tack! Beställningen är mottagen och skickad vidare till dem som ska ta fram materialet. <span id="bekraftelse-nummer"></span> Spara gärna texten nedan som kvitto.</p>
       </div>
       <div class="block-huvud" id="bekraftelse-mejl">
         <p class="etikett">Nästan klart</p>
@@ -235,6 +235,6 @@
   </div>
 </footer>
 
-<script src="app.js?v=2026-11-07e"></script>
+<script src="app.js?v=2026-11-09a"></script>
 </body>
 </html>

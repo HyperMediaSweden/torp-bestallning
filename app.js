@@ -20,8 +20,8 @@ const KONFIG = {
 
 /* Fälttyper som kan dyka upp under en grupp när något i gruppen är ikryssat. */
 const FALT = {
-  kampanjstart: { typ: 'date', etikett: 'Kampanjstart', hjalp: 'Om annan än kampanjens startdatum' },
-  kampanjslut:  { typ: 'date', etikett: 'Kampanjslut' },
+  kampanjstart: { typ: 'date', etikett: 'Startdatum', hjalp: 'Om annat än startdatumet ovan' },
+  kampanjslut:  { typ: 'date', etikett: 'Slutdatum' },
   uppsattning:  { typ: 'date', etikett: 'Uppsättningsdatum' },
   montering:    { typ: 'date', etikett: 'Monteringsdatum' },
   inforande:    { typ: 'date', etikett: 'Införandedatum', hjalp: 'Den dag annonsen ska vara i tidningen' },
@@ -60,7 +60,7 @@ const GRUPPER = [
     { id: 'skarm-1080x1920', namn: 'Stående skärm', matt: '1080×1920 px' }
   ]},
   { id: 'kartskarmar', antal: true, namn: 'Kartskärmar', falt: ['kampanjstart', 'kampanjslut', 'notering'],
-    leverantor: 'Ej angiven i den gamla blanketten – skriv i noteringen vem som ska ha filen', val: [
+    hjalp: 'Skriv i noteringen vem som ska ha filen.', val: [
     { id: 'kartskarm-1920x1080', namn: 'Liggande skärm', matt: '1920×1080 px' }
   ]},
   { id: 'hemsidan', namn: 'Hemsidan', falt: ['kampanjstart', 'notering'], val: [
@@ -272,8 +272,8 @@ function datum(s) {
 function sammanstall(d) {
   const r = [];
   r.push('BESTÄLLNING AV MATERIAL – ' + KONFIG.kund.toUpperCase());
-  r.push('Kampanj: ' + (d.kampanjnamn || '(ej ifyllt)'));
-  if (d.startdatum || d.slutdatum) r.push('Kampanjperiod: ' + (datum(d.startdatum) || '?') + ' – ' + (datum(d.slutdatum) || '?'));
+  r.push('Gäller: ' + (d.kampanjnamn || '(ej ifyllt)'));
+  if (d.startdatum || d.slutdatum) r.push('Period: ' + (datum(d.startdatum) || '?') + ' – ' + (datum(d.slutdatum) || '?'));
   r.push('LEVERERAS SENAST: ' + (datum(d.leveransdatum) || '(ej ifyllt)'));
   const b = [d.bestallare.namn, d.bestallare.epost, d.bestallare.telefon].filter(Boolean).join(' · ');
   r.push('Beställare: ' + (b || '(ej ifyllt)'));
@@ -314,7 +314,7 @@ function sammanstall(d) {
 }
 
 function amne(d) {
-  return KONFIG.amnesprefix + ': ' + (d.kampanjnamn || 'kampanj') + (d.leveransdatum ? ' – leverans ' + d.leveransdatum : '');
+  return KONFIG.amnesprefix + ': ' + (d.kampanjnamn || 'material') + (d.leveransdatum ? ' – leverans ' + d.leveransdatum : '');
 }
 
 function mailtoLank(d, text) {
@@ -811,7 +811,7 @@ function start() {
   $('mottagare-text').textContent = mottagare;
   document.querySelectorAll('.mottagare-text').forEach(el => { el.textContent = mottagare; });
   $('skicka-info').textContent = KONFIG.endpoint
-    ? 'Kontrollera sammanställningen. När du trycker på Skicka går beställningen direkt till Stampen och du får en bekräftelse här.'
+    ? 'Kontrollera sammanställningen. När du trycker på Skicka går beställningen iväg direkt och du får en bekräftelse här.'
     : 'Kontrollera sammanställningen. När du trycker på Skicka öppnas ett mejl i ditt e-postprogram med allt ifyllt. Skicka mejlet, så är beställningen gjord.';
   $('skicka-hjalp').textContent = KONFIG.endpoint
     ? 'Går systemet inte att nå öppnas i stället ett färdigt mejl till ' + mottagare + '.'

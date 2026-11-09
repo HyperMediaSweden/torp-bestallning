@@ -47,20 +47,20 @@ const GRUPPER = [
   // Inhusmaterial som Torp beställer själva kommer först. Grupper med kampanj: true hamnar i det
   // ihopfällda blocket Kampanjkanaler längst ner.
   { id: 'golvdekaler', antal: true, namn: 'Golvdekaler', falt: ['matt', 'montering', 'notering'],
-    leverantor: 'Arkitektkopia, henrik.fagerberg@arkitektkopia.se', val: [
+    leverantor: 'Arkitektkopia, henrik.fagerberg@arkitektkopia.se', leverantorEtikett: 'Tryck beställs av er hos:', val: [
     { id: 'golvdekal', namn: 'Golvdekal', matt: 'ca 2×3 m', info: 'Ange exakt mått i fältet nedan' }
   ]},
   { id: 'affischer', antal: true, namn: 'Öppettider-affischer', falt: ['uppsattning', 'notering'],
-    leverantor: 'Arkitektkopia, henrik.fagerberg@arkitektkopia.se', val: [
+    leverantor: 'Arkitektkopia, henrik.fagerberg@arkitektkopia.se', leverantorEtikett: 'Tryck beställs av er hos:', val: [
     { id: 'affisch-700x1000', namn: 'Affisch', matt: '700×1000 mm' },
     { id: 'affisch-eurosize', namn: 'Eurosize', matt: '1185×1750 mm', info: 'Synlig yta 1155×1710 mm, upplösning 120 dpi' }
   ]},
   { id: 'skarmar', antal: true, namn: 'Digitala skärmar', info: 'Film 5 eller 10 s, max 12 s', falt: ['kampanjstart', 'kampanjslut', 'notering'],
-    leverantor: 'Ocean Outdoor, ocean-delivery@oceanoutdoor.se', val: [
+    leverantor: 'Ocean Outdoor, ocean-delivery@oceanoutdoor.se', leverantorEtikett: 'Filen lämnas av er till:', val: [
     { id: 'skarm-1080x1920', namn: 'Stående skärm', matt: '1080×1920 px' }
   ]},
   { id: 'kartskarmar', antal: true, namn: 'Kartskärmar', falt: ['kampanjstart', 'kampanjslut', 'notering'],
-    hjalp: 'Skriv i noteringen vem som ska ha filen.', val: [
+    leverantor: 'ej angiven, skriv i noteringen vem som ska ha filen', leverantorEtikett: 'Filen lämnas av er till:', val: [
     { id: 'kartskarm-1920x1080', namn: 'Liggande skärm', matt: '1920×1080 px' }
   ]},
   { id: 'hemsidan', namn: 'Hemsidan', falt: ['kampanjstart', 'notering'], val: [
@@ -180,7 +180,9 @@ function byggGrupper() {
     if (g.leverantor) {
       const l = document.createElement('p');
       l.className = 'leverantor';
-      l.innerHTML = '<b>Leverantör:</b> ';
+      const etikett = document.createElement('b');
+      etikett.textContent = g.leverantorEtikett + ' ';
+      l.appendChild(etikett);
       l.appendChild(document.createTextNode(g.leverantor));
       inne.appendChild(l);
     }
@@ -294,7 +296,7 @@ function sammanstall(d) {
       }
     }
     for (const fid of Object.keys(g.falt)) r.push('  ' + FALT[fid].etikett + ': ' + g.falt[fid]);
-    if (g.leverantor) r.push('  Leverantör: ' + g.leverantor);
+    if (g.leverantor) r.push('  ' + GRUPPER.find(x => x.id === g.id).leverantorEtikett + ' ' + g.leverantor);
   }
 
   if (d.filer.length || d.filLank) {

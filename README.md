@@ -5,6 +5,11 @@ till exempel golvdekaler, öppettider-affischer och material till skärmarna. De
 PDF:en (skriv ut, fyll i, scanna). Beställare hos Torp är Fredrik Wändel och Anki, som också hämtar
 färdigt material under fliken Hämta material.
 
+Stampen producerar filerna. Torp beställer trycket själva, utan faktura via Stampen. Därför står
+"Tryck beställs av er hos:" på Golvdekaler och Öppettider-affischer, och "Filen lämnas av er till:" på
+Digitala skärmar och Kartskärmar. Etiketterna ligger i `leverantorEtikett` i `GRUPPER`. Datafältet
+`leverantor` till beställningssystemet är oförändrat.
+
 Inhusmaterialet kommer först i formuläret. Kampanjkanalerna (sociala medier, display, Adnami och
 tidning) ligger i ett ihopfällt block längst ner. Grupper med `kampanj: true` i `GRUPPER` i `app.js`
 hamnar där.
@@ -81,7 +86,7 @@ Sociala kanaler, display, Adnami och tidning följer Stampens formatlista (datab
 | Leverantör Delta via FRC Media för HTML5 | Borttagen |
 | Facebook och Instagram som separata grupper, film 12 s, 1080×1080 | En Meta-grupp med Stampens flödes-, Stories- och Reels-format, film max 10 s |
 | Digitala skärmar 1080×1920, 5/10 s, max 12 s | Oförändrat (Ocean Outdoors spec) |
-| Kartskärmar 1920×1080 | Oförändrat, leverantör saknas i PDF:en |
+| Kartskärmar 1920×1080 | Oförändrat, mottagare saknas i PDF:en och kunden skriver den i noteringen |
 | Affischer och golvdekaler | Oförändrat (Arkitektkopias spec) |
 
 Hemsidans mått (1920×694, 1500×1000) kommer från Torps egen webb och går inte att kontrollera

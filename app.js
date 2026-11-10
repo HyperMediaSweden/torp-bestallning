@@ -8,11 +8,9 @@ const KONFIG = {
   kund: 'Torp Köpcentrum',
   kundkod: 'torp-kopcentrum',                          // kundens kod i beställningssystemet (Kunder → Kod)
   // TESTLÄGE (Fridas beslut 2026-11-06): allt reservmejl går bara till Frida medan formuläret testas.
-  // Skarpt läge: till: ['annonsproduktion@stampen.com'], kopia: ['frida.baldvinsdottir@stampen.com']
+  // Skarpt läge: till: ['annonsproduktion@stampen.com'], kopia: ['emanda.andersson@stampen.com', 'frida.baldvinsdottir@stampen.com']
   till: ['frida@hypermedia.se'],
   kopia: [],
-  // Reservmejl för Boosta inlägg. Skarpt läge: ['performance@stampen.com']
-  boostTill: ['frida@hypermedia.se'],
   // Fridas beslut 2026-11-10: kampanjkanalerna är dolda. Sätt true för att visa dem igen.
   visaKampanjkanaler: false,
   endpoint: 'https://bestallningar.k2.nu/api/bestallning',                       // Beställningssystemet (Payload på Coolify). Tom = bara e-post.
@@ -30,8 +28,6 @@ const FALT = {
   montering:    { typ: 'date', etikett: 'Monteringsdatum' },
   inforande:    { typ: 'date', etikett: 'Införandedatum', hjalp: 'Den dag annonsen ska vara i tidningen' },
   matt:         { typ: 'text', etikett: 'Mått', platshallare: 't.ex. 2×3 m' },
-  inlagg:       { typ: 'text', etikett: 'Vilket inlägg?', bred: true, platshallare: 'Länk till inlägget eller en kort beskrivning' },
-  budget:       { typ: 'text', etikett: 'Budget', platshallare: 't.ex. 1 000 kr' },
   notering:     { typ: 'text', etikett: 'Notering', bred: true, platshallare: 'Budskap, bild, annat som gäller just detta' }
 };
 
@@ -61,13 +57,13 @@ const ALLA_GRUPPER = [
     { id: 'affisch-700x1000', namn: 'Affisch', matt: '700×1000 mm' },
     { id: 'affisch-eurosize', namn: 'Eurosize', matt: '1185×1750 mm', info: 'Synlig yta 1155×1710 mm, upplösning 120 dpi' }
   ]},
-  { id: 'skarmar', antal: true, namn: 'Digitala skärmar', info: 'Film 5 eller 10 s, max 12 s', falt: ['kampanjstart', 'kampanjslut', 'notering'],
+  { id: 'skarmar', antal: true, namn: 'Digitala skärmar', info: 'Film 5–10 s, max 12 s, gärna rörligt', falt: ['kampanjstart', 'kampanjslut', 'notering'],
     leverantor: 'Ocean Outdoor, ocean-delivery@oceanoutdoor.se', leverantorEtikett: 'Filen lämnas av er till:', val: [
     { id: 'skarm-1080x1920', namn: 'Stående skärm', matt: '1080×1920 px' }
   ]},
   { id: 'kartskarmar', antal: true, namn: 'Kartskärmar', falt: ['kampanjstart', 'kampanjslut', 'notering'],
     leverantor: 'ej angiven, skriv i noteringen vem som ska ha filen', leverantorEtikett: 'Filen lämnas av er till:', val: [
-    { id: 'kartskarm-1920x1080', namn: 'Liggande skärm', matt: '1920×1080 px' }
+    { id: 'kartskarm-1920x1080', namn: 'Liggande skärm', matt: '1920×1080 px', info: 'Stillbild' }
   ]},
   { id: 'bussreklam', antal: true, namn: 'Bussreklam', falt: ['kampanjstart', 'kampanjslut', 'notering'],
     hjalp: 'Mallar med utfall och synlig yta finns hos annonsproduktion.',
@@ -79,14 +75,16 @@ const ALLA_GRUPPER = [
     { id: 'buss-backside-1395x495', namn: 'Backside Filler', matt: '1395×495 mm' }
   ]},
   { id: 'hemsidan', namn: 'Hemsidan', falt: ['kampanjstart', 'notering'], val: [
-    { id: 'webheader-jpg', namn: 'Webheader, bild (.jpg)', matt: '1920×694 px' },
-    { id: 'webheader-mp4', namn: 'Webheader, film (.mp4)', matt: '1920×694 px', info: 'Max 50 MB' },
-    { id: 'kampanjplugg', namn: 'Kampanjplugg (.jpg)', matt: '1500×1000 px' }
+    { id: 'webheader-jpg', namn: 'Webheader, bild (.jpg)', matt: '1920×694 px', info: 'Centrera bild och eventuell text' },
+    { id: 'webheader-mp4', namn: 'Webheader, film (.mp4)', matt: '1920×694 px', info: 'Max 50 MB. Centrera bild och eventuell text' },
+    { id: 'webheader-minshopping', namn: 'Webheader i appen Minshopping (.jpg)', matt: '1600×1200 px', info: '4:3. Pixelmåttet är inte bekräftat, centrera bild och text.' },
+    { id: 'kampanjplugg', namn: 'Kampanjplugg (.jpg)', matt: '1500×1000 px', info: 'Helst utan text' }
   ]},
-  // Id:t meta-boost styr mottagaren, både här i reservmejlet och i beställningssystemet.
-  { id: 'meta-boost', namn: 'Boosta inlägg på Meta', falt: ['inlagg', 'budget', 'kampanjstart', 'kampanjslut', 'notering'], val: [
-    { id: 'boost-facebook', namn: 'Facebook' },
-    { id: 'boost-instagram', namn: 'Instagram' }
+  { id: 'sociala-medier', namn: 'Sociala medier', falt: ['kampanjstart', 'notering'],
+    hjalp: 'Samma material fungerar i båda kanalerna. Ska det bara synas i den ena, skriv det i noteringen.', val: [
+    { id: 'sociala-stillbild', namn: 'Facebook och Instagram, stillbild (.jpg)', matt: '1080×1920 px' },
+    { id: 'sociala-film', namn: 'Facebook och Instagram, film (.mp4)', matt: '1080×1920 px', info: 'Max 12 s' },
+    { id: 'sociala-facebookheader', namn: 'Facebookheader (.jpg)', matt: '1920×694 px', info: 'Centrera eventuell text' }
   ]},
   { id: 'ovrigt', namn: 'Övrigt', fritext: true, platshallare: 'Annat som ska tas fram, t.ex. tryck, skyltar eller annonser i andra kanaler. Skriv mått och var det ska användas.' },
   { id: 'meta', kampanj: true, namn: 'Facebook och Instagram', info: 'Film max 10 s', falt: ['kampanjstart', 'notering'],
@@ -346,11 +344,7 @@ function mailtoLank(d, text) {
   if (KONFIG.kopia.length) q.push('cc=' + encodeURIComponent(KONFIG.kopia.join(',')));
   q.push('subject=' + encodeURIComponent(amne(d)));
   q.push('body=' + encodeURIComponent(text).replace(/%0A/g, '%0D%0A'));
-  // Boost går till performance. Är det enda i beställningen behöver annonsproduktion inte mejlet.
-  const boost = d.grupper.some(g => g.id === 'meta-boost');
-  const annat = d.grupper.some(g => g.id !== 'meta-boost');
-  const till = [...new Set([...(annat || !boost ? KONFIG.till : []), ...(boost ? KONFIG.boostTill : [])])];
-  return 'mailto:' + till.join(',') + '?' + q.join('&');
+  return 'mailto:' + KONFIG.till.join(',') + '?' + q.join('&');
 }
 
 /* ---------- Validering ---------- */

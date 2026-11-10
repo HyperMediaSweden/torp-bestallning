@@ -14,9 +14,7 @@ Kampanjkanalerna (sociala medier, display, Adnami och tidning) är dolda sedan 2
 begäran. Grupperna med `kampanj: true` finns kvar i `ALLA_GRUPPER` i `app.js`, och blocket kommer
 tillbaka med `KONFIG.visaKampanjkanaler: true`.
 
-Boosta inlägg på Meta (`meta-boost`) är en egen rad bland det övriga materialet. Sådana beställningar
-ska till performance@stampen.com. I beställningssystemet styrs det av grupp-id, i reservmejlet av
-`KONFIG.boostTill`, som i testläge pekar på Frida.
+Sociala medier (`sociala-medier`) är material till organiska inlägg och ligger bland det övriga materialet.
 
 Varje materialgrupp är en ihopfällbar rad med gruppens namn till vänster och antal valda till höger.
 Raderna är stängda från början. En grupp med något ikryssat, eller Övrigt med text, öppnas av sig själv
@@ -33,7 +31,7 @@ Butikerna bokar en filmtid 18–20 november. Vilka tider som finns styrs helt av
 (`/api/filmbokning`), sidan har inga tider inskrivna. Lokalt pratar sidan med en mock på port 8777. Instruktion till Emanda: `INSTRUKTION.md`.
 
 **Formatspec:** https://torp.k2.nu/spec/ (`spec/index.html` och `spec/spec.css`, med `stil.css` som grund). Innehållet kommer från
-`../guider/formatspec-torp.k2.nu.html`. Sidan nås via fliken Specs, knappen ovanför materialgrupperna och sidfoten. Ändras formaten: uppdatera båda HTML-filerna.
+`../guider/formatspec-torp.k2.nu.html`. Sidan nås via fliken Specs, knappen ovanför materialgrupperna och sidfoten. Ändras formaten: uppdatera `spec/index.html`, det är den gällande versionen.
 
 ## Hur beställningarna kommer fram
 
@@ -44,7 +42,7 @@ Butikerna bokar en filmtid 18–20 november. Vilka tider som finns styrs helt av
    en länk till beställningen i admin. Kunden ser "Beställningen är mottagen" med beställningsnummer.
 3. **Reservväg:** går systemet inte att nå öppnas i stället ett färdigifyllt mejl i kundens
    e-postprogram, adresserat till **annonsproduktion@stampen.com** med kopia till
-   **frida.baldvinsdottir@stampen.com** (`KONFIG.till`/`KONFIG.kopia`). Texten kopieras också till urklipp.
+   **emanda.andersson@stampen.com** och **frida.baldvinsdottir@stampen.com** (`KONFIG.till`/`KONFIG.kopia`). Texten kopieras också till urklipp.
 
 Är `KONFIG.endpoint` tom används bara mejlvägen. Instruktion till produktionen: `INSTRUKTION.md`.
 
@@ -87,6 +85,7 @@ Sociala kanaler, display, Adnami och tidning följer Stampens formatlista (datab
 | Displayannonser | Panorama 980×240, Panorama Mega 980×600, Modul 640×320, Insider 300×250, Outsider 250×600, Mobil Panorama 320×320, Mobil Mega 320×480 |
 | Annonser med stor yta (Adnami) | Take-over mobil 320×480 och 1080×1920, take-over desktop 1920×1080, top-scroll mobil 1080×1920, top-scroll desktop 2560×1440 |
 | Tidningsannons | Modul 23 80×133 mm, Modul 34 122×170 mm, helsida 248×372 mm |
+| Sociala medier | Facebook och Instagram stillbild och film (max 12 s) 1080×1920, Facebookheader 1920×694 |
 | Bussreklam | Streetliner Filler 3050×650 och 1700×745 mm, Hop On Filler 1375×680 och 1395×495 mm, Backside Filler 1395×495 mm. Fanns inte i PDF:en. Mottagare saknas tills vidare, kunden skriver den i noteringen. Mallar med utfall och synlig yta finns hos annonsproduktion |
 
 ## Avvikelser mot den gamla PDF:en

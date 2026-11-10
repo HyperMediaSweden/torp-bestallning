@@ -29,8 +29,11 @@ https://hypermediasweden.github.io/torp-bestallning/ finns kvar tills Frida stä
 (Settings → Webhooks) driftsätter automatiskt i Coolify vid push till `main`; går den sönder: tryck Redeploy i Coolify.
 
 **Bokning av filmtid till julkalendern:** https://torp.k2.nu/julkalender/ (mappen `julkalender/`, deployas med resten av repot).
-Butikerna bokar en av 24 tider 18–20 november. Tider och bokningar hanteras av beställningssystemet
-(`/api/filmbokning`). Lokalt pratar sidan med en mock på port 8777. Instruktion till Emanda: `INSTRUKTION.md`.
+Butikerna bokar en filmtid 18–20 november. Vilka tider som finns styrs helt av beställningssystemet
+(`/api/filmbokning`), sidan har inga tider inskrivna. Lokalt pratar sidan med en mock på port 8777. Instruktion till Emanda: `INSTRUKTION.md`.
+
+**Formatspec:** https://torp.k2.nu/spec/ (`spec/index.html`, kopia av `../guider/formatspec-torp.k2.nu.html` plus en
+tillbaka-länk). Formuläret länkar dit ovanför materialgrupperna och i sidfoten. Ändras formaten: uppdatera båda filerna.
 
 ## Hur beställningarna kommer fram
 

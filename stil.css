@@ -253,3 +253,7 @@ textarea { resize: vertical; }
 /* Hämtkod för fliken Hämta material */
 .hamtkod { max-width: 420px; margin-bottom: 16px; }
 .glom-kod { margin: -64px 0 0; padding-bottom: 80px; }
+
+/* Länk till formatspecen ovanför materialgrupperna */
+.spec-cta { justify-self: start; line-height: 1.25; }
+@media (max-width: 600px) { .spec-cta { justify-self: stretch; justify-content: center; text-align: center; } }

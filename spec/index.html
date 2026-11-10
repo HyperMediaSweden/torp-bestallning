@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Torp formatspec</title>
+<meta name="description" content="Mått, filtyp och produktionskrav för varje rad i Torps beställningsformulär.">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap">
+<style>
+html { color-scheme: light dark; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+
+/* Samma tokens som produktionsguiden: vit yta, mörkblå accent, gul markering. Uppslagssida: en snabbtabell överst, sedan en sektion per grupp i formulärets ordning. */
+:root {
+  --bg: #ffffff; --yta: #f4f5f7; --fg: #15171c; --dov: #5f6673; --linje: #e2e5ea;
+  --accent: #0f2a4a; --accent-text: #ffffff; --mark: #d9a21b; --mark-ljus: #fff5d6;
+  --utfall: #e8b53a; --trim: #0f2a4a; --synlig: #2f7d5b;
+  --kant: 12px; color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111317; --yta: #1a1d23; --fg: #eef0f4; --dov: #a3abb8; --linje: #2b3039;
+    --accent: #cfe0f5; --accent-text: #0f2a4a; --mark: #e8b53a; --mark-ljus: #33290f;
+    --utfall: #e8b53a; --trim: #cfe0f5; --synlig: #6fcf9a; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111317; --yta: #1a1d23; --fg: #eef0f4; --dov: #a3abb8; --linje: #2b3039;
+  --accent: #cfe0f5; --accent-text: #0f2a4a; --mark: #e8b53a; --mark-ljus: #33290f;
+  --utfall: #e8b53a; --trim: #cfe0f5; --synlig: #6fcf9a; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 16px/1.55 Manrope, "Helvetica Neue", Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+.sida { max-width: 820px; margin: 0 auto; padding-block: 28px 64px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+header { padding-bottom: 20px; border-bottom: 1px solid var(--linje); }
+.etikett { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--dov); }
+h1 { font-size: clamp(26px, 5vw, 34px); line-height: 1.15; margin: 4px 0 0; font-weight: 800; text-wrap: balance; }
+.tillbaka { margin: 10px 0 0; font-size: 15px; }
+.ingress { font-size: 18px; color: var(--dov); margin: 22px 0 0; max-width: 62ch; }
+nav.inneh { margin: 26px 0 0; padding: 14px 18px; border: 1px solid var(--linje); border-radius: var(--kant); font-size: 15px; }
+nav.inneh ol { margin: 6px 0 0; padding-left: 20px; columns: 2; column-gap: 24px; }
+nav.inneh li { margin: 2px 0; break-inside: avoid; }
+h2 { font-size: 22px; margin: 44px 0 6px; font-weight: 800; text-wrap: balance; scroll-margin-top: 16px; }
+h2 + .under { margin: 0 0 10px; color: var(--dov); font-size: 15px; }
+h3 { font-size: 17px; margin: 24px 0 6px; font-weight: 800; }
+p { margin: 10px 0; max-width: 68ch; }
+ul { margin: 10px 0; padding-left: 20px; max-width: 68ch; }
+li { margin: 5px 0; }
+.tabell { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; margin: 14px 0; font-size: 15px; font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--linje); vertical-align: top; }
+th { font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: var(--dov); font-weight: 700; white-space: nowrap; }
+td.n { white-space: nowrap; }
+td.g { font-weight: 700; }
+.snabb tr.grupp td { background: var(--yta); font-weight: 800; padding-top: 12px; }
+.pill { display: inline-block; padding: 1px 9px; border-radius: 999px; font-weight: 700; font-size: 12.5px; border: 1px solid var(--linje); white-space: nowrap; }
+.pill.tryck { border-color: var(--mark); }
+.fakta { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; margin: 12px 0 0; }
+.fakta div { padding: 12px 14px; border: 1px solid var(--linje); border-radius: 10px; background: var(--yta); min-width: 0; }
+.fakta .etikett { display: block; margin-bottom: 2px; }
+.fakta strong { font-weight: 800; overflow-wrap: anywhere; }
+.ruta { margin-top: 14px; padding: 14px 18px; border-left: 4px solid var(--mark); background: var(--mark-ljus); border-radius: 0 var(--kant) var(--kant) 0; max-width: 68ch; }
+.ruta strong { font-weight: 800; }
+figure { margin: 18px 0 0; padding: 18px; border: 1px solid var(--linje); border-radius: var(--kant); background: var(--yta); }
+figure svg { display: block; width: 100%; height: auto; max-width: 100%; }
+figcaption { margin-top: 10px; font-size: 14px; color: var(--dov); display: flex; flex-wrap: wrap; gap: 6px 18px; }
+figcaption span::before { content: ""; display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+figcaption .u::before { background: var(--utfall); }
+figcaption .t::before { background: var(--trim); }
+figcaption .s::before { background: var(--synlig); }
+code { font: 14px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; background: var(--yta); padding: 1px 5px; border-radius: 5px; overflow-wrap: anywhere; }
+details.dolda { margin-top: 44px; border: 1px solid var(--linje); border-radius: var(--kant); padding: 0 18px; }
+details.dolda summary { cursor: pointer; padding: 14px 0; font-weight: 800; font-size: 18px; }
+details.dolda > div { padding-bottom: 14px; }
+footer { margin-top: 48px; padding-top: 18px; border-top: 1px solid var(--linje); color: var(--dov); font-size: 14px; display: flex; flex-wrap: wrap; gap: 8px 24px; }
+a { color: var(--accent); }
+@media (max-width: 520px) { nav.inneh ol { columns: 1; } }
+
+</style>
+</head>
+<body>
+<div class="sida">
+  <header>
+    <div class="etikett">Torp Köpcentrum · Stampen Media</div>
+    <h1>Formatspec för allt Torp kan beställa</h1>
+    <p class="tillbaka"><a href="../">← Till beställningsformuläret</a></p>
+  </header>
+
+  <p class="ingress">Varje rad i beställningsformuläret på <a href="https://torp.k2.nu">torp.k2.nu</a>, med mått, filtyp och vad som gäller i produktionen. Ordningen är samma som i formuläret. Stampen producerar originalet; tryck och uppsättning beställer Torp själva hos sin leverantör.</p>
+
+  <nav class="inneh" aria-label="Innehåll">
+    <strong>På den här sidan</strong>
+    <ol>
+      <li><a href="#snabb">Alla format i en tabell</a></li>
+      <li><a href="#golvdekaler">Golvdekaler</a></li>
+      <li><a href="#affischer">Öppettider-affischer</a></li>
+      <li><a href="#skarmar">Digitala skärmar</a></li>
+      <li><a href="#kartskarmar">Kartskärmar</a></li>
+      <li><a href="#bussreklam">Bussreklam</a></li>
+      <li><a href="#hemsidan">Hemsidan</a></li>
+      <li><a href="#boost">Boosta inlägg på Meta</a></li>
+      <li><a href="#ovrigt">Övrigt</a></li>
+      <li><a href="#allmant">Gäller allt</a></li>
+    </ol>
+  </nav>
+
+  <h2 id="snabb">Alla format i en tabell</h2>
+  <p class="under">Mått i mm för tryck, px för skärm och webb. Antal anges av Torp i formuläret på rader markerade med antal.</p>
+  <div class="tabell">
+  <table class="snabb">
+    <tr><th>Rad i formuläret</th><th>Mått</th><th>Fil</th><th>Går till</th></tr>
+    <tr class="grupp"><td colspan="4">Golvdekaler · antal</td></tr>
+    <tr><td>Golvdekal</td><td class="n">ca 2 × 3 m, exakt mått i beställningen</td><td>PDF för tryck</td><td><span class="pill tryck">Tryck: Arkitektkopia</span></td></tr>
+    <tr class="grupp"><td colspan="4">Öppettider-affischer · antal</td></tr>
+    <tr><td>Affisch</td><td class="n">700 × 1000 mm</td><td>PDF för tryck</td><td><span class="pill tryck">Tryck: Arkitektkopia</span></td></tr>
+    <tr><td>Eurosize</td><td class="n">1185 × 1750 mm, synlig yta 1155 × 1710 mm</td><td>PDF för tryck, 120 dpi</td><td><span class="pill tryck">Tryck: Arkitektkopia</span></td></tr>
+    <tr class="grupp"><td colspan="4">Digitala skärmar · antal</td></tr>
+    <tr><td>Stående skärm</td><td class="n">1080 × 1920 px</td><td>Film 5 eller 10 s, max 12 s</td><td><span class="pill">Fil: Ocean Outdoor</span></td></tr>
+    <tr class="grupp"><td colspan="4">Kartskärmar · antal</td></tr>
+    <tr><td>Liggande skärm</td><td class="n">1920 × 1080 px</td><td>Bild eller film</td><td><span class="pill">Fil: ej angiven</span></td></tr>
+    <tr class="grupp"><td colspan="4">Bussreklam · antal</td></tr>
+    <tr><td>Streetliner Filler</td><td class="n">3050 × 650 mm, synlig 3030 × 630</td><td>PDF för tryck, 5 mm utfall</td><td><span class="pill">Fil: ej angiven</span></td></tr>
+    <tr><td>Streetliner Filler</td><td class="n">1700 × 745 mm, synlig 1680 × 725</td><td>PDF för tryck, 5 mm utfall</td><td><span class="pill">Fil: ej angiven</span></td></tr>
+    <tr><td>Hop On Filler</td><td class="n">1375 × 680 mm, synlig 1355 × 660</td><td>PDF för tryck, 5 mm utfall</td><td><span class="pill">Fil: ej angiven</span></td></tr>
+    <tr><td>Hop On Filler</td><td class="n">1395 × 495 mm, synlig 1375 × 475</td><td>PDF för tryck, 5 mm utfall</td><td><span class="pill">Fil: ej angiven</span></td></tr>
+    <tr><td>Backside Filler</td><td class="n">1395 × 495 mm, synlig 1375 × 475</td><td>PDF för tryck, 5 mm utfall</td><td><span class="pill">Fil: ej angiven</span></td></tr>
+    <tr class="grupp"><td colspan="4">Hemsidan</td></tr>
+    <tr><td>Webheader, bild</td><td class="n">1920 × 694 px</td><td>.jpg</td><td>Torp lägger upp själva</td></tr>
+    <tr><td>Webheader, film</td><td class="n">1920 × 694 px</td><td>.mp4, max 50 MB</td><td>Torp lägger upp själva</td></tr>
+    <tr><td>Kampanjplugg</td><td class="n">1500 × 1000 px</td><td>.jpg</td><td>Torp lägger upp själva</td></tr>
+    <tr class="grupp"><td colspan="4">Boosta inlägg på Meta</td></tr>
+    <tr><td>Facebook / Instagram</td><td class="n">inget material</td><td>Länk till inlägget, budget, period</td><td>performance@stampen.com</td></tr>
+    <tr class="grupp"><td colspan="4">Övrigt</td></tr>
+    <tr><td>Fritext</td><td class="n">enligt beställningen</td><td>enligt beställningen</td><td>annonsproduktion</td></tr>
+  </table>
+  </div>
+
+  <h2 id="golvdekaler">Golvdekaler</h2>
+  <p class="under">Antal · fält: Mått, Monteringsdatum, Notering</p>
+  <div class="fakta">
+    <div><span class="etikett">Mått</span><strong>ca 2 × 3 m, exakt mått i fältet Mått</strong></div>
+    <div><span class="etikett">Tryck beställs av Torp hos</span><strong>Arkitektkopia, henrik.fagerberg@arkitektkopia.se</strong></div>
+  </div>
+  <ul>
+    <li>Bygg originalet i det exakta mått Torp angett, i skala 1:1 eller 1:10 med tydlig skalangivelse i filnamnet.</li>
+    <li>Leverera PDF för storformat (CMYK, bilder cirka 100–150 ppi i slutstorlek). Utfall och laminat enligt Arkitektkopias spec; fråga dem om Torp inte vet.</li>
+    <li>Golvdekaler ses ofta uppifrån och på avstånd: stor text, hög kontrast, inga finstilta budskap.</li>
+  </ul>
+
+  <h2 id="affischer">Öppettider-affischer</h2>
+  <p class="under">Antal · fält: Uppsättningsdatum, Notering</p>
+  <div class="tabell">
+  <table>
+    <tr><th>Rad</th><th>Mått</th><th>Synlig yta</th><th>Upplösning</th></tr>
+    <tr><td class="g">Affisch</td><td class="n">700 × 1000 mm</td><td class="n">hela ytan</td><td>enligt tryckeriet</td></tr>
+    <tr><td class="g">Eurosize</td><td class="n">1185 × 1750 mm</td><td class="n">1155 × 1710 mm</td><td>120 dpi</td></tr>
+  </table>
+  </div>
+  <div class="fakta">
+    <div><span class="etikett">Tryck beställs av Torp hos</span><strong>Arkitektkopia, henrik.fagerberg@arkitektkopia.se</strong></div>
+  </div>
+  <ul>
+    <li>Eurosize sitter i ram: håll text och logotyper inom 1155 × 1710 mm (15 mm in från kanten på alla sidor).</li>
+    <li>Öppettiderna är själva budskapet; kontrollera dem mot Torps uppgift i noteringen innan filen lämnas.</li>
+  </ul>
+
+  <h2 id="skarmar">Digitala skärmar</h2>
+  <p class="under">Antal · fält: Startdatum, Slutdatum, Notering</p>
+  <div class="fakta">
+    <div><span class="etikett">Format</span><strong>Stående, 1080 × 1920 px</strong></div>
+    <div><span class="etikett">Längd</span><strong>5 eller 10 s, max 12 s</strong></div>
+    <div><span class="etikett">Filen lämnas av Torp till</span><strong>Ocean Outdoor, ocean-delivery@oceanoutdoor.se</strong></div>
+  </div>
+  <ul>
+    <li>Film utan ljud; budskapet ska gå fram utan det. Loggan synlig från första bildrutan.</li>
+    <li>Leverera .mp4 (H.264). Ocean Outdoors egen spec går före om den anger annat, till exempel bildfrekvens eller maxstorlek.</li>
+    <li>En stillbild i 1080 × 1920 px går också, om Torp bara vill ha en bild.</li>
+  </ul>
+
+  <h2 id="kartskarmar">Kartskärmar</h2>
+  <p class="under">Antal · fält: Startdatum, Slutdatum, Notering</p>
+  <div class="fakta">
+    <div><span class="etikett">Format</span><strong>Liggande, 1920 × 1080 px</strong></div>
+    <div><span class="etikett">Filen lämnas av Torp till</span><strong>ej angiven, Torp skriver i noteringen vem som ska ha filen</strong></div>
+  </div>
+  <ul>
+    <li>Kartskärmarna visar kampanjen bredvid centrumkartan; stillbild .jpg eller kort film .mp4 beroende på vad Torp skriver.</li>
+    <li>Längd och eventuella krav står i noteringen, inte i formuläret.</li>
+  </ul>
+
+  <h2 id="bussreklam">Bussreklam</h2>
+  <p class="under">Antal · fält: Startdatum, Slutdatum, Notering</p>
+  <p>Fem format i varianten Filler. Alla följer samma regel: <strong>5 mm utfall</strong> runt om, och <strong>synlig yta 10 mm innanför trimkanten</strong> på alla sidor.</p>
+  <div class="tabell">
+  <table>
+    <tr><th>Format</th><th>Trimmått</th><th>Med utfall</th><th>Synlig yta</th></tr>
+    <tr><td class="g">Streetliner Filler</td><td class="n">3050 × 650</td><td class="n">3060 × 660</td><td class="n">3030 × 630</td></tr>
+    <tr><td class="g">Streetliner Filler</td><td class="n">1700 × 745</td><td class="n">1710 × 755</td><td class="n">1680 × 725</td></tr>
+    <tr><td class="g">Hop On Filler</td><td class="n">1375 × 680</td><td class="n">1385 × 690</td><td class="n">1355 × 660</td></tr>
+    <tr><td class="g">Hop On Filler</td><td class="n">1395 × 495</td><td class="n">1405 × 505</td><td class="n">1375 × 475</td></tr>
+    <tr><td class="g">Backside Filler</td><td class="n">1395 × 495</td><td class="n">1405 × 505</td><td class="n">1375 × 475</td></tr>
+  </table>
+  </div>
+  <figure>
+    <svg viewBox="0 0 700 290" role="img" aria-label="Skiss av Hop On Filler 1395 gånger 495 mm med utfall, trimkant och synlig yta">
+      <rect x="34" y="31" width="632" height="227" fill="var(--utfall)" fill-opacity=".45" stroke="var(--utfall)" stroke-width="1.5"/>
+      <rect x="36.25" y="33.25" width="627.5" height="222.5" fill="var(--bg)" stroke="var(--trim)" stroke-width="2"/>
+      <rect x="40.75" y="37.75" width="618.5" height="213.5" fill="none" stroke="var(--synlig)" stroke-width="2" stroke-dasharray="6 4"/>
+      <g stroke="var(--trim)" stroke-width="1">
+        <line x1="36.25" y1="8" x2="36.25" y2="24"/><line x1="663.75" y1="8" x2="663.75" y2="24"/>
+        <line x1="36.25" y1="266" x2="36.25" y2="282"/><line x1="663.75" y1="266" x2="663.75" y2="282"/>
+        <line x1="8" y1="33.25" x2="26" y2="33.25"/><line x1="8" y1="255.75" x2="26" y2="255.75"/>
+        <line x1="674" y1="33.25" x2="692" y2="33.25"/><line x1="674" y1="255.75" x2="692" y2="255.75"/>
+      </g>
+      <g font-family="Manrope, Arial, sans-serif" font-size="13" fill="var(--fg)">
+        <text x="350" y="150" text-anchor="middle" font-weight="700">Synlig yta 1375 × 475 mm</text>
+        <text x="350" y="170" text-anchor="middle" fill="var(--dov)">Håll text och logotyper här inne</text>
+        <text x="350" y="22" text-anchor="middle" fill="var(--dov)">Trimmått 1395 × 495 mm (blå linje) · utfall 5 mm (gult)</text>
+      </g>
+    </svg>
+    <figcaption><span class="u">Utfall 5 mm, fylls med bakgrund</span><span class="t">Trimkant</span><span class="s">Synlig yta, 10 mm in</span></figcaption>
+  </figure>
+  <div class="fakta">
+    <div><span class="etikett">Filen lämnas av Torp till</span><strong>ej angiven, Torp skriver i noteringen vem som ska ha filen</strong></div>
+    <div><span class="etikett">Mallar</span><strong>InDesign, Illustrator och PDF per format, hos Stampen (frida.baldvinsdottir@stampen.com)</strong></div>
+  </div>
+  <ul>
+    <li>Jobba i mallarna i skala 1:1; de har rätt sidstorlek, 5 mm utfall och skärmärken. Måttnotisen i mallen ligger utanför sidan och följer inte med i exporten.</li>
+    <li>Leverera PDF med utfall och skärmärken, CMYK, bilder cirka 100–150 ppi i slutstorlek.</li>
+    <li>Hop On 1395 × 495 och Backside 1395 × 495 har samma mått men sitter på olika ställen på bussen, så de är två original.</li>
+    <li>Namnge filen med format och mått, t.ex. <code>Torp_Hop-On-Filler_1395x495_BlackWeek.pdf</code>.</li>
+  </ul>
+
+  <h2 id="hemsidan">Hemsidan</h2>
+  <p class="under">Fält: Startdatum, Notering</p>
+  <div class="tabell">
+  <table>
+    <tr><th>Rad</th><th>Mått</th><th>Fil</th></tr>
+    <tr><td class="g">Webheader, bild</td><td class="n">1920 × 694 px</td><td>.jpg</td></tr>
+    <tr><td class="g">Webheader, film</td><td class="n">1920 × 694 px</td><td>.mp4, max 50 MB</td></tr>
+    <tr><td class="g">Kampanjplugg</td><td class="n">1500 × 1000 px</td><td>.jpg</td></tr>
+  </table>
+  </div>
+  <ul>
+    <li>Webheadern beskärs på mobil: håll budskapet i mitten av bilden.</li>
+    <li>Filmen loopar utan ljud; håll den kort och lätt (under 50 MB).</li>
+    <li>Torp hämtar filerna i systemet och lägger upp dem själva.</li>
+  </ul>
+
+  <h2 id="boost">Boosta inlägg på Meta</h2>
+  <p class="under">Fält: Vilket inlägg?, Budget, Startdatum, Slutdatum, Notering</p>
+  <p>Ingen produktion. Torp anger länk till inlägget, budget och period; beställningen går till performance@stampen.com. Innehåller beställningen också annat material går den dessutom till annonsproduktion som vanligt.</p>
+
+  <h2 id="ovrigt">Övrigt</h2>
+  <p>Fritext för sådant som saknar rad: skyltar, annat tryck, annonser i andra kanaler. Torp ska skriva mått och var det ska användas; saknas det, fråga innan produktionen börjar.</p>
+
+  <h2 id="allmant">Gäller allt</h2>
+  <ul>
+    <li><strong>Leveransdatum</strong> i beställningen är när Torp ska ha filen i systemet, inte när trycket ska vara uppe. Räkna bakåt från monterings- eller uppsättningsdatum i gruppens fält.</li>
+    <li><strong>Tryck:</strong> PDF i slutstorlek, CMYK, utfall enligt tabellen eller leverantörens spec. Leverantörens egen spec går alltid före riktvärdena här.</li>
+    <li><strong>Skärm och webb:</strong> RGB, exakt pixelmått, .jpg för bild och .mp4 (H.264) för film, utan ljud om inget annat sägs.</li>
+    <li><strong>Filnamn:</strong> kund, rad, mått och kampanj, t.ex. <code>Torp_Eurosize_1185x1750_Jul.pdf</code>, så att Torp hittar rätt fil när de hämtar materialet.</li>
+    <li>Det färdiga materialet laddas upp i <a href="https://bestallningar.k2.nu/admin">bestallningar.k2.nu/admin</a>; Torp hämtar det med sin hämtkod och beställer trycket själva.</li>
+  </ul>
+
+  <details class="dolda">
+    <summary>Kampanjkanaler (dolda i formuläret just nu)</summary>
+    <div>
+      <p>Dessa grupper finns kvar i formulärets kod men visas inte sedan 10 november 2026, eftersom kampanjmaterialet tas fram via Emanda. Måtten här för den dag de slås på igen.</p>
+      <div class="tabell">
+      <table>
+        <tr><th>Grupp</th><th>Rad</th><th>Mått</th><th>Krav</th></tr>
+        <tr><td class="g">Facebook och Instagram</td><td>Flöde 4:5 bild/film · Flöde 1:1 bild/film · Stories 9:16 · Reels 9:16 · Omslagsbild Facebook</td><td class="n">1080 × 1350 · 1080 × 1080 · 1080 × 1920 · 1920 × 694 px</td><td>Film max 10 s</td></tr>
+        <tr><td class="g">TikTok</td><td>Film 9:16</td><td class="n">1080 × 1920 px</td><td>Film max 10 s, ljud eller text på bild</td></tr>
+        <tr><td class="g">Snapchat</td><td>Film 9:16</td><td class="n">1080 × 1920 px</td><td>Film max 10 s</td></tr>
+        <tr><td class="g">YouTube</td><td>Film 16:9 · Shorts 9:16</td><td class="n">1920 × 1080 · 1080 × 1920 px</td><td>Film max 10 s, loggan från start</td></tr>
+        <tr><td class="g">Displayannonser</td><td>Panorama, Panorama Mega, Modul, Insider, Outsider, Mobil Panorama, Mobil Mega</td><td class="n">980 × 240 · 980 × 600 · 640 × 320 · 300 × 250 · 250 × 600 · 320 × 320 · 320 × 480 px</td><td>Animerad HTML5, max 30 s</td></tr>
+        <tr><td class="g">Displayannonser Norge</td><td>8 storlekar</td><td class="n">320 × 480 · 320 × 400 · 300 × 250 · 320 × 320 · 980 × 600 · 580 × 400 · 980 × 300 · 300 × 600 px</td><td>Animerad HTML5, max 30 s</td></tr>
+        <tr><td class="g">Annonser med stor yta</td><td>Take-over mobil · Take-over desktop · Top-scroll mobil · Top-scroll desktop</td><td class="n">320 × 480 / 1080 × 1920 · 1920 × 1080 · 1080 × 1920 · 2560 × 1440 px</td><td>Adnami, stillbild, max 200 kB</td></tr>
+        <tr><td class="g">Tidningsannons</td><td>Modul 23 åttondelssida · Modul 34 kvartssida · Helsida</td><td class="n">80 × 133 · 122 × 170 · 248 × 372 mm</td><td>Införandedatum</td></tr>
+      </table>
+      </div>
+    </div>
+  </details>
+
+  <footer>
+    <span>Torp Köpcentrum · formatspec</span>
+    <span>Enligt formuläret 10 november 2026</span>
+  </footer>
+</div>
+</body>
+</html>

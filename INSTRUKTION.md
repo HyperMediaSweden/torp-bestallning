@@ -55,3 +55,17 @@ och Frida. Lägg till eller ta bort adresser där och spara.
 Om systemet inte svarar när Torp skickar, öppnas i stället ett färdigt mejl till annonsproduktion@stampen.com med kopia
 till Frida (som förut). Beställningen finns då bara i mejlet, så lägg in den för hand under
 **Beställningar → Skapa ny** om ni vill ha den i systemet. Frågor om systemet: Frida.
+
+## Julkalendern: filmbokningar (till Emanda)
+
+Butikerna bokar sin filmtid 18–20 november på https://torp.k2.nu/julkalender/. Gina Tricot och
+Hunkemöller bokas separat senare.
+
+1. Logga in på **https://bestallningar.k2.nu/admin** med din Stampen-adress.
+2. Öppna **Filmbokningar julkalender** i menyn, under Beställningar. Listan är sorterad efter tid och
+   visar tid, butik, kontaktperson, telefon och manusval.
+3. Öppna en bokning för att se mejladress och butikens beskrivning av tävlingen.
+
+En bokad tid visas som Upptagen för övriga butiker. Vill en butik flytta sin tid: öppna bokningen,
+ändra **Tid** till en annan ledig tid och spara. Att radera en bokning kräver administratör, så be
+Frida om det.

@@ -28,6 +28,10 @@ Sajten körs i Coolify (app `torp-bestallning`, Static från detta repo, branch 
 https://hypermediasweden.github.io/torp-bestallning/ finns kvar tills Frida stänger det. En GitHub-webhook i repot
 (Settings → Webhooks) driftsätter automatiskt i Coolify vid push till `main`; går den sönder: tryck Redeploy i Coolify.
 
+**Bokning av filmtid till julkalendern:** https://torp.k2.nu/julkalender/ (mappen `julkalender/`, deployas med resten av repot).
+Butikerna bokar en av 24 tider 18–20 november. Tider och bokningar hanteras av beställningssystemet
+(`/api/filmbokning`). Lokalt pratar sidan med en mock på port 8777. Instruktion till Emanda: `INSTRUKTION.md`.
+
 ## Hur beställningarna kommer fram
 
 1. Kunden fyller i formuläret och trycker **Skicka beställningen**.

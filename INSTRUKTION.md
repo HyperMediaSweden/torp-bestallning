@@ -5,7 +5,7 @@
 Torp (Fredrik och Anki) beställer själva material utanför kampanjproduktionen,
 till exempel golvdekaler, affischer, skärmmaterial och bussreklam, via formuläret på https://torp.k2.nu/.
 Stampen producerar filerna. Torp beställer trycket själva, utan faktura via Stampen, och lämnar skärmfilerna
-till mottagaren som står vid gruppen. Kampanjkanalerna ligger ihopfällda längst ner i formuläret. Beställningarna hamnar i Stampens
+till mottagaren som står vid gruppen. Kampanjkanalerna är dolda i formuläret. Boosta inlägg på Meta går till performance@stampen.com. Beställningarna hamnar i Stampens
 beställningssystem: **https://bestallningar.k2.nu/admin**. Logga in med din Stampen-adress.
 Första gången: tryck *Glömt lösenord?* på inloggningssidan och följ länken i mejlet.
 

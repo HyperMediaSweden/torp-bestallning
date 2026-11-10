@@ -10,9 +10,13 @@ Stampen producerar filerna. Torp beställer trycket själva, utan faktura via St
 Digitala skärmar, Kartskärmar och Bussreklam. Etiketterna ligger i `leverantorEtikett` i `GRUPPER`. Datafältet
 `leverantor` till beställningssystemet är oförändrat.
 
-Inhusmaterialet kommer först i formuläret. Kampanjkanalerna (sociala medier, display, Adnami och
-tidning) ligger i ett ihopfällt block längst ner. Grupper med `kampanj: true` i `GRUPPER` i `app.js`
-hamnar där.
+Kampanjkanalerna (sociala medier, display, Adnami och tidning) är dolda sedan 2026-11-10 på Fridas
+begäran. Grupperna med `kampanj: true` finns kvar i `ALLA_GRUPPER` i `app.js`, och blocket kommer
+tillbaka med `KONFIG.visaKampanjkanaler: true`.
+
+Boosta inlägg på Meta (`meta-boost`) är en egen rad bland det övriga materialet. Sådana beställningar
+ska till performance@stampen.com. I beställningssystemet styrs det av grupp-id, i reservmejlet av
+`KONFIG.boostTill`, som i testläge pekar på Frida.
 
 Varje materialgrupp är en ihopfällbar rad med gruppens namn till vänster och antal valda till höger.
 Raderna är stängda från början. En grupp med något ikryssat, eller Övrigt med text, öppnas av sig själv

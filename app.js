@@ -11,6 +11,10 @@ const KONFIG = {
   // Skarpt läge: till: ['annonsproduktion@stampen.com'], kopia: ['frida.baldvinsdottir@stampen.com']
   till: ['frida@hypermedia.se'],
   kopia: [],
+  // Reservmejl för Boosta inlägg. Skarpt läge: ['performance@stampen.com']
+  boostTill: ['frida@hypermedia.se'],
+  // Fridas beslut 2026-11-10: kampanjkanalerna är dolda. Sätt true för att visa dem igen.
+  visaKampanjkanaler: false,
   endpoint: 'https://bestallningar.k2.nu/api/bestallning',                       // Beställningssystemet (Payload på Coolify). Tom = bara e-post.
   materialUrl: 'https://bestallningar.k2.nu/api/material-lista/torp-kopcentrum', // Publicerat material från systemet. Tom = material.json.
   filUrl: 'https://bestallningar.k2.nu/api/fil',      // Uppladdning av bilder och filer. Tom = blocket Bilder och filer döljs.
@@ -26,6 +30,8 @@ const FALT = {
   montering:    { typ: 'date', etikett: 'Monteringsdatum' },
   inforande:    { typ: 'date', etikett: 'Införandedatum', hjalp: 'Den dag annonsen ska vara i tidningen' },
   matt:         { typ: 'text', etikett: 'Mått', platshallare: 't.ex. 2×3 m' },
+  inlagg:       { typ: 'text', etikett: 'Vilket inlägg?', bred: true, platshallare: 'Länk till inlägget eller en kort beskrivning' },
+  budget:       { typ: 'text', etikett: 'Budget', platshallare: 't.ex. 1 000 kr' },
   notering:     { typ: 'text', etikett: 'Notering', bred: true, platshallare: 'Budskap, bild, annat som gäller just detta' }
 };
 
@@ -43,7 +49,7 @@ function html5(prefix, storlek) {
     : { id: id, namn: storlek + ' px', matt: '', tagg: 'ej Stampen-standard', ejStandard: true };
 }
 
-const GRUPPER = [
+const ALLA_GRUPPER = [
   // Inhusmaterial som Torp beställer själva kommer först. Grupper med kampanj: true hamnar i det
   // ihopfällda blocket Kampanjkanaler längst ner.
   { id: 'golvdekaler', antal: true, namn: 'Golvdekaler', falt: ['matt', 'montering', 'notering'],
@@ -76,6 +82,11 @@ const GRUPPER = [
     { id: 'webheader-jpg', namn: 'Webheader, bild (.jpg)', matt: '1920×694 px' },
     { id: 'webheader-mp4', namn: 'Webheader, film (.mp4)', matt: '1920×694 px', info: 'Max 50 MB' },
     { id: 'kampanjplugg', namn: 'Kampanjplugg (.jpg)', matt: '1500×1000 px' }
+  ]},
+  // Id:t meta-boost styr mottagaren, både här i reservmejlet och i beställningssystemet.
+  { id: 'meta-boost', namn: 'Boosta inlägg på Meta', falt: ['inlagg', 'budget', 'kampanjstart', 'kampanjslut', 'notering'], val: [
+    { id: 'boost-facebook', namn: 'Facebook' },
+    { id: 'boost-instagram', namn: 'Instagram' }
   ]},
   { id: 'ovrigt', namn: 'Övrigt', fritext: true, platshallare: 'Annat som ska tas fram, t.ex. tryck, skyltar eller annonser i andra kanaler. Skriv mått och var det ska användas.' },
   { id: 'meta', kampanj: true, namn: 'Facebook och Instagram', info: 'Film max 10 s', falt: ['kampanjstart', 'notering'],
@@ -117,6 +128,7 @@ const GRUPPER = [
     { id: 'tidning-helsida', namn: 'Helsida', matt: '248×372 mm' }
   ]}
 ];
+const GRUPPER = ALLA_GRUPPER.filter(g => !g.kampanj || KONFIG.visaKampanjkanaler);
 
 const $ = (id) => document.getElementById(id);
 const UTKAST_NYCKEL = 'torp-bestallning-utkast';
@@ -126,6 +138,7 @@ function byggGrupper() {
   const inhus = $('grupper');
   // Saknas blocket (en äldre index.html ur webbläsarens cache) hamnar kampanjgrupperna i den vanliga listan
   const kampanj = $('grupper-kampanj') || inhus;
+  if ($('kampanjkanaler')) $('kampanjkanaler').hidden = !GRUPPER.some(g => g.kampanj);
   for (const g of GRUPPER) {
     const rot = g.kampanj ? kampanj : inhus;
     // Varje grupp är en ihopfällbar rad: namn till vänster, antal valda till höger
@@ -333,7 +346,11 @@ function mailtoLank(d, text) {
   if (KONFIG.kopia.length) q.push('cc=' + encodeURIComponent(KONFIG.kopia.join(',')));
   q.push('subject=' + encodeURIComponent(amne(d)));
   q.push('body=' + encodeURIComponent(text).replace(/%0A/g, '%0D%0A'));
-  return 'mailto:' + KONFIG.till.join(',') + '?' + q.join('&');
+  // Boost går till performance. Är det enda i beställningen behöver annonsproduktion inte mejlet.
+  const boost = d.grupper.some(g => g.id === 'meta-boost');
+  const annat = d.grupper.some(g => g.id !== 'meta-boost');
+  const till = [...new Set([...(annat || !boost ? KONFIG.till : []), ...(boost ? KONFIG.boostTill : [])])];
+  return 'mailto:' + till.join(',') + '?' + q.join('&');
 }
 
 /* ---------- Validering ---------- */

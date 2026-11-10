@@ -256,4 +256,4 @@ textarea { resize: vertical; }
 
 /* Länk till formatspecen ovanför materialgrupperna */
 .spec-cta { justify-self: start; line-height: 1.25; }
-@media (max-width: 600px) { .spec-cta { justify-self: stretch; justify-content: center; text-align: center; } }
+@media (max-width: 600px) { .spec-cta { justify-self: stretch; justify-content: center; text-align: center; padding-inline: 8px; font-size: 14.5px; } }

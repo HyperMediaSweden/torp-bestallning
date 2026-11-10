@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="../stil.css?v=2026-11-10e">
-<link rel="stylesheet" href="julkalender.css?v=2026-11-10a">
+<link rel="stylesheet" href="julkalender.css?v=2026-11-10b">
 </head>
 <body>
 
@@ -89,12 +89,11 @@
     <section class="block" id="block-tid">
       <div class="block-huvud">
         <h2>Välj filmtid <span class="kravd">*</span></h2>
-        <p>Varje tid är 45 minuter.</p>
+        <p>Bokar ni kl. 09.00 är vi på plats exakt kl. 09.00. Övriga tider är ankomstintervall. Väljer ni exempelvis kl. 10.00–12.00 kommer vi någon gång under det intervallet. Exakt ankomst beror på hur lång tid tidigare inspelningar tar. Alla medverkande behöver därför vara redo från intervallets start.</p>
       </div>
       <div id="tider" class="dagar" aria-busy="true"><p class="dampad">Hämtar tiderna …</p></div>
       <p class="vald-tid" id="vald-tid" aria-live="polite" hidden></p>
       <p class="fel" id="fel-tid" role="alert" hidden></p>
-      <p class="hjalp">Gina Tricot och Hunkemöller bokas separat senare på grund av ombyggnation.</p>
     </section>
 
     <section class="block">
@@ -105,8 +104,8 @@
 
       <fieldset class="val-grupp" id="manus-grupp">
         <legend>Manus <span class="kravd">*</span></legend>
-        <label class="val-rad"><input type="radio" name="manus" value="stampen"><span>Vi önskar att Stampen Media tar med ett förslag på manus</span></label>
-        <label class="val-rad"><input type="radio" name="manus" value="sjalv"><span>Vi känner oss trygga med att ta fram manus själva</span></label>
+        <label class="val-rad"><input type="radio" name="manus" value="sjalv"><span>Jajamän, manus löser vi! Vi kan vårt erbjudande bäst.</span></label>
+        <label class="val-rad"><input type="radio" name="manus" value="stampen"><span>Vi önskar att Stampen Media tar med ett förslag på manus.</span></label>
         <p class="fel" id="fel-manus" hidden>Välj ett av alternativen.</p>
       </fieldset>
     </section>
@@ -141,6 +140,6 @@
   </div>
 </footer>
 
-<script src="julkalender.js?v=2026-11-10a"></script>
+<script src="julkalender.js?v=2026-11-10b"></script>
 </body>
 </html>

@@ -11,6 +11,12 @@ const $ = (id) => document.getElementById(id);
 let tider = [];
 let valdTid = null;
 
+const klockslag = (tid) => String(tid).replace(':', '.');
+function arExakt(t) { return t.exakt === true || t.start === t.slut; }
+function tidEtikett(t) { return arExakt(t) ? 'Kl. ' + klockslag(t.start) + ', exakt ankomst' : 'Kl. ' + klockslag(t.start) + '–' + klockslag(t.slut); }
+function tidBeskrivning(t) { return arExakt(t) ? 'kl. ' + klockslag(t.start) + ' (exakt ankomst)' : 'kl. ' + klockslag(t.start) + '–' + klockslag(t.slut) + ' (ankomstintervall)'; }
+function platserKvar(t) { return typeof t.lediga === 'number' && !arExakt(t) ? t.lediga + (t.lediga === 1 ? ' plats kvar' : ' platser kvar') : ''; }
+
 function dagNamn(datum) {
   const text = new Date(datum + 'T12:00:00').toLocaleDateString('sv-SE', { weekday: 'long', day: 'numeric', month: 'long' });
   return text.charAt(0).toUpperCase() + text.slice(1);
@@ -75,14 +81,16 @@ function tidKnapp(t) {
   input.className = 'visuellt-dold';
   input.disabled = !t.ledig;
   input.checked = t.id === valdTid;
-  input.setAttribute('aria-label', t.start + ' till ' + t.slut + (t.ledig ? '' : ', upptagen'));
+  const kvar = platserKvar(t);
+  input.setAttribute('aria-label', tidEtikett(t) + (t.ledig ? (kvar ? ', ' + kvar : '') : ', fullbokat'));
   input.addEventListener('change', () => { valdTid = t.id; visaValdTid(); visaFel('tid', false); });
   const ruta = document.createElement('span');
   ruta.className = 'tid-ruta';
   const start = document.createElement('b');
-  start.textContent = t.start;
+  start.textContent = tidEtikett(t);
   ruta.appendChild(start);
-  if (!t.ledig) { const u = document.createElement('small'); u.textContent = 'Upptagen'; ruta.appendChild(u); }
+  const notis = t.ledig ? kvar : 'Fullbokat';
+  if (notis) { const u = document.createElement('small'); u.textContent = notis; ruta.appendChild(u); }
   label.append(input, ruta);
   return label;
 }
@@ -90,7 +98,7 @@ function tidKnapp(t) {
 function visaValdTid() {
   const t = tider.find(x => x.id === valdTid);
   $('vald-tid').hidden = !t;
-  $('vald-tid').textContent = t ? 'Vald tid: ' + dagNamn(t.datum).toLowerCase() + ', kl. ' + t.start + '–' + t.slut : '';
+  $('vald-tid').textContent = t ? 'Vald tid: ' + dagNamn(t.datum).toLowerCase() + ', ' + tidBeskrivning(t) : '';
 }
 
 function visaLaddfel() {
@@ -175,7 +183,7 @@ async function tidenTagen(text) {
 }
 
 function visaBekraftelse(bokning, epost) {
-  $('bokad-tid').textContent = dagNamn(bokning.datum) + ', kl. ' + bokning.start + '–' + bokning.slut;
+  $('bokad-tid').textContent = dagNamn(bokning.datum) + ', ' + tidBeskrivning(bokning);
   $('bokad-epost').textContent = epost;
   $('formular').hidden = true;
   document.querySelectorAll('.hero .lead').forEach(el => { el.hidden = true; });
@@ -197,7 +205,7 @@ async function boka(ev) {
     const kontrollerad = await laddaTider();
     const tid = tider.find(t => t.id === d.tid);
     if (kontrollerad && (!tid || !tid.ledig)) {
-      await tidenTagen('Tiden hann bli tagen. Välj en annan tid.');
+      await tidenTagen('Tiden hann bli fullbokad. Välj en annan tid.');
       return;
     }
     const valdRad = tid;
@@ -209,11 +217,11 @@ async function boka(ev) {
     let json = null;
     try { json = await svar.json(); } catch (e) { /* inget JSON-svar */ }
     if (svar.ok && json) {
-      visaBekraftelse({ datum: json.datum || (valdRad && valdRad.datum), start: json.start || (valdRad && valdRad.start), slut: json.slut || (valdRad && valdRad.slut) }, d.epost);
+      visaBekraftelse({ datum: json.datum || (valdRad && valdRad.datum), start: json.start || (valdRad && valdRad.start), slut: json.slut || (valdRad && valdRad.slut), exakt: json.exakt === undefined ? valdRad && valdRad.exakt : json.exakt }, d.epost);
       return;
     }
     if (svar.status === 409) {
-      await tidenTagen((json && json.fel) || 'Tiden hann bli tagen. Välj en annan tid.');
+      await tidenTagen((json && json.fel) || 'Tiden hann bli fullbokad. Välj en annan tid.');
       return;
     }
     visaFel('skicka', true, (json && json.fel) || 'Bokningen gick inte att skicka just nu. Försök igen om en stund.');

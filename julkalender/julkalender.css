@@ -9,11 +9,12 @@
 /* Tidsväljaren: en rubrik per dag, tiderna som knappar */
 .dagar { display: grid; gap: 18px; }
 .dag { display: grid; gap: 8px; }
-.tid-rutnat { display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(70px, 1fr)); }
+.tid-rutnat { display: grid; gap: 8px; grid-template-columns: repeat(auto-fill, minmax(145px, 1fr)); }
 .tid { position: relative; font-weight: 400; }
-.tid-ruta { display: grid; place-content: center; justify-items: center; gap: 1px; min-height: 54px; padding: 6px 2px; border: 1px solid var(--linje); border-radius: 10px; background: var(--bg); cursor: pointer; transition: background .15s, border-color .15s; }
-.tid-ruta b { font-weight: 700; font-size: 16px; font-variant-numeric: tabular-nums; }
-.tid-ruta small { font-size: 11px; line-height: 1.2; }
+.tid-ruta { display: grid; place-content: center; justify-items: center; gap: 2px; min-height: 62px; padding: 8px 8px; text-align: center; border: 1px solid var(--linje); border-radius: 10px; background: var(--bg); cursor: pointer; transition: background .15s, border-color .15s; }
+.tid-ruta b { font-weight: 700; font-size: 15px; line-height: 1.25; font-variant-numeric: tabular-nums; }
+.tid-ruta small { font-size: 12.5px; line-height: 1.2; color: var(--dampad); }
+.tid input:checked + .tid-ruta small { color: #fff; }
 .tid:hover input:enabled:not(:checked) + .tid-ruta { border-color: var(--plum); background: var(--rosa-ton); }
 .tid input:checked + .tid-ruta { background: var(--plum); border-color: var(--plum); color: #fff; }
 .tid input:focus-visible + .tid-ruta { outline: 3px solid var(--rosa); outline-offset: 2px; }

@@ -58,14 +58,23 @@ till Emanda och Frida. Beställningen finns då bara i mejlet, så lägg in den 
 
 ## Julkalendern: filmbokningar (till Emanda)
 
-Butikerna bokar sin filmtid 18–20 november på https://torp.k2.nu/julkalender/. Gina Tricot och
-Hunkemöller bokas separat senare.
+Butikerna bokar sin filmtid 18–20 november på https://torp.k2.nu/julkalender/.
 
 1. Logga in på **https://bestallningar.k2.nu/admin** med din Stampen-adress.
 2. Öppna **Filmbokningar julkalender** i menyn, under Beställningar. Listan är sorterad efter tid och
    visar tid, butik, kontaktperson, telefon och manusval.
 3. Öppna en bokning för att se mejladress och butikens beskrivning av tävlingen.
 
-En bokad tid visas som Upptagen för övriga butiker. Vill en butik flytta sin tid: öppna bokningen,
-ändra **Tid** till en annan ledig tid och spara. Att radera en bokning kräver administratör, så be
-Frida om det.
+Så många butiker får plats varje dag:
+
+| Tid | Platser |
+|---|---|
+| Kl. 09.00, exakt ankomst | 1 |
+| Kl. 10.00–12.00 | 3 |
+| Kl. 12.00–14.00 | 3 |
+| Kl. 14.00–15.00 | 2 |
+
+Listan är sorterad efter tid, så bokningarna i samma intervall ligger efter varandra. Antalet rader
+med samma tid är antalet butiker som bokat intervallet. När alla platser är tagna står det Fullbokat
+för övriga butiker. Vill en butik flytta sin tid: öppna bokningen, ändra **Tid** till en tid med lediga
+platser och spara. Att radera en bokning kräver administratör, så be Frida om det.

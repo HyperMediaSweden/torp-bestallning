@@ -32,8 +32,8 @@ https://hypermediasweden.github.io/torp-bestallning/ finns kvar tills Frida stä
 Butikerna bokar en filmtid 18–20 november. Vilka tider som finns styrs helt av beställningssystemet
 (`/api/filmbokning`), sidan har inga tider inskrivna. Lokalt pratar sidan med en mock på port 8777. Instruktion till Emanda: `INSTRUKTION.md`.
 
-**Formatspec:** https://torp.k2.nu/spec/ (`spec/index.html`, kopia av `../guider/formatspec-torp.k2.nu.html` plus en
-tillbaka-länk). Formuläret länkar dit ovanför materialgrupperna och i sidfoten. Ändras formaten: uppdatera båda filerna.
+**Formatspec:** https://torp.k2.nu/spec/ (`spec/index.html` och `spec/spec.css`, med `stil.css` som grund). Innehållet kommer från
+`../guider/formatspec-torp.k2.nu.html`. Sidan nås via fliken Specs, knappen ovanför materialgrupperna och sidfoten. Ändras formaten: uppdatera båda HTML-filerna.
 
 ## Hur beställningarna kommer fram
 

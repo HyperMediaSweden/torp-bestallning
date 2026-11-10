@@ -13,8 +13,8 @@ let valdTid = null;
 
 const klockslag = (tid) => String(tid).replace(':', '.');
 function arExakt(t) { return t.exakt === true || t.start === t.slut; }
-function tidEtikett(t) { return arExakt(t) ? 'Kl. ' + klockslag(t.start) + ', exakt ankomst' : 'Kl. ' + klockslag(t.start) + '–' + klockslag(t.slut); }
-function tidBeskrivning(t) { return arExakt(t) ? 'kl. ' + klockslag(t.start) + ' (exakt ankomst)' : 'kl. ' + klockslag(t.start) + '–' + klockslag(t.slut) + ' (ankomstintervall)'; }
+function tidEtikett(t) { return arExakt(t) ? 'Kl. ' + klockslag(t.start) : 'Kl. ' + klockslag(t.start) + '–' + klockslag(t.slut); }
+function tidBeskrivning(t) { return arExakt(t) ? 'kl. ' + klockslag(t.start) : 'kl. ' + klockslag(t.start) + '–' + klockslag(t.slut) + ' (ankomstintervall)'; }
 function platserKvar(t) { return typeof t.lediga === 'number' && !arExakt(t) ? t.lediga + (t.lediga === 1 ? ' plats kvar' : ' platser kvar') : ''; }
 
 function dagNamn(datum) {

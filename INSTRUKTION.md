@@ -69,7 +69,7 @@ Så många butiker får plats varje dag:
 
 | Tid | Platser |
 |---|---|
-| Kl. 09.00, exakt ankomst | 1 |
+| Kl. 09.00 | 1 |
 | Kl. 10.00–12.00 | 3 |
 | Kl. 12.00–14.00 | 3 |
 | Kl. 14.00–15.00 | 2 |

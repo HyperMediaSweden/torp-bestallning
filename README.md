@@ -7,7 +7,7 @@ färdigt material under fliken Hämta material.
 
 Stampen producerar filerna. Torp beställer trycket själva, utan faktura via Stampen. Därför står
 "Tryck beställs av er hos:" på Golvdekaler och Öppettider-affischer, och "Filen lämnas av er till:" på
-Digitala skärmar och Kartskärmar. Etiketterna ligger i `leverantorEtikett` i `GRUPPER`. Datafältet
+Digitala skärmar, Kartskärmar och Bussreklam. Etiketterna ligger i `leverantorEtikett` i `GRUPPER`. Datafältet
 `leverantor` till beställningssystemet är oförändrat.
 
 Inhusmaterialet kommer först i formuläret. Kampanjkanalerna (sociala medier, display, Adnami och
@@ -76,6 +76,7 @@ Sociala kanaler, display, Adnami och tidning följer Stampens formatlista (datab
 | Displayannonser | Panorama 980×240, Panorama Mega 980×600, Modul 640×320, Insider 300×250, Outsider 250×600, Mobil Panorama 320×320, Mobil Mega 320×480 |
 | Annonser med stor yta (Adnami) | Take-over mobil 320×480 och 1080×1920, take-over desktop 1920×1080, top-scroll mobil 1080×1920, top-scroll desktop 2560×1440 |
 | Tidningsannons | Modul 23 80×133 mm, Modul 34 122×170 mm, helsida 248×372 mm |
+| Bussreklam | Streetliner Filler 3050×650 och 1700×745 mm, Hop On Filler 1375×680 och 1395×495 mm, Backside Filler 1395×495 mm. Fanns inte i PDF:en. Mottagare saknas tills vidare, kunden skriver den i noteringen. Mallar med utfall och synlig yta finns hos annonsproduktion |
 
 ## Avvikelser mot den gamla PDF:en
 

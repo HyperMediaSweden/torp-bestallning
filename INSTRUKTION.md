@@ -3,7 +3,7 @@
 *Till annonsproduktion (Anton).*
 
 Torp (Fredrik och Anki) beställer själva material utanför kampanjproduktionen,
-till exempel golvdekaler, affischer och skärmmaterial, via formuläret på https://torp.k2.nu/.
+till exempel golvdekaler, affischer, skärmmaterial och bussreklam, via formuläret på https://torp.k2.nu/.
 Stampen producerar filerna. Torp beställer trycket själva, utan faktura via Stampen, och lämnar skärmfilerna
 till mottagaren som står vid gruppen. Kampanjkanalerna ligger ihopfällda längst ner i formuläret. Beställningarna hamnar i Stampens
 beställningssystem: **https://bestallningar.k2.nu/admin**. Logga in med din Stampen-adress.
@@ -16,6 +16,9 @@ Första gången: tryck *Glömt lösenord?* på inloggningssidan och följ länke
 2. Öppna länken (eller gå till **Beställningar** i systemet). Hela texten ligger under
    *Hela beställningen* och kan kopieras rakt av till produktion. Under *Rådata* finns exakt vad
    som kryssades i.
+
+Bussreklam (Streetliner, Hop On och Backside Filler): mallarna med utfall och synlig yta finns hos er
+och kommer från Frida. Formuläret hänvisar till er för mallarna.
 
 ## Byta status
 

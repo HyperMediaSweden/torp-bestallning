@@ -63,6 +63,15 @@ const GRUPPER = [
     leverantor: 'ej angiven, skriv i noteringen vem som ska ha filen', leverantorEtikett: 'Filen lämnas av er till:', val: [
     { id: 'kartskarm-1920x1080', namn: 'Liggande skärm', matt: '1920×1080 px' }
   ]},
+  { id: 'bussreklam', antal: true, namn: 'Bussreklam', falt: ['kampanjstart', 'kampanjslut', 'notering'],
+    hjalp: 'Mallar med utfall och synlig yta finns hos annonsproduktion.',
+    leverantor: 'ej angiven, skriv i noteringen vem som ska ha filen', leverantorEtikett: 'Filen lämnas av er till:', val: [
+    { id: 'buss-streetliner-3050x650', namn: 'Streetliner Filler', matt: '3050×650 mm' },
+    { id: 'buss-streetliner-1700x745', namn: 'Streetliner Filler', matt: '1700×745 mm' },
+    { id: 'buss-hopon-1375x680', namn: 'Hop On Filler', matt: '1375×680 mm' },
+    { id: 'buss-hopon-1395x495', namn: 'Hop On Filler', matt: '1395×495 mm' },
+    { id: 'buss-backside-1395x495', namn: 'Backside Filler', matt: '1395×495 mm' }
+  ]},
   { id: 'hemsidan', namn: 'Hemsidan', falt: ['kampanjstart', 'notering'], val: [
     { id: 'webheader-jpg', namn: 'Webheader, bild (.jpg)', matt: '1920×694 px' },
     { id: 'webheader-mp4', namn: 'Webheader, film (.mp4)', matt: '1920×694 px', info: 'Max 50 MB' },

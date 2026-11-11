@@ -7,10 +7,9 @@
 const KONFIG = {
   kund: 'Torp Köpcentrum',
   kundkod: 'torp-kopcentrum',                          // kundens kod i beställningssystemet (Kunder → Kod)
-  // TESTLÄGE (Fridas beslut 2026-11-06): allt reservmejl går bara till Frida medan formuläret testas.
-  // Skarpt läge: till: ['annonsproduktion@stampen.com'], kopia: ['emanda.andersson@stampen.com', 'frida.baldvinsdottir@stampen.com']
-  till: ['frida@hypermedia.se'],
-  kopia: [],
+  // Skarpt läge sedan 2026-11-11 (Fridas beslut). Testläget skickade allt reservmejl till frida@hypermedia.se utan kopia.
+  till: ['annonsproduktion@stampen.com'],
+  kopia: ['emanda.andersson@stampen.com', 'frida.baldvinsdottir@stampen.com'],
   // Fridas beslut 2026-11-10: kampanjkanalerna är dolda. Sätt true för att visa dem igen.
   visaKampanjkanaler: false,
   endpoint: 'https://bestallningar.k2.nu/api/bestallning',                       // Beställningssystemet (Payload på Coolify). Tom = bara e-post.

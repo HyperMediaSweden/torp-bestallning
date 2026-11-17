@@ -27,7 +27,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="stil.css?v=2026-11-10f">
+<link rel="stylesheet" href="stil.css?v=2026-11-17a">
 </head>
 <body>
 
@@ -94,6 +94,8 @@
           <p class="hjalp">Det viktigaste datumet. Då behöver ni ha materialet.</p>
           <p class="fel" id="fel-leveransdatum" hidden>Ange när materialet senast ska vara levererat.</p>
           <p class="varning" id="varning-leveransdatum" hidden>Leveransdatumet ligger efter startdatumet. Stämmer det?</p>
+          <p class="ledtid-tidigast" id="ledtid-tidigast" hidden>Tidigast möjliga leverans: <b id="ledtid-tidigast-datum"></b></p>
+          <p class="varning" id="varning-ledtid" role="status" hidden></p>
         </div>
       </div>
 
@@ -249,6 +251,7 @@
   </div>
 </footer>
 
-<script src="app.js?v=2026-11-11a"></script>
+<script src="ledtider.js?v=2026-11-17a"></script>
+<script src="app.js?v=2026-11-17a"></script>
 </body>
 </html>

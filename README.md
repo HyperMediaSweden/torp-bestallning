@@ -33,6 +33,24 @@ Butikerna bokar en filmtid 18–20 november. Vilka tider som finns styrs helt av
 **Formatspec:** https://torp.k2.nu/spec/ (`spec/index.html` och `spec/spec.css`, med `stil.css` som grund). Innehållet kommer från
 `../guider/formatspec-torp.k2.nu.html`. Sidan nås via fliken Specs, knappen ovanför materialgrupperna och sidfoten. Ändras formaten: uppdatera `spec/index.html`, det är den gällande versionen.
 
+## Ledtider
+
+Siffrorna ligger på ett ställe: `ledtider.js` (`LEDTIDER`). Både formuläret och specsidan läser filen, så en
+ändring där slår igenom överallt. Räkna upp `?v=` på `ledtider.js` i `index.html` och `spec/index.html` när den ändras.
+
+- `dagar`: arbetsdagar från komplett beställning (texter, bilder, godkänt budskap) till levererad fil.
+- `val`: egen ledtid för en enskild rad, går före gruppens (filmerna på Hemsidan och Sociala medier).
+- `tillagg`: det som tillkommer efter filen (tryck och montering). Visas i gruppen och på specsidan men räknas inte in i datumet.
+- `text`: grupper utan fast ledtid (Tidningsannons). Räknas inte in.
+
+Formuläret visar ledtiden på varje grupprad. Under "Materialet levereras senast" står "Tidigast möjliga leverans",
+räknat från dagens datum plus den längsta ledtiden bland det som är valt. Lördag och söndag hoppas över,
+**svenska helgdagar räknas inte bort**. Är leveransdatumet tidigare visas en gul varning, men beställningen går
+att skicka. Sammanställningen får raden `LEDTID: tidigast <datum> (<grupp> N arbetsdagar)` och, vid kortare tid,
+`OBS: kortare än normal ledtid`. Ledtiden skickas bara i texten, inte som eget fält till beställningssystemet.
+
+Siffrorna är förslag från 2026-11-17 och är inte avstämda mot Nellies ledtidsdokument.
+
 ## Hur beställningarna kommer fram
 
 1. Kunden fyller i formuläret och trycker **Skicka beställningen**.

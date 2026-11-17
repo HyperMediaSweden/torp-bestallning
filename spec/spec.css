@@ -31,6 +31,8 @@
 .spec td { color: var(--text2); }
 .spec td.n { white-space: nowrap; }
 .spec td.g { font-weight: 700; color: var(--text); }
+.spec table.ledtider { min-width: 620px; }
+.ledtider td:nth-child(2) { min-width: 150px; }
 .snabb tr.grupp td { background: var(--yta); color: var(--text); font-weight: 800; padding-top: 11px; }
 .pill { display: inline-block; padding: 1px 9px; border-radius: 999px; font: 500 11.5px/1.5 var(--mono); background: var(--rosa-ton); color: var(--plum); white-space: nowrap; }
 .pill.tryck { background: var(--varning-ton); color: var(--varning); }

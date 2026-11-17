@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="../stil.css?v=2026-11-10e">
-<link rel="stylesheet" href="spec.css?v=2026-11-10a">
+<link rel="stylesheet" href="spec.css?v=2026-11-17a">
 </head>
 <body>
 
@@ -74,6 +74,7 @@
       <li><a href="#hemsidan">Hemsidan</a></li>
       <li><a href="#sociala">Sociala medier</a></li>
       <li><a href="#ovrigt">Övrigt</a></li>
+      <li><a href="#ledtider">Ledtider</a></li>
       <li><a href="#allmant">Gäller allt</a></li>
     </ol>
   </nav>
@@ -265,6 +266,17 @@
   </section>
 
   <section class="block">
+  <h2 id="ledtider">Ledtider</h2>
+  <p>Ledtiden räknas i arbetsdagar från komplett beställning, det vill säga texter, bilder och godkänt budskap, till levererad fil. Där Torp beställer trycket själva tillkommer tryck och montering hos leverantören. Formuläret räknar fram tidigast möjliga leverans och varnar om leveransdatumet är tidigare.</p>
+  <div class="tabell" tabindex="0">
+  <table class="ledtider">
+    <thead><tr><th>Grupp</th><th>Ledtid</th><th>Tillkommer</th></tr></thead>
+    <tbody id="ledtider-rader"><tr><td colspan="3">Ledtiderna visas när sidan har laddat klart.</td></tr></tbody>
+  </table>
+  </div>
+  </section>
+
+  <section class="block">
   <h2 id="allmant">Gäller allt</h2>
   <ul>
     <li>Beställningen går till annonsproduktion med kopia till Emanda och Frida.</li>
@@ -293,6 +305,12 @@
         <tr><td class="g">Tidningsannons</td><td>Modul 23 åttondelssida · Modul 34 kvartssida · Helsida</td><td class="n">80 × 133 · 122 × 170 · 248 × 372 mm</td><td>Införandedatum</td></tr>
       </table>
       </div>
+      <div class="tabell" tabindex="0">
+      <table>
+        <thead><tr><th>Grupp</th><th>Ledtid</th></tr></thead>
+        <tbody id="ledtider-kampanj"></tbody>
+      </table>
+      </div>
     </div>
   </details>
 </main>
@@ -303,6 +321,8 @@
     <span>Enligt formuläret 10 november 2026</span>
   </div>
 </footer>
+<script src="../ledtider.js?v=2026-11-17a"></script>
+<script src="spec.js?v=2026-11-17a"></script>
 
 </body>
 </html>

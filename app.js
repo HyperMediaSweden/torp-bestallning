@@ -126,6 +126,8 @@ const ALLA_GRUPPER = [
   ]}
 ];
 const GRUPPER = ALLA_GRUPPER.filter(g => !g.kampanj || KONFIG.visaKampanjkanaler);
+// Ledtiderna ligger i ledtider.js. Saknas filen (gammal cachad index.html) fungerar formuläret utan dem.
+const HAR_LEDTIDER = typeof LEDTIDER !== 'undefined';
 
 const $ = (id) => document.getElementById(id);
 const UTKAST_NYCKEL = 'torp-bestallning-utkast';
@@ -146,14 +148,18 @@ function byggGrupper() {
 
     const huvud = document.createElement('summary');
     huvud.className = 'grupp-huvud';
-    huvud.innerHTML = '<span class="grupp-namn"><h3></h3>' + (g.info ? '<small></small>' : '') + '</span><span class="grupp-antal" aria-live="polite"></span>';
+    const ledtid = HAR_LEDTIDER ? ledtidKort(g.id) : '';
+    huvud.innerHTML = '<span class="grupp-namn"><h3></h3>' + (g.info ? '<small class="grupp-kort"></small>' : '') + (ledtid ? '<small class="grupp-ledtid"></small>' : '') + '</span><span class="grupp-antal" aria-live="polite"></span>';
     huvud.querySelector('h3').textContent = g.namn;
-    if (g.info) huvud.querySelector('small').textContent = g.info;
+    if (g.info) huvud.querySelector('.grupp-kort').textContent = g.info;
+    if (ledtid) huvud.querySelector('.grupp-ledtid').textContent = ledtid;
     sek.appendChild(huvud);
     const inne = document.createElement('div');
     inne.className = 'grupp-innehall';
     sek.appendChild(inne);
     if (g.hjalp) { const h = document.createElement('p'); h.className = 'grupp-info'; h.textContent = g.hjalp; inne.appendChild(h); }
+    const tillagg = HAR_LEDTIDER && LEDTIDER[g.id] && LEDTIDER[g.id].tillagg;
+    if (tillagg) { const h = document.createElement('p'); h.className = 'grupp-info grupp-tillagg'; h.textContent = ledtidKort(g.id) + '. ' + tillagg; inne.appendChild(h); }
 
     if (g.fritext) {
       const f = document.createElement('div');
@@ -223,6 +229,8 @@ function valRad(v, g, arAlla) {
   if (v.matt) { const m = document.createElement('span'); m.className = 'val-matt'; m.textContent = v.matt; text.appendChild(m); }
   if (v.tagg) { const t = document.createElement('span'); t.className = 'tagg'; t.textContent = v.tagg; text.appendChild(t); }
   if (v.info) { const i = document.createElement('span'); i.className = 'val-info'; i.textContent = v.info; text.appendChild(i); }
+  const egen = HAR_LEDTIDER && LEDTIDER[g.id] && LEDTIDER[g.id].val && LEDTIDER[g.id].val[v.id];
+  if (egen) { const i = document.createElement('span'); i.className = 'val-info val-ledtid'; i.textContent = 'Ledtid ' + ledtidDagarText(egen.dagar); text.appendChild(i); }
   label.appendChild(input);
   label.appendChild(text);
   if (!g.antal || arAlla) return label;
@@ -285,6 +293,28 @@ function antalVal(d) {
   return d.grupper.reduce((n, g) => n + (g.val ? g.val.length : 1), 0);
 }
 
+/* ---------- Ledtid ---------- */
+/* Längsta ledtiden bland det som är valt. Returnerar { dagar, namn, tidigast, kort } eller null. */
+function beraknaLedtid(d) {
+  if (!HAR_LEDTIDER) return null;
+  let langst = null;
+  for (const g of d.grupper) {
+    const l = LEDTIDER[g.id];
+    if (!l || !l.dagar) continue;
+    const kandidater = g.val
+      ? g.val.map(v => (l.val && l.val[v.id]) || { namn: l.namn, dagar: l.dagar })
+      : [{ namn: l.namn, dagar: l.dagar }];
+    for (const k of kandidater) if (!langst || k.dagar > langst.dagar) langst = k;
+  }
+  if (!langst) return null;
+  const tidigast = isoDatum(laggTillArbetsdagar(new Date(), langst.dagar));
+  return { dagar: langst.dagar, namn: langst.namn, tidigast, kort: !!(d.leveransdatum && d.leveransdatum < tidigast) };
+}
+function langtDatum(iso) {
+  const t = new Date(iso + 'T12:00:00').toLocaleDateString('sv-SE', { weekday: 'long', day: 'numeric', month: 'long' });
+  return t;
+}
+
 /* ---------- Sammanställning som text ---------- */
 function datum(s) {
   if (!s) return '';
@@ -296,6 +326,11 @@ function sammanstall(d) {
   r.push('Gäller: ' + (d.kampanjnamn || '(ej ifyllt)'));
   if (d.startdatum || d.slutdatum) r.push('Period: ' + (datum(d.startdatum) || '?') + ' – ' + (datum(d.slutdatum) || '?'));
   r.push('LEVERERAS SENAST: ' + (datum(d.leveransdatum) || '(ej ifyllt)'));
+  const lt = beraknaLedtid(d);
+  if (lt) {
+    r.push('LEDTID: tidigast ' + lt.tidigast + ' (' + lt.namn + ' ' + lt.dagar + ' arbetsdagar)');
+    if (lt.kort) r.push('OBS: kortare än normal ledtid');
+  }
   const b = [d.bestallare.namn, d.bestallare.epost, d.bestallare.telefon].filter(Boolean).join(' · ');
   r.push('Beställare: ' + (b || '(ej ifyllt)'));
   if (d.notering) r.push('Notering: ' + d.notering);
@@ -432,6 +467,16 @@ function uppdatera() {
     + (nf ? ' · ' + nf + (nf === 1 ? ' fil' : ' filer') : '');
   // Varning om leveransdatum efter kampanjstart
   $('varning-leveransdatum').hidden = !(d.startdatum && d.leveransdatum && d.leveransdatum > d.startdatum);
+  // Tidigast möjliga leverans utifrån det som är valt. Varnar, men stoppar inte beställningen.
+  if ($('ledtid-tidigast')) {
+    const lt = beraknaLedtid(d);
+    $('ledtid-tidigast').hidden = !lt;
+    $('varning-ledtid').hidden = !(lt && lt.kort);
+    if (lt) {
+      $('ledtid-tidigast-datum').textContent = langtDatum(lt.tidigast);
+      $('varning-ledtid').textContent = 'Kort om tid: ' + lt.namn + ' tar normalt ' + lt.dagar + ' arbetsdagar. Skicka ändå, så hör vi av oss om det inte går.';
+    }
+  }
   sparaUtkast();
 }
 
@@ -904,7 +949,7 @@ function visaVy() {
 function start() {
   // En äldre index.html ur webbläsarens cache saknar nyare delar av sidan. Ladda då om en gång,
   // en omladdning frågar alltid servern (som svarar med Cache-Control: no-cache).
-  if (!$('grupper-kampanj') || !$('block-filer') || !$('hamtkod-formular')) {
+  if (!$('grupper-kampanj') || !$('block-filer') || !$('hamtkod-formular') || !$('ledtid-tidigast')) {
     let redan = false;
     try { redan = sessionStorage.getItem('torp-omladdad') === '1'; sessionStorage.setItem('torp-omladdad', '1'); } catch (e) { redan = true; }
     if (!redan) { location.reload(); return; }

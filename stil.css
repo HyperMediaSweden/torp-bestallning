@@ -100,6 +100,8 @@ textarea { resize: vertical; }
 .hjalp { font-size: 13.5px; color: var(--dampad); }
 .fel { font-size: 13.5px; color: var(--fel); font-weight: 600; }
 .varning { font-size: 13.5px; color: var(--varning); font-weight: 600; }
+.ledtid-tidigast { font-size: 13.5px; color: var(--text2); }
+.ledtid-tidigast b { color: var(--text); font-weight: 700; }
 .falt.ogiltig input { border-color: var(--fel); }
 
 /* Leveransdatum: rosa platta, som gulmarkeringen i den gamla blanketten */
@@ -124,6 +126,8 @@ textarea { resize: vertical; }
 .grupp-antal { font: 700 13px/1 var(--disp); color: var(--plum); white-space: nowrap; }
 .grupp-innehall { display: grid; gap: 12px; padding: 4px 16px 16px; }
 .grupp-huvud small { font-weight: 500; color: var(--dampad); font-size: 13.5px; }
+.grupp-huvud small.grupp-ledtid { flex-basis: 100%; color: var(--text2); font-size: 13px; }
+.val-ledtid { color: var(--text2); }
 .grupp-info { font-size: 13.5px; color: var(--text2); }
 .val-lista { display: grid; gap: 4px; }
 .val-rad { display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; padding: 7px 8px; margin: 0 -8px; border-radius: 8px; cursor: pointer; }

@@ -14,6 +14,8 @@
 .fraga-sist { gap: 12px; }
 .fraga-sist .val-rad { font-weight: 500; }
 .fraga.ogiltig .betyg-knappar span, .fraga.ogiltig .knappval span { border-color: var(--fel); }
+.fraga.ogiltig select { border-color: var(--fel); }
+#fraga-butik select { max-width: 420px; }
 
 /* Betyg 1–5 och Ja/Kanske/Nej: stora tryckytor */
 .betyg { display: grid; gap: 6px; }

@@ -1,16 +1,17 @@
-/* Utvärdering av julkalendern. Butiken kommer hit via en personlig länk (?k=<kod>) från Emandas mejl.
-   Butiksnamnet och om utvärderingen redan är besvarad hämtas från beställningssystemet (bestallningar.k2.nu). */
+/* Utvärdering av julkalendern. En gemensam länk till alla butiker (Fridas beslut 2026-11-19).
+   Butiken väljer sitt namn i en lista som hämtas från beställningssystemet (bestallningar.k2.nu).
+   Butiker som redan har svarat går inte att välja, och servern säger ifrån om samma butik svarar igen. */
 'use strict';
 
 const LOKALT = ['localhost', '127.0.0.1'].includes(location.hostname);
 const API = LOKALT ? 'http://127.0.0.1:8778' : 'https://bestallningar.k2.nu'; // Lokalt: mock vid testning
 const TIDSGRANS = 15000;
 const BETYG = ['helhet', 'forberedelse', 'coachning', 'rolig'];
-const OBLIGATORISKA = [...BETYG, 'nastaAr'];
+const OBLIGATORISKA = ['butik', ...BETYG, 'nastaAr'];
 const KONTAKT = 'emanda.andersson@stampen.com';
 
 const $ = (id) => document.getElementById(id);
-const kod = (new URLSearchParams(location.search).get('k') || '').trim();
+let butiker = [];
 
 async function hamta(url, val) {
   const styr = new AbortController();
@@ -21,7 +22,6 @@ async function hamta(url, val) {
     clearTimeout(klocka);
   }
 }
-const adress = () => API + '/api/utvardering/' + encodeURIComponent(kod);
 
 /* ---------- Tillstånd ---------- */
 function visa(lage) {
@@ -36,28 +36,39 @@ function visaMeddelande(rubrik, text, kanForsoka) {
   visa('meddelande');
   $('meddelande-rubrik').focus({ preventScroll: true });
 }
-function okandKod() {
-  visaMeddelande('Länken fungerar inte.', 'Hör av dig till Emanda på ' + KONTAKT + '.', false);
-}
-function redanBesvarad(text) {
-  visaMeddelande(text || 'Ni har redan svarat. Tack!', 'Era svar har kommit fram till oss.', false);
-}
 
 async function start() {
-  if (!kod) { okandKod(); return; }
   visa('laddar');
   try {
-    const svar = await hamta(adress());
-    if (svar.status === 404) { okandKod(); return; }
+    const svar = await hamta(API + '/api/utvardering/butiker');
     const data = await svar.json().catch(() => null);
-    if (!svar.ok || !data) throw new Error('Systemet svarade ' + svar.status);
-    if (data.besvarad) { redanBesvarad(); return; }
-    $('butik-namn').textContent = data.butik || 'där';
+    if (!svar.ok || !data || !Array.isArray(data.butiker)) throw new Error('Systemet svarade ' + svar.status);
+    butiker = data.butiker;
+    if (!butiker.length) {
+      visaMeddelande('Utvärderingen är inte öppen just nu.', 'Hör av dig till Emanda på ' + KONTAKT + '.', false);
+      return;
+    }
+    ritaButiker();
     visa('formular');
     uppdateraFramsteg();
   } catch (err) {
     visaMeddelande('Formuläret gick inte att hämta', 'Kontrollera uppkopplingen och försök igen. Fungerar det ändå inte, hör av dig till Emanda på ' + KONTAKT + '.', true);
   }
+}
+
+function ritaButiker() {
+  const val = $('butik');
+  const fore = val.value;
+  val.length = 1; // behåll "Välj butik"
+  const sorterade = butiker.slice().sort((a, b) => String(a.namn).localeCompare(String(b.namn), 'sv'));
+  sorterade.forEach((b) => {
+    const o = document.createElement('option');
+    o.value = String(b.id);
+    o.textContent = b.namn + (b.besvarad ? ' (har svarat)' : '');
+    o.disabled = !!b.besvarad;
+    val.appendChild(o);
+  });
+  val.value = sorterade.some(b => String(b.id) === fore && !b.besvarad) ? fore : '';
 }
 
 /* ---------- Bygg betygsknapparna ---------- */
@@ -95,11 +106,14 @@ function byggBetyg() {
 
 /* ---------- Läs och kontrollera ---------- */
 function valt(namn) {
+  if (namn === 'butik') return $('butik').value;
   const el = document.querySelector('input[name="' + namn + '"]:checked');
   return el ? el.value : '';
 }
 function lasSvar() {
-  const d = {};
+  // Skicka tillbaka butikens id med samma typ som servern gav (tal eller sträng)
+  const vald = butiker.find(b => String(b.id) === $('butik').value);
+  const d = { butik: vald ? vald.id : $('butik').value };
   for (const f of BETYG) d[f] = parseInt(valt(f), 10) || null;
   d.nastaAr = valt('nastaAr');
   const forbattring = $('forbattring').value.trim();
@@ -132,8 +146,8 @@ function validera() {
   }
   if (forsta) {
     $('fraga-' + forsta).scrollIntoView({ block: 'center', behavior: 'smooth' });
-    const forstaVal = document.querySelector('input[name="' + forsta + '"]');
-    if (forstaVal) forstaVal.focus({ preventScroll: true });
+    const el = forsta === 'butik' ? $('butik') : document.querySelector('input[name="' + forsta + '"]');
+    if (el) el.focus({ preventScroll: true });
   }
   return !forsta;
 }
@@ -147,7 +161,7 @@ async function skicka(ev) {
   knapp.disabled = true;
   knapp.textContent = 'Skickar …';
   try {
-    const svar = await hamta(adress(), {
+    const svar = await hamta(API + '/api/utvardering', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(lasSvar())
@@ -159,8 +173,11 @@ async function skicka(ev) {
       $('tack-rubrik').focus({ preventScroll: true });
       return;
     }
-    if (svar.status === 409) { redanBesvarad(json && json.fel); window.scrollTo(0, 0); return; }
-    if (svar.status === 404) { okandKod(); window.scrollTo(0, 0); return; }
+    if (svar.status === 409) {
+      visaMeddelande((json && json.fel) || 'Ni har redan svarat. Tack!', 'Er butik har redan skickat in sina svar. Har ni valt fel butik, hör av dig till Emanda på ' + KONTAKT + '.', false);
+      window.scrollTo(0, 0);
+      return;
+    }
     visaSkickfel((json && json.fel) || 'Svaren gick inte att skicka just nu. Försök igen om en stund.');
   } catch (err) {
     visaSkickfel('Svaren gick inte att skicka. Kontrollera uppkopplingen och försök igen.');

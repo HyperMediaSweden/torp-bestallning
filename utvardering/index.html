@@ -28,7 +28,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="../stil.css?v=2026-11-17a">
-<link rel="stylesheet" href="utvardering.css?v=2026-11-19a">
+<link rel="stylesheet" href="utvardering.css?v=2026-11-19b">
 </head>
 <body>
 
@@ -53,7 +53,7 @@
     <div class="inre">
       <p class="etikett">Torps julkalender · Stampen Media</p>
       <h1>Hur var det att filma julkalendern?</h1>
-      <p class="lead" id="ingress" hidden>Hej <span id="butik-namn"></span>! Tack för att ni var med i Torps julkalender. Ge oss två minuter och berätta hur ni upplevde inspelningen.</p>
+      <p class="lead" id="ingress" hidden>Hej! Tack för att ni var med i Torps julkalender. Ge oss två minuter och berätta hur ni upplevde inspelningen.</p>
     </div>
   </section>
 
@@ -79,32 +79,41 @@
     <section class="block">
       <p class="framsteg" id="framsteg-topp" aria-hidden="true"></p>
 
+      <div class="falt fraga" id="fraga-butik">
+        <label for="butik"><span class="fraga-nr">1</span>Vilken butik är ni? <span class="kravd">*</span></label>
+        <select id="butik" name="butik" required>
+          <option value="">Välj butik</option>
+        </select>
+        <p class="hjalp">Står er butik inte med, hör av dig till Emanda på emanda.andersson@stampen.com.</p>
+        <p class="fel" id="fel-butik" hidden>Välj er butik i listan.</p>
+      </div>
+
       <fieldset class="fraga" id="fraga-helhet" data-falt="helhet">
-        <legend><span class="fraga-nr">1</span>Hur upplevde ni inspelningen som helhet? <span class="kravd">*</span></legend>
+        <legend><span class="fraga-nr">2</span>Hur upplevde ni inspelningen som helhet? <span class="kravd">*</span></legend>
         <div class="betyg" data-lag="Mycket dåligt" data-hog="Mycket bra"></div>
         <p class="fel" id="fel-helhet" hidden>Välj ett betyg från 1 till 5.</p>
       </fieldset>
 
       <fieldset class="fraga" id="fraga-forberedelse" data-falt="forberedelse">
-        <legend><span class="fraga-nr">2</span>Höll vi tiden och var vi väl förberedda? <span class="kravd">*</span></legend>
+        <legend><span class="fraga-nr">3</span>Höll vi tiden och var vi väl förberedda? <span class="kravd">*</span></legend>
         <div class="betyg" data-lag="Inte alls" data-hog="Helt och hållet"></div>
         <p class="fel" id="fel-forberedelse" hidden>Välj ett betyg från 1 till 5.</p>
       </fieldset>
 
       <fieldset class="fraga" id="fraga-coachning" data-falt="coachning">
-        <legend><span class="fraga-nr">3</span>Hur upplevde ni vår coachning och vägledning framför kameran? <span class="kravd">*</span></legend>
+        <legend><span class="fraga-nr">4</span>Hur upplevde ni vår coachning och vägledning framför kameran? <span class="kravd">*</span></legend>
         <div class="betyg" data-lag="Mycket dålig" data-hog="Mycket bra"></div>
         <p class="fel" id="fel-coachning" hidden>Välj ett betyg från 1 till 5.</p>
       </fieldset>
 
       <fieldset class="fraga" id="fraga-rolig" data-falt="rolig">
-        <legend><span class="fraga-nr">4</span>Var inspelningen en rolig och positiv upplevelse? <span class="kravd">*</span></legend>
+        <legend><span class="fraga-nr">5</span>Var inspelningen en rolig och positiv upplevelse? <span class="kravd">*</span></legend>
         <div class="betyg" data-lag="Inte alls" data-hog="Absolut"></div>
         <p class="fel" id="fel-rolig" hidden>Välj ett betyg från 1 till 5.</p>
       </fieldset>
 
       <fieldset class="fraga" id="fraga-nastaAr" data-falt="nastaAr">
-        <legend><span class="fraga-nr">5</span>Vill ni vara med i julkalendern nästa år? <span class="kravd">*</span></legend>
+        <legend><span class="fraga-nr">6</span>Vill ni vara med i julkalendern nästa år? <span class="kravd">*</span></legend>
         <div class="alternativ">
           <label class="knappval"><input type="radio" name="nastaAr" value="ja" class="visuellt-dold"><span>Ja</span></label>
           <label class="knappval"><input type="radio" name="nastaAr" value="kanske" class="visuellt-dold"><span>Kanske</span></label>
@@ -114,13 +123,13 @@
       </fieldset>
 
       <div class="falt fraga">
-        <label for="forbattring"><span class="fraga-nr">6</span>Vad kan vi göra ännu bättre nästa gång? <span class="valfri">Valfritt</span></label>
+        <label for="forbattring"><span class="fraga-nr">7</span>Vad kan vi göra ännu bättre nästa gång? <span class="valfri">Valfritt</span></label>
         <textarea id="forbattring" name="forbattring" rows="4" maxlength="2000"></textarea>
       </div>
 
       <div class="fraga fraga-sist">
         <div class="falt">
-          <label for="namn"><span class="fraga-nr">7</span>Ditt namn <span class="valfri">Valfritt</span></label>
+          <label for="namn"><span class="fraga-nr">8</span>Ditt namn <span class="valfri">Valfritt</span></label>
           <input type="text" id="namn" name="namn" autocomplete="name" maxlength="120">
         </div>
         <label class="val-rad"><input type="checkbox" id="farCitera" name="farCitera"><span>Ni får gärna citera vårt svar när ni berättar om julkalendern.</span></label>
@@ -154,6 +163,6 @@
   </div>
 </footer>
 
-<script src="utvardering.js?v=2026-11-19a"></script>
+<script src="utvardering.js?v=2026-11-19b"></script>
 </body>
 </html>

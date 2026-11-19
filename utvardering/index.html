@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="sv">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex">
+<title>Utvärdering av julkalendern – Torp Köpcentrum</title>
+<meta name="description" content="Berätta hur ni upplevde inspelningen av Torps julkalender. Det tar två minuter.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Torp Köpcentrum">
+<meta property="og:locale" content="sv_SE">
+<meta property="og:title" content="Hur var det att filma julkalendern?">
+<meta property="og:description" content="Berätta hur ni upplevde inspelningen av Torps julkalender. Det tar två minuter.">
+<meta property="og:url" content="https://torp.k2.nu/utvardering/">
+<meta property="og:image" content="https://torp.k2.nu/utvardering/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Utvärdering av julkalendern – Torp Köpcentrum">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Hur var det att filma julkalendern?">
+<meta name="twitter:description" content="Berätta hur ni upplevde inspelningen av Torps julkalender. Det tar två minuter.">
+<meta name="twitter:image" content="https://torp.k2.nu/utvardering/og.png">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="icon" href="../favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<meta name="theme-color" content="#8a1a5b">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;800&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../stil.css?v=2026-11-17a">
+<link rel="stylesheet" href="utvardering.css?v=2026-11-19a">
+</head>
+<body>
+
+<header class="topp">
+  <div class="inre">
+    <div class="topp-rad">
+      <div class="avsandare">
+        <span class="o-platta" aria-label="Torp Köpcentrum" role="img">
+          <img src="../o-mark.svg" alt="" width="42" height="42" aria-hidden="true">
+        </span>
+        <span class="logga">
+          <img class="logga-svart" src="../logo-svart.svg" alt="Stampen Media" width="129" height="49">
+          <img class="logga-vit" src="../logo-vit.svg" alt="" width="129" height="49" aria-hidden="true">
+        </span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="inre">
+      <p class="etikett">Torps julkalender · Stampen Media</p>
+      <h1>Hur var det att filma julkalendern?</h1>
+      <p class="lead" id="ingress" hidden>Hej <span id="butik-namn"></span>! Tack för att ni var med i Torps julkalender. Ge oss två minuter och berätta hur ni upplevde inspelningen.</p>
+    </div>
+  </section>
+
+  <!-- Laddar -->
+  <section id="laddar" class="inre lage" aria-live="polite">
+    <div class="block"><p class="dampad">Hämtar formuläret …</p></div>
+  </section>
+
+  <!-- Okänd eller saknad kod, redan besvarad, nätfel -->
+  <section id="meddelande" class="inre lage" hidden>
+    <div class="block">
+      <div class="block-huvud">
+        <h2 id="meddelande-rubrik" tabindex="-1"></h2>
+        <p id="meddelande-text"></p>
+      </div>
+      <div id="meddelande-knapp" hidden>
+        <button type="button" class="knapp knapp-sekundar knapp-liten" id="forsok-igen">Försök igen</button>
+      </div>
+    </div>
+  </section>
+
+  <form id="formular" class="inre formular" novalidate hidden>
+    <section class="block">
+      <p class="framsteg" id="framsteg-topp" aria-hidden="true"></p>
+
+      <fieldset class="fraga" id="fraga-helhet" data-falt="helhet">
+        <legend><span class="fraga-nr">1</span>Hur upplevde ni inspelningen som helhet? <span class="kravd">*</span></legend>
+        <div class="betyg" data-lag="Mycket dåligt" data-hog="Mycket bra"></div>
+        <p class="fel" id="fel-helhet" hidden>Välj ett betyg från 1 till 5.</p>
+      </fieldset>
+
+      <fieldset class="fraga" id="fraga-forberedelse" data-falt="forberedelse">
+        <legend><span class="fraga-nr">2</span>Höll vi tiden och var vi väl förberedda? <span class="kravd">*</span></legend>
+        <div class="betyg" data-lag="Inte alls" data-hog="Helt och hållet"></div>
+        <p class="fel" id="fel-forberedelse" hidden>Välj ett betyg från 1 till 5.</p>
+      </fieldset>
+
+      <fieldset class="fraga" id="fraga-coachning" data-falt="coachning">
+        <legend><span class="fraga-nr">3</span>Hur upplevde ni vår coachning och vägledning framför kameran? <span class="kravd">*</span></legend>
+        <div class="betyg" data-lag="Mycket dålig" data-hog="Mycket bra"></div>
+        <p class="fel" id="fel-coachning" hidden>Välj ett betyg från 1 till 5.</p>
+      </fieldset>
+
+      <fieldset class="fraga" id="fraga-rolig" data-falt="rolig">
+        <legend><span class="fraga-nr">4</span>Var inspelningen en rolig och positiv upplevelse? <span class="kravd">*</span></legend>
+        <div class="betyg" data-lag="Inte alls" data-hog="Absolut"></div>
+        <p class="fel" id="fel-rolig" hidden>Välj ett betyg från 1 till 5.</p>
+      </fieldset>
+
+      <fieldset class="fraga" id="fraga-nastaAr" data-falt="nastaAr">
+        <legend><span class="fraga-nr">5</span>Vill ni vara med i julkalendern nästa år? <span class="kravd">*</span></legend>
+        <div class="alternativ">
+          <label class="knappval"><input type="radio" name="nastaAr" value="ja" class="visuellt-dold"><span>Ja</span></label>
+          <label class="knappval"><input type="radio" name="nastaAr" value="kanske" class="visuellt-dold"><span>Kanske</span></label>
+          <label class="knappval"><input type="radio" name="nastaAr" value="nej" class="visuellt-dold"><span>Nej</span></label>
+        </div>
+        <p class="fel" id="fel-nastaAr" hidden>Välj Ja, Kanske eller Nej.</p>
+      </fieldset>
+
+      <div class="falt fraga">
+        <label for="forbattring"><span class="fraga-nr">6</span>Vad kan vi göra ännu bättre nästa gång? <span class="valfri">Valfritt</span></label>
+        <textarea id="forbattring" name="forbattring" rows="4" maxlength="2000"></textarea>
+      </div>
+
+      <div class="fraga fraga-sist">
+        <div class="falt">
+          <label for="namn"><span class="fraga-nr">7</span>Ditt namn <span class="valfri">Valfritt</span></label>
+          <input type="text" id="namn" name="namn" autocomplete="name" maxlength="120">
+        </div>
+        <label class="val-rad"><input type="checkbox" id="farCitera" name="farCitera"><span>Ni får gärna citera vårt svar när ni berättar om julkalendern.</span></label>
+      </div>
+    </section>
+
+    <section class="block skicka-block">
+      <p class="framsteg" id="framsteg" aria-live="polite"></p>
+      <div class="skicka-rad">
+        <button type="submit" class="knapp knapp-primar" id="skicka">Skicka svaren</button>
+      </div>
+      <p class="fel" id="fel-skicka" role="alert" hidden></p>
+    </section>
+  </form>
+
+  <section id="tack" class="inre lage" hidden>
+    <div class="block">
+      <div class="block-huvud">
+        <p class="etikett">Skickat</p>
+        <h2 id="tack-rubrik" tabindex="-1">Tack!</h2>
+        <p>Era svar hjälper oss att göra julkalendern ännu bättre nästa år.</p>
+        <p class="signatur">Emanda och Nellie, Stampen Media</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="sidfot">
+  <div class="inre">
+    <p>Stampen Media · Utvärdering av Torps julkalender</p>
+  </div>
+</footer>
+
+<script src="utvardering.js?v=2026-11-19a"></script>
+</body>
+</html>

@@ -30,6 +30,12 @@ https://hypermediasweden.github.io/torp-bestallning/ finns kvar tills Frida stä
 Butikerna bokar en filmtid 18–20 november. Vilka tider som finns styrs helt av beställningssystemet
 (`/api/filmbokning`), sidan har inga tider inskrivna. Lokalt pratar sidan med en mock på port 8777. Instruktion till Emanda: `INSTRUKTION.md`.
 
+**Utvärdering av julkalendern:** https://torp.k2.nu/utvardering/?k=<kod> (mappen `utvardering/`, noindex, inte i menyn).
+Butikerna får en personlig länk av Emanda och betygsätter inspelningen. Sidan hämtar butiksnamnet med
+`GET /api/utvardering/:kod` och skickar svaren med `POST /api/utvardering/:kod` till beställningssystemet. Okänd eller
+saknad kod visar "Länken fungerar inte" med Emandas adress. Lokalt pratar sidan med en mock på port 8778
+(koder TEST1, SVARAT, KROCK, FEL400, TRASIG). Skicka aldrig testsvar mot produktion, koderna där tillhör riktiga butiker.
+
 **Formatspec:** https://torp.k2.nu/spec/ (`spec/index.html` och `spec/spec.css`, med `stil.css` som grund). Innehållet kommer från
 `../guider/formatspec-torp.k2.nu.html`. Sidan nås via fliken Specs, knappen ovanför materialgrupperna och sidfoten. Ändras formaten: uppdatera `spec/index.html`, det är den gällande versionen.
 

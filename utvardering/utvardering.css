@@ -1,0 +1,44 @@
+/* Utvärdering av julkalendern. Bygger på ../stil.css, här finns bara det som är unikt för sidan. */
+
+.formular, .lage { padding-bottom: 64px; }
+.formular { display: grid; gap: 16px; }
+.formular .block { gap: 28px; }
+.hel { white-space: nowrap; }
+
+/* Frågorna */
+.fraga { display: grid; gap: 10px; min-width: 0; margin: 0; padding: 0; border: 0; scroll-margin-top: 110px; }
+.fraga legend, .fraga > label:not(.val-rad), .fraga .falt > label { padding: 0; font-weight: 700; font-size: 16.5px; line-height: 1.35; }
+.fraga legend { margin-bottom: 10px; }
+.fraga-nr { display: inline-grid; place-items: center; width: 24px; height: 24px; margin-right: 8px; border-radius: 50%; background: var(--rosa-ton); color: var(--plum); font: 700 13px/1 var(--disp); vertical-align: 1px; }
+.valfri { font-weight: 500; font-size: 13px; color: var(--dampad); margin-left: 4px; }
+.fraga-sist { gap: 12px; }
+.fraga-sist .val-rad { font-weight: 500; }
+.fraga.ogiltig .betyg-knappar span, .fraga.ogiltig .knappval span { border-color: var(--fel); }
+
+/* Betyg 1–5 och Ja/Kanske/Nej: stora tryckytor */
+.betyg { display: grid; gap: 6px; }
+.betyg-knappar { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; }
+.alternativ { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; max-width: 420px; }
+.betyg-knappar label, .knappval { position: relative; display: block; cursor: pointer; }
+.betyg-knappar span, .knappval span { display: grid; place-items: center; min-height: 52px; padding: 6px; border: 1px solid var(--linje); border-radius: 12px; background: var(--bg); font: 700 18px/1 var(--disp); font-variant-numeric: tabular-nums; color: var(--text); transition: background .15s, border-color .15s; }
+.knappval span { font-size: 16px; }
+.betyg-knappar label:hover input:not(:checked) + span, .knappval:hover input:not(:checked) + span { border-color: var(--plum); background: var(--rosa-ton); }
+.betyg-knappar input:checked + span, .knappval input:checked + span { background: var(--plum); border-color: var(--plum); color: #fff; }
+.betyg-knappar input:focus-visible + span, .knappval input:focus-visible + span { outline: 3px solid var(--rosa); outline-offset: 2px; }
+.betyg-skala { display: flex; justify-content: space-between; gap: 12px; font-size: 13px; color: var(--dampad); }
+.betyg-skala span:last-child { text-align: right; }
+
+/* Antal besvarade */
+.framsteg { font-weight: 600; font-size: 14px; color: var(--text2); }
+.framsteg.klar { color: var(--ok); }
+#framsteg-topp { font: 500 12px/1.2 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--plum); }
+.skicka-block { gap: 12px; }
+
+.signatur { font-weight: 700; color: var(--text) !important; }
+#tack-rubrik:focus, #meddelande-rubrik:focus { outline: none; }
+
+@media (max-width: 600px) {
+  .betyg-knappar { gap: 6px; }
+  .betyg-knappar span { min-height: 50px; }
+  .alternativ { max-width: none; }
+}
